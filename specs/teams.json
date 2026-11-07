@@ -1,0 +1,483 @@
+{
+  "workload": "teams",
+  "sources": {
+    "TEAMS_MeetingPolicy": {
+      "type": "teams",
+      "config": "TeamsMeetingPolicy"
+    },
+    "TEAMS_ClientConfiguration": {
+      "type": "teams",
+      "config": "TeamsClientConfiguration"
+    },
+    "TEAMS_MessagingPolicy": {
+      "type": "teams",
+      "config": "TeamsMessagingPolicy"
+    },
+    "TEAMS_AppPermissionPolicy": {
+      "type": "teams",
+      "config": "TeamsAppPermissionPolicy"
+    }
+  },
+  "rules": [
+    {
+      "id": "TEAMS.MT.1037",
+      "reference": "MT.1037",
+      "framework": "Jolera Extended Controls",
+      "area": "Teams",
+      "title": "Only users with the Presenter role can present in Teams meetings",
+      "severity": "High",
+      "licence": "",
+      "nist": "PR.AA-05",
+      "source": "TEAMS_MeetingPolicy",
+      "mode": "first",
+      "filter": [
+        {
+          "path": "Identity",
+          "op": "eq",
+          "value": "Global"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "AllowParticipantGiveRequestControl",
+          "op": "false"
+        }
+      ],
+      "name": "Identity",
+      "fail_if_empty": true,
+      "empty_message": "No Global Teams meeting policy found",
+      "description": "Standard attendees should not be able to share content in meetings unless they are given the Presenter role. Restricting who can present limits meeting disruption and inappropriate content.",
+      "remediation": "Teams admin center > Meetings > Meeting policies > Global (Org-wide default): set 'Who can present?' to 'Only organizers and co-organizers' (or set AllowParticipantGiveRequestControl to False).",
+      "impact": "Attendees will need to be promoted to presenter to share content.",
+      "links": [
+        {
+          "text": "Teams meeting policies",
+          "url": "https://learn.microsoft.com/microsoftteams/meeting-policies-overview"
+        }
+      ],
+      "origin": "Maester Test-MtTeamsRestrictParticipantGiveRequestControl (MT.1037)"
+    },
+    {
+      "id": "TEAMS.MT.1042",
+      "reference": "MT.1042",
+      "framework": "Jolera Extended Controls",
+      "area": "Teams",
+      "title": "Dial-in users cannot bypass the meeting lobby",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "PR.AA-05",
+      "source": "TEAMS_MeetingPolicy",
+      "mode": "first",
+      "filter": [
+        {
+          "path": "Identity",
+          "op": "eq",
+          "value": "Global"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "AllowPSTNUsersToBypassLobby",
+          "op": "false"
+        }
+      ],
+      "name": "Identity",
+      "fail_if_empty": true,
+      "empty_message": "No Global Teams meeting policy found",
+      "description": "Dial-in (PSTN) users are not authenticated through the Teams app. Preventing them from bypassing the lobby stops unknown callers joining meetings directly.",
+      "remediation": "Teams admin center > Meetings > Meeting policies > Global (Org-wide default): turn off 'Dial-in users can bypass the lobby' (AllowPSTNUsersToBypassLobby = False).",
+      "impact": "",
+      "links": [
+        {
+          "text": "Teams meeting policies",
+          "url": "https://learn.microsoft.com/microsoftteams/meeting-policies-overview"
+        }
+      ],
+      "origin": "Maester Test-TeamsMeeting MT.1042"
+    },
+    {
+      "id": "TEAMS.MT.1045",
+      "reference": "MT.1045",
+      "framework": "Jolera Extended Controls",
+      "area": "Teams",
+      "title": "Only invited users are automatically admitted to Teams meetings",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "PR.AA-05",
+      "source": "TEAMS_MeetingPolicy",
+      "mode": "first",
+      "filter": [
+        {
+          "path": "Identity",
+          "op": "eq",
+          "value": "Global"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "AutoAdmittedUsers",
+          "op": "eq",
+          "value": "InvitedUsers"
+        }
+      ],
+      "name": "Identity",
+      "fail_if_empty": true,
+      "empty_message": "No Global Teams meeting policy found",
+      "description": "Users who are not invited should not be let into a meeting automatically; this reduces the risk of data leaks, inappropriate content and malicious participants.",
+      "remediation": "Teams admin center > Meetings > Meeting policies > Global (Org-wide default): set 'Who can bypass the lobby' to 'People who were invited' (AutoAdmittedUsers = InvitedUsers).",
+      "impact": "",
+      "links": [
+        {
+          "text": "Teams meeting policies",
+          "url": "https://learn.microsoft.com/microsoftteams/meeting-policies-overview"
+        }
+      ],
+      "origin": "Maester Test-TeamsMeeting MT.1045"
+    },
+    {
+      "id": "TEAMS.MT.1046",
+      "reference": "MT.1046",
+      "framework": "Jolera Extended Controls",
+      "area": "Teams",
+      "title": "Anonymous users cannot join Teams meetings",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "PR.AA-03",
+      "source": "TEAMS_MeetingPolicy",
+      "mode": "first",
+      "filter": [
+        {
+          "path": "Identity",
+          "op": "eq",
+          "value": "Global"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "AllowAnonymousUsersToJoinMeeting",
+          "op": "false"
+        }
+      ],
+      "name": "Identity",
+      "fail_if_empty": true,
+      "empty_message": "No Global Teams meeting policy found",
+      "description": "Anonymous users are not authenticated and may not belong to your organization. Blocking them gives you control over who can access meetings.",
+      "remediation": "Teams admin center > Meetings > Meeting policies > Global (Org-wide default): turn off 'Anonymous users can join a meeting' (AllowAnonymousUsersToJoinMeeting = False).",
+      "impact": "Meetings can then only be joined by signed-in users.",
+      "links": [
+        {
+          "text": "Teams meeting policies",
+          "url": "https://learn.microsoft.com/microsoftteams/meeting-policies-overview"
+        }
+      ],
+      "origin": "Maester Test-TeamsMeeting MT.1046"
+    },
+    {
+      "id": "TEAMS.MT.1047",
+      "reference": "MT.1047",
+      "framework": "Jolera Extended Controls",
+      "area": "Teams",
+      "title": "Anonymous users cannot start Teams meetings",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "PR.AA-03",
+      "source": "TEAMS_MeetingPolicy",
+      "mode": "first",
+      "filter": [
+        {
+          "path": "Identity",
+          "op": "eq",
+          "value": "Global"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "AllowAnonymousUsersToStartMeeting",
+          "op": "false"
+        }
+      ],
+      "name": "Identity",
+      "fail_if_empty": true,
+      "empty_message": "No Global Teams meeting policy found",
+      "description": "If anonymous users can start meetings they can admit others from the lobby without being authenticated, increasing the risk of data leakage.",
+      "remediation": "Teams admin center > Meetings > Meeting policies > Global (Org-wide default): turn off 'Anonymous users and dial-in callers can start a meeting' (AllowAnonymousUsersToStartMeeting = False).",
+      "impact": "",
+      "links": [
+        {
+          "text": "Teams meeting policies",
+          "url": "https://learn.microsoft.com/microsoftteams/meeting-policies-overview"
+        }
+      ],
+      "origin": "Maester Test-TeamsMeeting MT.1047"
+    },
+    {
+      "id": "TEAMS.MT.1048",
+      "reference": "MT.1048",
+      "framework": "Jolera Extended Controls",
+      "area": "Teams",
+      "title": "External participants cannot give or request control in Teams meetings",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "PR.AA-05",
+      "source": "TEAMS_MeetingPolicy",
+      "mode": "first",
+      "filter": [
+        {
+          "path": "Identity",
+          "op": "eq",
+          "value": "Global"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "AllowExternalParticipantGiveRequestControl",
+          "op": "false"
+        }
+      ],
+      "name": "Identity",
+      "fail_if_empty": true,
+      "empty_message": "No Global Teams meeting policy found",
+      "description": "External participants should not be able to take control of shared content; limiting this protects information and reduces inappropriate content sharing.",
+      "remediation": "Teams admin center > Meetings > Meeting policies > Global (Org-wide default): turn off 'External participants can give or request control' (AllowExternalParticipantGiveRequestControl = False).",
+      "impact": "",
+      "links": [
+        {
+          "text": "Teams meeting policies",
+          "url": "https://learn.microsoft.com/microsoftteams/meeting-policies-overview"
+        }
+      ],
+      "origin": "Maester Test-TeamsMeeting MT.1048"
+    },
+    {
+      "id": "TEAMS.CIS.8.5.3",
+      "reference": "CIS.M365.8.5.3",
+      "framework": "CIS Microsoft 365",
+      "area": "Teams",
+      "title": "Only people in my org can bypass the Teams meeting lobby",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "PR.AA-05",
+      "source": "TEAMS_MeetingPolicy",
+      "mode": "first",
+      "filter": [
+        {
+          "path": "Identity",
+          "op": "eq",
+          "value": "Global"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "AutoAdmittedUsers",
+          "op": "in",
+          "value": [
+            "InvitedUsers",
+            "EveryoneInCompanyExcludingGuests",
+            "OrganizerOnly"
+          ]
+        }
+      ],
+      "name": "Identity",
+      "fail_if_empty": true,
+      "empty_message": "No Global Teams meeting policy found",
+      "description": "The Global meeting policy should only let people in your organization (or only invited users / the organizer) bypass the lobby, so external and anonymous participants must wait to be admitted.",
+      "remediation": "Teams admin center > Meetings > Meeting policies > Global (Org-wide default): set 'Who can bypass the lobby' to 'People in my org', 'People who were invited' or 'Only organizers and co-organizers'.",
+      "impact": "External participants and guests wait in the lobby until admitted.",
+      "links": [
+        {
+          "text": "Teams meeting policies",
+          "url": "https://learn.microsoft.com/microsoftteams/meeting-policies-overview"
+        },
+        {
+          "text": "CIS Microsoft 365 Foundations Benchmark",
+          "url": "https://www.cisecurity.org/benchmark/microsoft_365"
+        }
+      ],
+      "origin": "Maester Test-MtCisTeamsLobbyBypass"
+    },
+    {
+      "id": "TEAMS.CIS.8.1.1",
+      "reference": "CIS.M365.8.1.1",
+      "framework": "CIS Microsoft 365",
+      "area": "Teams",
+      "title": "Third-party cloud storage services are disabled for file sharing in Teams",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "PR.PS-05",
+      "source": "TEAMS_ClientConfiguration",
+      "mode": "first",
+      "filter": [
+        {
+          "path": "Identity",
+          "op": "eq",
+          "value": "Global"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "AllowDropbox",
+          "op": "false"
+        },
+        {
+          "path": "AllowBox",
+          "op": "false"
+        },
+        {
+          "path": "AllowGoogleDrive",
+          "op": "false"
+        },
+        {
+          "path": "AllowShareFile",
+          "op": "false"
+        },
+        {
+          "path": "AllowEgnyte",
+          "op": "false"
+        }
+      ],
+      "name": "Identity",
+      "fail_if_empty": true,
+      "empty_message": "No Global Teams client configuration found",
+      "description": "Teams should only allow file sharing through approved storage. Dropbox, Box, Google Drive, ShareFile and Egnyte must all be disabled unless explicitly approved.",
+      "remediation": "Teams admin center > Teams settings > Files: turn off all third-party cloud storage options (or set AllowDropbox, AllowBox, AllowGoogleDrive, AllowShareFile, AllowEgnyte to False with Set-CsTeamsClientConfiguration).",
+      "impact": "Users can no longer add these services as storage in Teams.",
+      "links": [
+        {
+          "text": "Manage Teams settings",
+          "url": "https://learn.microsoft.com/microsoftteams/manage-teams-settings"
+        }
+      ],
+      "origin": "Maester Test-MtCisThirdPartyFileSharing"
+    },
+    {
+      "id": "TEAMS.CIS.8.4.1.a",
+      "reference": "CIS.M365.8.4.1",
+      "framework": "CIS Microsoft 365",
+      "area": "Teams",
+      "title": "Global app permission policy blocks all or most third-party Teams apps",
+      "severity": "High",
+      "licence": "",
+      "nist": "PR.PS-05",
+      "source": "TEAMS_AppPermissionPolicy",
+      "mode": "first",
+      "filter": [
+        {
+          "path": "Identity",
+          "op": "eq",
+          "value": "Global"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "GlobalCatalogAppsType",
+          "op": "ne",
+          "value": "BlockedAppList"
+        }
+      ],
+      "name": "Identity",
+      "fail_if_empty": true,
+      "empty_message": "No Global Teams app permission policy found",
+      "description": "The Global app permission policy must not allow all (or all but a few) third-party apps. It should block them all or allow only an approved list.",
+      "remediation": "Teams admin center > Teams apps > Permission policies > Global: under 'Third-party apps' choose 'Allow specific apps and block all others' or 'Block all apps'.",
+      "impact": "Users can only install third-party apps you have approved.",
+      "links": [
+        {
+          "text": "Manage app permission policies",
+          "url": "https://learn.microsoft.com/microsoftteams/teams-app-permission-policies"
+        }
+      ],
+      "origin": "Maester Test-MtCisThirdPartyAndCustomApps"
+    },
+    {
+      "id": "TEAMS.CIS.8.4.1.b",
+      "reference": "CIS.M365.8.4.1",
+      "framework": "CIS Microsoft 365",
+      "area": "Teams",
+      "title": "Global app permission policy blocks all or most custom Teams apps",
+      "severity": "High",
+      "licence": "",
+      "nist": "PR.PS-05",
+      "source": "TEAMS_AppPermissionPolicy",
+      "mode": "first",
+      "filter": [
+        {
+          "path": "Identity",
+          "op": "eq",
+          "value": "Global"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "PrivateCatalogAppsType",
+          "op": "ne",
+          "value": "BlockedAppList"
+        }
+      ],
+      "name": "Identity",
+      "fail_if_empty": true,
+      "empty_message": "No Global Teams app permission policy found",
+      "description": "The Global app permission policy must not allow all (or all but a few) custom (line-of-business) apps. It should block them all or allow only an approved list.",
+      "remediation": "Teams admin center > Teams apps > Permission policies > Global: under 'Custom apps' choose 'Allow specific apps and block all others' or 'Block all apps'.",
+      "impact": "Users can only install custom apps you have approved.",
+      "links": [
+        {
+          "text": "Manage app permission policies",
+          "url": "https://learn.microsoft.com/microsoftteams/teams-app-permission-policies"
+        }
+      ],
+      "origin": "Maester Test-MtCisThirdPartyAndCustomApps"
+    },
+    {
+      "id": "TEAMS.CIS.8.6.1",
+      "reference": "CIS.M365.8.6.1",
+      "framework": "CIS Microsoft 365",
+      "area": "Teams",
+      "title": "Users can report security concerns in Teams (messaging policy)",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "RS.CO-02",
+      "source": "TEAMS_MessagingPolicy",
+      "mode": "first",
+      "filter": [
+        {
+          "path": "Identity",
+          "op": "eq",
+          "value": "Global"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "AllowSecurityEndUserReporting",
+          "op": "true"
+        }
+      ],
+      "name": "Identity",
+      "fail_if_empty": true,
+      "empty_message": "No Global Teams messaging policy found",
+      "description": "Covers the Teams half of CIS 8.6.1: the Global messaging policy must let users report messages as security risks. The Defender report submission policy half (reports go to an internal mailbox) is not evaluated here.",
+      "remediation": "Teams admin center > Messaging policies > Global: turn on 'Report a security concern' (AllowSecurityEndUserReporting = True), and configure user reported settings in the Defender portal to send reports to an internal mailbox.",
+      "impact": "",
+      "links": [
+        {
+          "text": "User reported settings",
+          "url": "https://learn.microsoft.com/defender-office-365/submissions-teams"
+        }
+      ],
+      "origin": "Maester Test-MtCisTeamsReportSecurityConcerns (Teams messaging policy part)"
+    }
+  ],
+  "not_ported": [
+    {
+      "origin": "CIS.M365.8.2.2 Test-MtCisCommunicateWithUnmanagedTeamsUsers",
+      "reason": "passes if tenant federation AllowTeamsConsumer is false OR Get-CsExternalAccessPolicy Global EnableTeamsConsumerAccess is false; needs an OR across two different cmdlets"
+    },
+    {
+      "origin": "CIS.M365.8.2.3 Test-MtCisCommunicateInitiateExternalTeamsUsers",
+      "reason": "passes if tenant federation AllowTeamsConsumerInbound is false OR Get-CsExternalAccessPolicy Global EnableTeamsConsumerInbound is false; needs an OR across two different cmdlets"
+    },
+    {
+      "origin": "CIS.M365.8.6.1 Test-MtCisTeamsReportSecurityConcerns (Get-ReportSubmissionPolicy part)",
+      "reason": "also requires Exchange Get-ReportSubmissionPolicy settings with several address fields; only the Teams messaging policy part is ported"
+    }
+  ]
+}

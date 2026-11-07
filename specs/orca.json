@@ -1,0 +1,2476 @@
+{
+  "workload": "orca",
+  "sources": {
+    "EXO_ORCA_HostedContentFilterPolicy": {
+      "type": "exo",
+      "cmdlet": "Get-HostedContentFilterPolicy",
+      "params": {}
+    },
+    "EXO_ORCA_HostedOutboundSpamFilterPolicy": {
+      "type": "exo",
+      "cmdlet": "Get-HostedOutboundSpamFilterPolicy",
+      "params": {}
+    },
+    "EXO_ORCA_HostedConnectionFilterPolicy": {
+      "type": "exo",
+      "cmdlet": "Get-HostedConnectionFilterPolicy",
+      "params": {}
+    },
+    "EXO_ORCA_MalwareFilterPolicy": {
+      "type": "exo",
+      "cmdlet": "Get-MalwareFilterPolicy",
+      "params": {}
+    },
+    "EXO_ORCA_AntiPhishPolicy": {
+      "type": "exo",
+      "cmdlet": "Get-AntiPhishPolicy",
+      "params": {}
+    },
+    "EXO_ORCA_SafeLinksPolicy": {
+      "type": "exo",
+      "cmdlet": "Get-SafeLinksPolicy",
+      "params": {}
+    },
+    "EXO_ORCA_SafeAttachmentPolicy": {
+      "type": "exo",
+      "cmdlet": "Get-SafeAttachmentPolicy",
+      "params": {}
+    },
+    "EXO_ORCA_AtpPolicyForO365": {
+      "type": "exo",
+      "cmdlet": "Get-AtpPolicyForO365",
+      "params": {}
+    },
+    "EXO_ORCA_ATPBuiltInProtectionRule": {
+      "type": "exo",
+      "cmdlet": "Get-ATPBuiltInProtectionRule",
+      "params": {}
+    },
+    "EXO_ORCA_TransportRule": {
+      "type": "exo",
+      "cmdlet": "Get-TransportRule",
+      "params": {}
+    },
+    "EXO_ORCA_DkimSigningConfig": {
+      "type": "exo",
+      "cmdlet": "Get-DkimSigningConfig",
+      "params": {}
+    },
+    "EXO_ORCA_ExternalInOutlook": {
+      "type": "exo",
+      "cmdlet": "Get-ExternalInOutlook",
+      "params": {}
+    }
+  },
+  "rules": [
+    {
+      "id": "EXO.ORCA.100",
+      "reference": "ORCA-100",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Bulk Complaint Level threshold is between 4 and 6",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_HostedContentFilterPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "BulkThreshold",
+          "op": "ge",
+          "value": 4
+        },
+        {
+          "path": "BulkThreshold",
+          "op": "le",
+          "value": 6
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "The bulk complaint level (BCL) separates bulk mail from spam. Every anti-spam policy should use a BulkThreshold between 4 (Strict) and 6 (Standard); a higher value lets more bulk mail through, a too low value may be too aggressive. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set BulkThreshold to 6 (Standard) or 4 (Strict) in each anti-spam policy.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Anti-spam > policy > Bulk email threshold. PowerShell: Set-HostedContentFilterPolicy -Identity <policy> -BulkThreshold 6",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Bulk Complaint Level values",
+          "url": "https://aka.ms/orca-antispam-docs-1"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA100 (Test-ORCA100)"
+    },
+    {
+      "id": "EXO.ORCA.101",
+      "reference": "ORCA-101",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Bulk mail is marked as spam",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_HostedContentFilterPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "MarkAsSpamBulkMail",
+          "op": "eq",
+          "value": "On"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "Anti-spam policies should have MarkAsSpamBulkMail set to On so that mail identified as bulk is treated as spam. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set MarkAsSpamBulkMail to On.\n\nSet-HostedContentFilterPolicy -Identity <policy> -MarkAsSpamBulkMail On",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Anti-spam policies in Microsoft 365",
+          "url": "https://learn.microsoft.com/defender-office-365/anti-spam-policies-configure"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA101 (Test-ORCA101)"
+    },
+    {
+      "id": "EXO.ORCA.102",
+      "reference": "ORCA-102",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Advanced Spam Filter (ASF) options are turned off",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_HostedContentFilterPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "IncreaseScoreWithImageLinks",
+          "op": "ne",
+          "value": "On"
+        },
+        {
+          "path": "IncreaseScoreWithNumericIps",
+          "op": "ne",
+          "value": "On"
+        },
+        {
+          "path": "IncreaseScoreWithRedirectToOtherPort",
+          "op": "ne",
+          "value": "On"
+        },
+        {
+          "path": "IncreaseScoreWithBizOrInfoUrls",
+          "op": "ne",
+          "value": "On"
+        },
+        {
+          "path": "MarkAsSpamEmptyMessages",
+          "op": "ne",
+          "value": "On"
+        },
+        {
+          "path": "MarkAsSpamJavaScriptInHtml",
+          "op": "ne",
+          "value": "On"
+        },
+        {
+          "path": "MarkAsSpamFramesInHtml",
+          "op": "ne",
+          "value": "On"
+        },
+        {
+          "path": "MarkAsSpamObjectTagsInHtml",
+          "op": "ne",
+          "value": "On"
+        },
+        {
+          "path": "MarkAsSpamEmbedTagsInHtml",
+          "op": "ne",
+          "value": "On"
+        },
+        {
+          "path": "MarkAsSpamFormTagsInHtml",
+          "op": "ne",
+          "value": "On"
+        },
+        {
+          "path": "MarkAsSpamWebBugsInHtml",
+          "op": "ne",
+          "value": "On"
+        },
+        {
+          "path": "MarkAsSpamSensitiveWordList",
+          "op": "ne",
+          "value": "On"
+        },
+        {
+          "path": "MarkAsSpamFromAddressAuthFail",
+          "op": "ne",
+          "value": "On"
+        },
+        {
+          "path": "MarkAsSpamNdrBackscatter",
+          "op": "ne",
+          "value": "On"
+        },
+        {
+          "path": "MarkAsSpamSpfRecordHardFail",
+          "op": "ne",
+          "value": "On"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "The Advanced Spam Filter (ASF) options are being retired and produce false positives; all of them (IncreaseScoreWithImageLinks, IncreaseScoreWithNumericIps, IncreaseScoreWithRedirectToOtherPort, IncreaseScoreWithBizOrInfoUrls, MarkAsSpamEmptyMessages, MarkAsSpamJavaScriptInHtml, MarkAsSpamFramesInHtml, MarkAsSpamObjectTagsInHtml, MarkAsSpamEmbedTagsInHtml, MarkAsSpamFormTagsInHtml, MarkAsSpamWebBugsInHtml, MarkAsSpamSensitiveWordList, MarkAsSpamFromAddressAuthFail, MarkAsSpamNdrBackscatter, MarkAsSpamSpfRecordHardFail) should be Off or Test, not On. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Turn off all ASF options in every anti-spam policy.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Anti-spam > policy > Advanced options (ASF) > Off. Equivalent to Set-HostedContentFilterPolicy -Identity <policy> -<option> Off for each option.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Anti-spam policies in Microsoft 365",
+          "url": "https://learn.microsoft.com/defender-office-365/anti-spam-policies-configure"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA102 (Test-ORCA102)"
+    },
+    {
+      "id": "EXO.ORCA.103",
+      "reference": "ORCA-103",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Outbound spam filter policy limits and action are configured",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_HostedOutboundSpamFilterPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "RecipientLimitExternalPerHour",
+          "op": "in",
+          "value": [
+            500,
+            400
+          ]
+        },
+        {
+          "path": "RecipientLimitInternalPerHour",
+          "op": "in",
+          "value": [
+            1000,
+            800
+          ]
+        },
+        {
+          "path": "RecipientLimitPerDay",
+          "op": "in",
+          "value": [
+            1000,
+            800
+          ]
+        },
+        {
+          "path": "ActionWhenThresholdReached",
+          "op": "eq",
+          "value": "BlockUser"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "Outbound spam policies should limit what a compromised account can send: external recipients per hour 500 (Standard) or 400 (Strict), internal per hour 1000 or 800, per day 1000 or 800, and the action when the limit is reached should be BlockUser. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set RecipientLimitExternalPerHour 500, RecipientLimitInternalPerHour 1000, RecipientLimitPerDay 1000 and ActionWhenThresholdReached BlockUser.\n\nMicrosoft Defender portal > Threat policies > Anti-spam > Anti-spam outbound policy.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Outbound spam filtering",
+          "url": "https://learn.microsoft.com/defender-office-365/outbound-spam-policies-configure"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA103 (Test-ORCA103)"
+    },
+    {
+      "id": "EXO.ORCA.104",
+      "reference": "ORCA-104",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "High Confidence Phish action is set to Quarantine",
+      "severity": "High",
+      "licence": "",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_HostedContentFilterPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "HighConfidencePhishAction",
+          "op": "eq",
+          "value": "Quarantine"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "High confidence phishing messages should be quarantined so users never see them in Outlook; phishing mail looks legitimate and may be wrongly released from Junk. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set HighConfidencePhishAction to Quarantine.\n\nSet-HostedContentFilterPolicy -Identity <policy> -HighConfidencePhishAction Quarantine",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Anti-spam policies in Microsoft 365",
+          "url": "https://learn.microsoft.com/defender-office-365/anti-spam-policies-configure"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA104 (Test-ORCA104)"
+    },
+    {
+      "id": "EXO.ORCA.105",
+      "reference": "ORCA-105",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Safe Links synchronous URL detonation is enabled",
+      "severity": "Medium",
+      "licence": "Defender for Office 365 Plan 1",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_SafeLinksPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "DeliverMessageAfterScan",
+          "op": "true"
+        },
+        {
+          "path": "ScanUrls",
+          "op": "true"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": true,
+      "empty_message": "No Safe Links policy found",
+      "description": "Safe Links policies should scan URLs (ScanUrls) and wait for the scan to finish before delivering the message (DeliverMessageAfterScan) so a malicious link is not delivered while detonation is pending. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Enable \"Wait for URL scanning to complete before delivering the message\" and real-time URL scanning.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Safe Links > policy > URL & click protection settings. Set-SafeLinksPolicy -Identity <policy> -ScanUrls $true -DeliverMessageAfterScan $true",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Safe Links in Microsoft Defender for Office 365",
+          "url": "https://learn.microsoft.com/defender-office-365/safe-links-about"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA105 (Test-ORCA105)"
+    },
+    {
+      "id": "EXO.ORCA.106",
+      "reference": "ORCA-106",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Quarantine retention period is 30 days",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "PR.DS-11",
+      "source": "EXO_ORCA_HostedContentFilterPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "QuarantineRetentionPeriod",
+          "op": "eq",
+          "value": 30
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "Quarantined spam and phishing messages should be kept for the maximum 30 days so administrators and users can review and release false positives. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set QuarantineRetentionPeriod to 30.\n\nSet-HostedContentFilterPolicy -Identity <policy> -QuarantineRetentionPeriod 30",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Manage quarantined messages as an admin",
+          "url": "https://aka.ms/orca-antispam-docs-6"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA106 (Test-ORCA106)"
+    },
+    {
+      "id": "EXO.ORCA.109",
+      "reference": "ORCA-109",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "No senders are allow listed in anti-spam policies",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_HostedContentFilterPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "AllowedSenders",
+          "op": "empty"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "Allowed senders in an anti-spam policy bypass spam filtering and are a common phishing path (including spoofed senders). The AllowedSenders list should be empty. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Remove all entries from the allowed senders list.\n\nSet-HostedContentFilterPolicy -Identity <policy> -AllowedSenders $null. Use transport rules or the Tenant Allow/Block List for justified exceptions.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Create safe sender lists in Microsoft 365",
+          "url": "https://learn.microsoft.com/defender-office-365/create-safe-sender-lists-in-office-365"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA109 (Test-ORCA109)"
+    },
+    {
+      "id": "EXO.ORCA.110",
+      "reference": "ORCA-110",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Internal sender notifications for malware are disabled",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_MalwareFilterPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "EnableInternalSenderNotifications",
+          "op": "false"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "Anti-malware policies should not send malware detection notifications to internal senders (it can disclose detection details and cause noise). Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set EnableInternalSenderNotifications to $false.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Anti-malware > policy > Notifications.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Anti-malware protection in EOP",
+          "url": "https://learn.microsoft.com/defender-office-365/anti-malware-protection-about"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA110 (Test-ORCA110)"
+    },
+    {
+      "id": "EXO.ORCA.111",
+      "reference": "ORCA-111",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Anti-phishing unauthenticated sender tagging is enabled",
+      "severity": "High",
+      "licence": "Defender for Office 365 Plan 1",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_AntiPhishPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "any": [
+            {
+              "path": "Enabled",
+              "op": "true"
+            },
+            {
+              "path": "Identity",
+              "op": "eq",
+              "value": "Office365 AntiPhish Default"
+            }
+          ]
+        },
+        {
+          "path": "EnableUnauthenticatedSender",
+          "op": "true"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": true,
+      "empty_message": "No anti-phishing policy found",
+      "description": "Anti-phishing policies should enable EnableUnauthenticatedSender, which adds a question mark to the sender photo when the sender cannot be authenticated. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set EnableUnauthenticatedSender to $true.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Anti-phishing > policy > Phishing threshold & protection > Show (?) for unauthenticated senders for spoof.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Anti-phishing policies in Microsoft 365",
+          "url": "https://learn.microsoft.com/defender-office-365/anti-phishing-policies-about"
+        },
+        {
+          "text": "Unverified sender",
+          "url": "https://aka.ms/orca-atpp-docs-12"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA111 (Test-ORCA111)"
+    },
+    {
+      "id": "EXO.ORCA.112",
+      "reference": "ORCA-112",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Anti-spoofing action moves messages to Junk or Quarantine",
+      "severity": "Medium",
+      "licence": "Defender for Office 365 Plan 1",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_AntiPhishPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "any": [
+            {
+              "path": "Enabled",
+              "op": "true"
+            },
+            {
+              "path": "Identity",
+              "op": "eq",
+              "value": "Office365 AntiPhish Default"
+            }
+          ]
+        },
+        {
+          "path": "AuthenticationFailAction",
+          "op": "in",
+          "value": [
+            "MoveToJmf",
+            "Quarantine"
+          ]
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": true,
+      "empty_message": "No anti-phishing policy found",
+      "description": "Messages that fail spoof intelligence checks should be moved to the Junk Email folder (Standard) or quarantined (Strict). Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set AuthenticationFailAction to MoveToJmf or Quarantine.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Anti-phishing > policy > Spoof > If the message is detected as spoof.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Anti-phishing policies in Microsoft 365",
+          "url": "https://learn.microsoft.com/defender-office-365/anti-phishing-policies-about"
+        },
+        {
+          "text": "Anti-spoofing protection",
+          "url": "https://aka.ms/orca-atpp-docs-5"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA112 (Test-ORCA112)"
+    },
+    {
+      "id": "EXO.ORCA.113",
+      "reference": "ORCA-113",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Users cannot click through Safe Links warning pages",
+      "severity": "Medium",
+      "licence": "Defender for Office 365 Plan 1",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_SafeLinksPolicy",
+      "mode": "all",
+      "filter": [
+        {
+          "path": "Name",
+          "op": "ne",
+          "value": "Built-In Protection Policy"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "AllowClickThrough",
+          "op": "false"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": true,
+      "empty_message": "No non built-in Safe Links policy found",
+      "description": "Safe Links policies (excluding the Built-In Protection Policy) should not let users click through to the original URL after a warning (AllowClickThrough = false). Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set AllowClickThrough to $false.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Safe Links > policy > Do not let users click through to the original URL.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Safe Links in Microsoft Defender for Office 365",
+          "url": "https://learn.microsoft.com/defender-office-365/safe-links-about"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA113 (Test-ORCA113)"
+    },
+    {
+      "id": "EXO.ORCA.114",
+      "reference": "ORCA-114",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "No IP allow lists are configured",
+      "severity": "High",
+      "licence": "",
+      "nist": "PR.IR-01",
+      "source": "EXO_ORCA_HostedConnectionFilterPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "IPAllowList",
+          "op": "empty"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "The connection filter IP allow list bypasses spam filtering for the listed IP addresses; any compromised or spoofed source in the range gets delivered unfiltered. The list should be empty. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Remove all IP addresses from the IP allow list.\n\nMicrosoft Defender portal > Threat policies > Anti-spam > Connection filter policy (Default). Set-HostedConnectionFilterPolicy -Identity Default -IPAllowList @{}",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Use Anti-Spam Policy IP Allow lists",
+          "url": "https://aka.ms/orca-antispam-docs-3"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA114 (Test-ORCA114)"
+    },
+    {
+      "id": "EXO.ORCA.115",
+      "reference": "ORCA-115",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Mailbox intelligence based impersonation protection is enabled",
+      "severity": "Medium",
+      "licence": "Defender for Office 365 Plan 1",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_AntiPhishPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "EnableMailboxIntelligenceProtection",
+          "op": "ne",
+          "value": false
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": true,
+      "empty_message": "No anti-phishing policy found",
+      "description": "Anti-phishing policies should enable EnableMailboxIntelligenceProtection so mailbox intelligence is used to detect impersonation of people the user normally communicates with. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set EnableMailboxIntelligenceProtection to $true.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Anti-phishing > policy > Impersonation > Enable mailbox intelligence based impersonation protection.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Anti-phishing policies in Microsoft 365",
+          "url": "https://learn.microsoft.com/defender-office-365/anti-phishing-policies-about"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA115 (Test-ORCA115)"
+    },
+    {
+      "id": "EXO.ORCA.116",
+      "reference": "ORCA-116",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Mailbox intelligence impersonation action moves to Junk or Quarantine",
+      "severity": "Medium",
+      "licence": "Defender for Office 365 Plan 1",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_AntiPhishPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "MailboxIntelligenceProtectionAction",
+          "op": "in",
+          "value": [
+            "MoveToJmf",
+            "Quarantine"
+          ]
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": true,
+      "empty_message": "No anti-phishing policy found",
+      "description": "The action for messages detected by mailbox intelligence impersonation protection should be MoveToJmf (Standard) or Quarantine (Strict). Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set MailboxIntelligenceProtectionAction to MoveToJmf or Quarantine.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Anti-phishing > policy > Impersonation > If a message is detected as an impersonated user.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Anti-phishing policies in Microsoft 365",
+          "url": "https://learn.microsoft.com/defender-office-365/anti-phishing-policies-about"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA116 (Test-ORCA116)"
+    },
+    {
+      "id": "EXO.ORCA.118.1",
+      "reference": "ORCA-118_1",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "No domains are allow listed in anti-spam policies",
+      "severity": "High",
+      "licence": "",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_HostedContentFilterPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "AllowedSenderDomains",
+          "op": "empty"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "Allowed sender domains in an anti-spam policy bypass spam filtering for the whole domain and are easily abused by spoofing. The AllowedSenderDomains list should be empty. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Remove all allowed sender domains.\n\nSet-HostedContentFilterPolicy -Identity <policy> -AllowedSenderDomains $null",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Create safe sender lists in Microsoft 365",
+          "url": "https://learn.microsoft.com/defender-office-365/create-safe-sender-lists-in-office-365"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA118_1 (Test-ORCA118_1)"
+    },
+    {
+      "id": "EXO.ORCA.119",
+      "reference": "ORCA-119",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Similar Domains Safety Tips is enabled",
+      "severity": "Info",
+      "licence": "Defender for Office 365 Plan 1",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_AntiPhishPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "EnableSimilarDomainsSafetyTips",
+          "op": "ne",
+          "value": false
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": true,
+      "empty_message": "No anti-phishing policy found",
+      "description": "Anti-phishing policies should enable EnableSimilarDomainsSafetyTips so users get a visible warning for look-alike domains. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set EnableSimilarDomainsSafetyTips to $true.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Anti-phishing > policy > Impersonation > Show tip for similar domains.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Anti-phishing policies in Microsoft 365",
+          "url": "https://learn.microsoft.com/defender-office-365/anti-phishing-policies-about"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA119 (Test-ORCA119)"
+    },
+    {
+      "id": "EXO.ORCA.120.malware",
+      "reference": "ORCA-120_malware",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Zero Hour Autopurge is enabled for malware",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_MalwareFilterPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "ZapEnabled",
+          "op": "true"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "Zero-hour auto purge (ZAP) for malware removes messages found to contain malware after delivery. ZapEnabled should be true on every anti-malware policy. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set ZapEnabled to $true.\n\nSet-MalwareFilterPolicy -Identity <policy> -ZapEnabled $true",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Zero-hour auto purge (ZAP)",
+          "url": "https://aka.ms/orca-zha-docs-2"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA120_malware (Test-ORCA120_malware)"
+    },
+    {
+      "id": "EXO.ORCA.120.phish",
+      "reference": "ORCA-120_phish",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Zero Hour Autopurge is enabled for phish",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_HostedContentFilterPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "PhishZapEnabled",
+          "op": "true"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "Zero-hour auto purge for phishing removes already-delivered messages later identified as phishing. PhishZapEnabled should be true on every anti-spam policy. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set PhishZapEnabled to $true.\n\nSet-HostedContentFilterPolicy -Identity <policy> -PhishZapEnabled $true",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Zero-hour auto purge (ZAP)",
+          "url": "https://aka.ms/orca-zha-docs-2"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA120_phish (Test-ORCA120_phish)"
+    },
+    {
+      "id": "EXO.ORCA.120.spam",
+      "reference": "ORCA-120_spam",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Zero Hour Autopurge is enabled for spam",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_HostedContentFilterPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "SpamZapEnabled",
+          "op": "true"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "Zero-hour auto purge for spam moves already-delivered spam to Junk or quarantine once identified. SpamZapEnabled should be true on every anti-spam policy. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set SpamZapEnabled to $true.\n\nSet-HostedContentFilterPolicy -Identity <policy> -SpamZapEnabled $true",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Zero-hour auto purge (ZAP)",
+          "url": "https://aka.ms/orca-zha-docs-2"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA120_spam (Test-ORCA120_spam)"
+    },
+    {
+      "id": "EXO.ORCA.121",
+      "reference": "ORCA-121",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Spam and phish actions are supported by Zero Hour Autopurge",
+      "severity": "Low",
+      "licence": "",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_HostedContentFilterPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "SpamAction",
+          "op": "in",
+          "value": [
+            "MoveToJmf",
+            "Redirect",
+            "Delete",
+            "Quarantine"
+          ]
+        },
+        {
+          "path": "PhishSpamAction",
+          "op": "in",
+          "value": [
+            "MoveToJmf",
+            "Redirect",
+            "Delete",
+            "Quarantine"
+          ]
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "ZAP only works when the spam and phish actions are MoveToJmf, Redirect, Delete or Quarantine; actions such as AddXHeader or ModifySubject prevent ZAP from acting. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Change SpamAction and PhishSpamAction to Move to Junk Email folder or Quarantine.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Anti-spam > policy > Actions.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Zero-hour auto purge (ZAP)",
+          "url": "https://aka.ms/orca-zha-docs-2"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA121 (Test-ORCA121)"
+    },
+    {
+      "id": "EXO.ORCA.123",
+      "reference": "ORCA-123",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Unusual Characters Safety Tips is enabled",
+      "severity": "Info",
+      "licence": "Defender for Office 365 Plan 1",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_AntiPhishPolicy",
+      "mode": "all",
+      "filter": [
+        {
+          "path": "Enabled",
+          "op": "true"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "EnableUnusualCharactersSafetyTips",
+          "op": "ne",
+          "value": false
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": true,
+      "empty_message": "No enabled anti-phishing policy found",
+      "description": "Enabled anti-phishing policies should have EnableUnusualCharactersSafetyTips set so users see a tip when a sender name contains unusual characters. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set EnableUnusualCharactersSafetyTips to $true.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Anti-phishing > policy > Impersonation > Show tip for unusual characters.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Anti-phishing policies in Microsoft 365",
+          "url": "https://learn.microsoft.com/defender-office-365/anti-phishing-policies-about"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA123 (Test-ORCA123)"
+    },
+    {
+      "id": "EXO.ORCA.124",
+      "reference": "ORCA-124",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Safe Attachments unknown malware response is Block",
+      "severity": "High",
+      "licence": "Defender for Office 365 Plan 1",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_SafeAttachmentPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "Action",
+          "op": "eq",
+          "value": "Block"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "Safe Attachments policies should block messages with attachments detected as malware (Action = Block); Replace and Dynamic Delivery still deliver the message body. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set Action to Block.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Safe Attachments > policy > Safe Attachments unknown malware response > Block.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Safe Attachments in Microsoft Defender for Office 365",
+          "url": "https://learn.microsoft.com/defender-office-365/safe-attachments-about"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA124 (Test-ORCA124)"
+    },
+    {
+      "id": "EXO.ORCA.139",
+      "reference": "ORCA-139",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Spam action is Move to Junk Email or Quarantine",
+      "severity": "Low",
+      "licence": "",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_HostedContentFilterPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "SpamAction",
+          "op": "in",
+          "value": [
+            "MoveToJmf",
+            "Quarantine"
+          ]
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "The Spam detection action should be MoveToJmf (Standard) or Quarantine (Strict); Delete and Redirect harm the ability to release mail. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set SpamAction to MoveToJmf or Quarantine.\n\nSet-HostedContentFilterPolicy -Identity <policy> -SpamAction MoveToJmf",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Anti-spam policies in Microsoft 365",
+          "url": "https://learn.microsoft.com/defender-office-365/anti-spam-policies-configure"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA139 (Test-ORCA139)"
+    },
+    {
+      "id": "EXO.ORCA.140",
+      "reference": "ORCA-140",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "High Confidence Spam action is Quarantine",
+      "severity": "High",
+      "licence": "",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_HostedContentFilterPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "HighConfidenceSpamAction",
+          "op": "eq",
+          "value": "Quarantine"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "High confidence spam should be quarantined rather than delivered to Junk. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set HighConfidenceSpamAction to Quarantine.\n\nSet-HostedContentFilterPolicy -Identity <policy> -HighConfidenceSpamAction Quarantine",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Anti-spam policies in Microsoft 365",
+          "url": "https://learn.microsoft.com/defender-office-365/anti-spam-policies-configure"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA140 (Test-ORCA140)"
+    },
+    {
+      "id": "EXO.ORCA.141",
+      "reference": "ORCA-141",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Bulk action is Move to Junk Email or Quarantine",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_HostedContentFilterPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "BulkSpamAction",
+          "op": "in",
+          "value": [
+            "MoveToJmf",
+            "Quarantine"
+          ]
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "The bulk detection action should be MoveToJmf (Standard) or Quarantine (Strict). Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set BulkSpamAction to MoveToJmf or Quarantine.\n\nSet-HostedContentFilterPolicy -Identity <policy> -BulkSpamAction MoveToJmf",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Anti-spam policies in Microsoft 365",
+          "url": "https://learn.microsoft.com/defender-office-365/anti-spam-policies-configure"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA141 (Test-ORCA141)"
+    },
+    {
+      "id": "EXO.ORCA.142",
+      "reference": "ORCA-142",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Phish action is Quarantine",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_HostedContentFilterPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "PhishSpamAction",
+          "op": "eq",
+          "value": "Quarantine"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "Messages detected as phishing should be quarantined. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set PhishSpamAction to Quarantine.\n\nSet-HostedContentFilterPolicy -Identity <policy> -PhishSpamAction Quarantine",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Anti-spam policies in Microsoft 365",
+          "url": "https://learn.microsoft.com/defender-office-365/anti-spam-policies-configure"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA142 (Test-ORCA142)"
+    },
+    {
+      "id": "EXO.ORCA.156",
+      "reference": "ORCA-156",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Safe Links policies track user clicks",
+      "severity": "Medium",
+      "licence": "Defender for Office 365 Plan 1",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_SafeLinksPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "TrackClicks",
+          "op": "true"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "Safe Links policies should keep click tracking (TrackClicks) on so URL click data is available for investigation. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set TrackClicks to $true.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Safe Links > policy > Track user clicks.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Safe Links in Microsoft Defender for Office 365",
+          "url": "https://learn.microsoft.com/defender-office-365/safe-links-about"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA156 (Test-ORCA156)"
+    },
+    {
+      "id": "EXO.ORCA.158",
+      "reference": "ORCA-158",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Safe Attachments is enabled for SharePoint, OneDrive and Teams",
+      "severity": "Medium",
+      "licence": "Defender for Office 365 Plan 1",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_AtpPolicyForO365",
+      "mode": "first",
+      "conditions": [
+        {
+          "path": "EnableATPForSPOTeamsODB",
+          "op": "ne",
+          "value": false
+        }
+      ],
+      "name": "Identity",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "The global ATP policy should have EnableATPForSPOTeamsODB turned on so files in SharePoint, OneDrive and Teams are scanned for malware.",
+      "remediation": "Turn on Safe Attachments for SharePoint, OneDrive and Microsoft Teams.\n\nMicrosoft Defender portal > Threat policies > Safe Attachments > Global settings. Set-AtpPolicyForO365 -EnableATPForSPOTeamsODB $true",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Safe Attachments for SharePoint, OneDrive and Teams",
+          "url": "https://learn.microsoft.com/defender-office-365/safe-attachments-for-spo-odfb-teams-configure"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA158 (Test-ORCA158)"
+    },
+    {
+      "id": "EXO.ORCA.179",
+      "reference": "ORCA-179",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Safe Links is enabled for internal senders",
+      "severity": "Medium",
+      "licence": "Defender for Office 365 Plan 1",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_SafeLinksPolicy",
+      "mode": "all",
+      "filter": [
+        {
+          "path": "Name",
+          "op": "ne",
+          "value": "Built-In Protection Policy"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "EnableForInternalSenders",
+          "op": "true"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": true,
+      "empty_message": "No non built-in Safe Links policy found",
+      "description": "Safe Links policies (excluding the Built-In Protection Policy) should also scan messages between internal users (EnableForInternalSenders) to limit lateral phishing from compromised accounts. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set EnableForInternalSenders to $true.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Safe Links > policy > Apply Safe Links to email messages sent within the organization.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Safe Links in Microsoft Defender for Office 365",
+          "url": "https://learn.microsoft.com/defender-office-365/safe-links-about"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA179 (Test-ORCA179)"
+    },
+    {
+      "id": "EXO.ORCA.180",
+      "reference": "ORCA-180",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Anti-spoofing protection (spoof intelligence) is enabled",
+      "severity": "Medium",
+      "licence": "Defender for Office 365 Plan 1",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_AntiPhishPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "EnableSpoofIntelligence",
+          "op": "true"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": true,
+      "empty_message": "No anti-phishing policy found",
+      "description": "Anti-phishing policies should have EnableSpoofIntelligence turned on so forged From addresses are detected. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set EnableSpoofIntelligence to $true.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Anti-phishing > policy > Spoof > Enable spoof intelligence.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Anti-spoofing protection in Microsoft 365",
+          "url": "https://aka.ms/orca-atpp-docs-3"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA180 (Test-ORCA180)"
+    },
+    {
+      "id": "EXO.ORCA.189",
+      "reference": "ORCA-189",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "No mail flow rule bypasses Safe Attachments",
+      "severity": "Medium",
+      "licence": "Defender for Office 365 Plan 1",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_TransportRule",
+      "mode": "none",
+      "conditions": [
+        {
+          "path": "SetHeaderName",
+          "op": "eq",
+          "value": "X-MS-Exchange-Organization-SkipSafeAttachmentProcessing"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "A transport rule that sets the header X-MS-Exchange-Organization-SkipSafeAttachmentProcessing makes Safe Attachments skip scanning and should not exist.",
+      "remediation": "Remove or change the mail flow rules that set the SkipSafeAttachmentProcessing header.\n\nExchange admin center > Mail flow > Rules.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Safe Attachments in Microsoft Defender for Office 365",
+          "url": "https://learn.microsoft.com/defender-office-365/safe-attachments-about"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA189 (Test-ORCA189)"
+    },
+    {
+      "id": "EXO.ORCA.189.2",
+      "reference": "ORCA-189_2",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "No mail flow rule bypasses Safe Links",
+      "severity": "High",
+      "licence": "Defender for Office 365 Plan 1",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_TransportRule",
+      "mode": "none",
+      "conditions": [
+        {
+          "path": "SetHeaderName",
+          "op": "eq",
+          "value": "X-MS-Exchange-Organization-SkipSafeLinksProcessing"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "A transport rule that sets the header X-MS-Exchange-Organization-SkipSafeLinksProcessing makes Safe Links skip URL checks and should not exist.",
+      "remediation": "Remove or change the mail flow rules that set the SkipSafeLinksProcessing header.\n\nExchange admin center > Mail flow > Rules.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Safe Links in Microsoft Defender for Office 365",
+          "url": "https://learn.microsoft.com/defender-office-365/safe-links-about"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA189_2 (Test-ORCA189_2)"
+    },
+    {
+      "id": "EXO.ORCA.205",
+      "reference": "ORCA-205",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Common attachment type filter is enabled with the default file types",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_MalwareFilterPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "EnableFileFilter",
+          "op": "true"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "ace"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "ani"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "apk"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "app"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "appx"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "arj"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "bat"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "cab"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "cmd"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "com"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "deb"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "dex"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "dll"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "docm"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "elf"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "exe"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "hta"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "img"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "iso"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "jar"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "jnlp"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "kext"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "lha"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "lib"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "library"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "lnk"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "lzh"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "macho"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "msc"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "msi"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "msix"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "msp"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "mst"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "pif"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "ppa"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "ppam"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "reg"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "rev"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "scf"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "scr"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "sct"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "sys"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "uif"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "vb"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "vbe"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "vbs"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "vxd"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "wsc"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "wsf"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "wsh"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "xll"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "xz"
+        },
+        {
+          "path": "FileTypes",
+          "op": "contains",
+          "value": "z"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "Anti-malware policies should enable the common attachment types filter (EnableFileFilter) and block at least the default list of 53 dangerous file extensions (ace, ani, apk, app, appx, arj, bat, cab, cmd, com, deb, dex, dll, docm, elf, exe, hta, img, iso, jar, jnlp, kext, lha, lib, library, lnk, lzh, macho, msc, msi, msix, msp, mst, pif, ppa, ppam, reg, rev, scf, scr, sct, sys, uif, vb, vbe, vbs, vxd, wsc, wsf, wsh, xll, xz, z). Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Enable the common attachments filter and select all default file types.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Anti-malware > policy > Protection settings > Enable the common attachments filter. Set-MalwareFilterPolicy -Identity <policy> -EnableFileFilter $true",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Anti-malware protection in EOP",
+          "url": "https://learn.microsoft.com/defender-office-365/anti-malware-protection-about"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA205 (Test-ORCA205)"
+    },
+    {
+      "id": "EXO.ORCA.220",
+      "reference": "ORCA-220",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Advanced phishing threshold level is 3 or 4",
+      "severity": "Medium",
+      "licence": "Defender for Office 365 Plan 1",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_AntiPhishPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "PhishThresholdLevel",
+          "op": "in",
+          "value": [
+            3,
+            4
+          ]
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": true,
+      "empty_message": "No anti-phishing policy found",
+      "description": "The phish email threshold should be 3 - More aggressive (Standard) or 4 - Most aggressive (Strict). Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set PhishThresholdLevel to 3 or 4.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Anti-phishing > policy > Phishing threshold & protection > Phishing email threshold.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Anti-phishing policies in Microsoft 365",
+          "url": "https://learn.microsoft.com/defender-office-365/anti-phishing-policies-about"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA220 (Test-ORCA220)"
+    },
+    {
+      "id": "EXO.ORCA.221",
+      "reference": "ORCA-221",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Mailbox intelligence is enabled in anti-phishing policies",
+      "severity": "Medium",
+      "licence": "Defender for Office 365 Plan 1",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_AntiPhishPolicy",
+      "mode": "all",
+      "filter": [
+        {
+          "path": "Enabled",
+          "op": "true"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "EnableMailboxIntelligence",
+          "op": "ne",
+          "value": false
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": true,
+      "empty_message": "No enabled anti-phishing policy found",
+      "description": "Enabled anti-phishing policies should have EnableMailboxIntelligence turned on so mailbox intelligence can learn user communication patterns. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set EnableMailboxIntelligence to $true.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Anti-phishing > policy > Phishing threshold & protection > Enable mailbox intelligence.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Anti-phishing policies in Microsoft 365",
+          "url": "https://learn.microsoft.com/defender-office-365/anti-phishing-policies-about"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA221 (Test-ORCA221)"
+    },
+    {
+      "id": "EXO.ORCA.222",
+      "reference": "ORCA-222",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Domain impersonation protection is on and the action is Quarantine",
+      "severity": "Medium",
+      "licence": "Defender for Office 365 Plan 1",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_AntiPhishPolicy",
+      "mode": "all",
+      "filter": [
+        {
+          "path": "Enabled",
+          "op": "true"
+        }
+      ],
+      "conditions": [
+        {
+          "any": [
+            {
+              "path": "EnableTargetedDomainsProtection",
+              "op": "true"
+            },
+            {
+              "path": "EnableOrganizationDomainsProtection",
+              "op": "true"
+            }
+          ]
+        },
+        {
+          "path": "TargetedDomainProtectionAction",
+          "op": "eq",
+          "value": "Quarantine"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "Enabled anti-phishing policies should protect your own and/or custom domains against impersonation (EnableOrganizationDomainsProtection or EnableTargetedDomainsProtection) and quarantine detected messages (TargetedDomainProtectionAction). Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Turn on domain impersonation protection and set the action to Quarantine.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Anti-phishing > policy > Impersonation > Enable domains to protect and the action.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Anti-phishing policies in Microsoft 365",
+          "url": "https://learn.microsoft.com/defender-office-365/anti-phishing-policies-about"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA222 (Test-ORCA222)"
+    },
+    {
+      "id": "EXO.ORCA.223",
+      "reference": "ORCA-223",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "User impersonation protection is on and the action is Quarantine",
+      "severity": "High",
+      "licence": "Defender for Office 365 Plan 1",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_AntiPhishPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "EnableTargetedUserProtection",
+          "op": "true"
+        },
+        {
+          "path": "TargetedUserProtectionAction",
+          "op": "eq",
+          "value": "Quarantine"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": true,
+      "empty_message": "No anti-phishing policy found",
+      "description": "Anti-phishing policies should enable user impersonation protection for key users (EnableTargetedUserProtection) and quarantine detected messages (TargetedUserProtectionAction). Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Turn on user impersonation protection, add protected users and set the action to Quarantine.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Anti-phishing > policy > Impersonation > Enable users to protect.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Anti-phishing policies in Microsoft 365",
+          "url": "https://learn.microsoft.com/defender-office-365/anti-phishing-policies-about"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA223 (Test-ORCA223)"
+    },
+    {
+      "id": "EXO.ORCA.224",
+      "reference": "ORCA-224",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Similar Users Safety Tips is enabled",
+      "severity": "Info",
+      "licence": "Defender for Office 365 Plan 1",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_AntiPhishPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "EnableSimilarUsersSafetyTips",
+          "op": "ne",
+          "value": false
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": true,
+      "empty_message": "No anti-phishing policy found",
+      "description": "Anti-phishing policies should enable EnableSimilarUsersSafetyTips so users see a tip for look-alike senders. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set EnableSimilarUsersSafetyTips to $true.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Anti-phishing > policy > Impersonation > Show tip for similar users.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Anti-phishing policies in Microsoft 365",
+          "url": "https://learn.microsoft.com/defender-office-365/anti-phishing-policies-about"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA224 (Test-ORCA224)"
+    },
+    {
+      "id": "EXO.ORCA.225",
+      "reference": "ORCA-225",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Safe Documents is enabled for Office clients",
+      "severity": "Medium",
+      "licence": "Microsoft 365 E5 (Safe Documents)",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_AtpPolicyForO365",
+      "mode": "first",
+      "conditions": [
+        {
+          "path": "EnableSafeDocs",
+          "op": "ne",
+          "value": false
+        }
+      ],
+      "name": "Identity",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "Safe Documents scans Office documents opened in Protected View. EnableSafeDocs should be on in the global ATP policy.",
+      "remediation": "Turn on Safe Documents for Office clients.\n\nMicrosoft Defender portal > Settings > Email & collaboration > Safe Documents. Set-AtpPolicyForO365 -EnableSafeDocs $true",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Safe Documents in Microsoft 365 E5",
+          "url": "https://learn.microsoft.com/defender-office-365/safe-documents-in-e5-plus-security-about"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA225 (Test-ORCA225)"
+    },
+    {
+      "id": "EXO.ORCA.228",
+      "reference": "ORCA-228",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "No trusted senders in anti-phishing policies",
+      "severity": "High",
+      "licence": "Defender for Office 365 Plan 1",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_AntiPhishPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "ExcludedSenders",
+          "op": "empty"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "Senders in the anti-phishing policy ExcludedSenders list are exempt from impersonation protection and are an attractive spoofing target; the list should be empty. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Remove all trusted senders from the anti-phishing policies.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Anti-phishing > policy > Impersonation > Add trusted senders and domains.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Anti-phishing policies in Microsoft 365",
+          "url": "https://learn.microsoft.com/defender-office-365/anti-phishing-policies-about"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA228 (Test-ORCA228)"
+    },
+    {
+      "id": "EXO.ORCA.229",
+      "reference": "ORCA-229",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "No trusted domains in anti-phishing policies",
+      "severity": "Medium",
+      "licence": "Defender for Office 365 Plan 1",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_AntiPhishPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "ExcludedDomains",
+          "op": "empty"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "Domains in the anti-phishing policy ExcludedDomains list are exempt from impersonation protection; the list should be empty. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Remove all trusted domains from the anti-phishing policies.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Anti-phishing > policy > Impersonation > Add trusted senders and domains.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Anti-phishing policies in Microsoft 365",
+          "url": "https://learn.microsoft.com/defender-office-365/anti-phishing-policies-about"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA229 (Test-ORCA229)"
+    },
+    {
+      "id": "EXO.ORCA.234",
+      "reference": "ORCA-234",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Click through is disabled for Safe Documents",
+      "severity": "Medium",
+      "licence": "Microsoft 365 E5 (Safe Documents)",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_AtpPolicyForO365",
+      "mode": "first",
+      "conditions": [
+        {
+          "path": "AllowSafeDocsOpen",
+          "op": "ne",
+          "value": true
+        }
+      ],
+      "name": "Identity",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "Users should not be able to click through Protected View when Safe Documents identifies a file as malicious (AllowSafeDocsOpen = false).",
+      "remediation": "Turn off \"Allow people to click through Protected View even if Safe Documents identified the file as malicious\".\n\nMicrosoft Defender portal > Settings > Email & collaboration > Safe Documents. Set-AtpPolicyForO365 -AllowSafeDocsOpen $false",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA234 (Test-ORCA234)"
+    },
+    {
+      "id": "EXO.ORCA.236",
+      "reference": "ORCA-236",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Safe Links is enabled for email",
+      "severity": "Medium",
+      "licence": "Defender for Office 365 Plan 1",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_SafeLinksPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "EnableSafeLinksForEmail",
+          "op": "true"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "Safe Links policies should protect URLs in email (EnableSafeLinksForEmail). Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set EnableSafeLinksForEmail to $true.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Safe Links > policy > Email > On: Safe Links checks a list of known malicious links.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Safe Links in Microsoft Defender for Office 365",
+          "url": "https://learn.microsoft.com/defender-office-365/safe-links-about"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA236 (Test-ORCA236)"
+    },
+    {
+      "id": "EXO.ORCA.237",
+      "reference": "ORCA-237",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Safe Links is enabled for Teams messages",
+      "severity": "Medium",
+      "licence": "Defender for Office 365 Plan 1",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_SafeLinksPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "EnableSafeLinksForTeams",
+          "op": "true"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "Safe Links policies should protect URLs in Microsoft Teams messages (EnableSafeLinksForTeams). Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set EnableSafeLinksForTeams to $true.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Safe Links > policy > Teams.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Safe Links in Microsoft Defender for Office 365",
+          "url": "https://learn.microsoft.com/defender-office-365/safe-links-about"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA237 (Test-ORCA237)"
+    },
+    {
+      "id": "EXO.ORCA.238",
+      "reference": "ORCA-238",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Safe Links is enabled for Office documents",
+      "severity": "Medium",
+      "licence": "Defender for Office 365 Plan 1",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_SafeLinksPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "EnableSafeLinksForOffice",
+          "op": "true"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "Safe Links policies should protect URLs in Office apps (EnableSafeLinksForOffice). Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set EnableSafeLinksForOffice to $true.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Safe Links > policy > Office 365 apps.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Safe Links in Microsoft Defender for Office 365",
+          "url": "https://learn.microsoft.com/defender-office-365/safe-links-about"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA238 (Test-ORCA238)"
+    },
+    {
+      "id": "EXO.ORCA.239",
+      "reference": "ORCA-239",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "No exclusions on the built-in protection policies",
+      "severity": "High",
+      "licence": "Defender for Office 365 Plan 1",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_ATPBuiltInProtectionRule",
+      "mode": "first",
+      "conditions": [
+        {
+          "path": "ExceptIfSentTo",
+          "op": "empty"
+        },
+        {
+          "path": "ExceptIfSentToMemberOf",
+          "op": "empty"
+        },
+        {
+          "path": "ExceptIfRecipientDomainIs",
+          "op": "empty"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "The built-in protection rule (Safe Links and Safe Attachments baseline) should not exclude any recipients, groups or domains.",
+      "remediation": "Remove the exclusions from Built-in protection.\n\nMicrosoft Defender portal > Threat policies > Preset security policies > Built-in protection > Manage protection settings.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Preset security policies",
+          "url": "https://learn.microsoft.com/defender-office-365/preset-security-policies"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA239 (Test-ORCA239)"
+    },
+    {
+      "id": "EXO.ORCA.240",
+      "reference": "ORCA-240",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Outlook external sender tags are enabled",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_ExternalInOutlook",
+      "mode": "first",
+      "conditions": [
+        {
+          "path": "Enabled",
+          "op": "true"
+        }
+      ],
+      "name": "Identity",
+      "fail_if_empty": true,
+      "empty_message": "No ExternalInOutlook configuration returned",
+      "description": "External sender identification in Outlook (Set-ExternalInOutlook -Enabled $true) shows an External tag on mail from outside the organisation.",
+      "remediation": "Run: Set-ExternalInOutlook -Enabled $true",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Native external sender callouts",
+          "url": "https://learn.microsoft.com/exchange/security-and-compliance/mail-flow-rules/external-sender-callouts"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA240 (Test-ORCA240)"
+    },
+    {
+      "id": "EXO.ORCA.241",
+      "reference": "ORCA-241",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "First contact safety tip is enabled",
+      "severity": "Medium",
+      "licence": "Defender for Office 365 Plan 1",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_AntiPhishPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "EnableFirstContactSafetyTips",
+          "op": "true"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": true,
+      "empty_message": "No anti-phishing policy found",
+      "description": "Anti-phishing policies should enable EnableFirstContactSafetyTips to warn users when they receive mail from a sender for the first time. ORCA reports this as informational (not fail) when the legacy transport rule X-MS-Exchange-EnableFirstContactSafetyTip is in place; this rule does not take that rule into account. Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set EnableFirstContactSafetyTips to $true.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Anti-phishing > policy > Safety tips & indicators > Show first contact safety tip.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Anti-phishing policies in Microsoft 365",
+          "url": "https://learn.microsoft.com/defender-office-365/anti-phishing-policies-about"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA241 (Test-ORCA241)"
+    },
+    {
+      "id": "EXO.ORCA.244",
+      "reference": "ORCA-244",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "Anti-phishing policies honor the sending domain DMARC policy",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "DE.CM-09",
+      "source": "EXO_ORCA_AntiPhishPolicy",
+      "mode": "all",
+      "conditions": [
+        {
+          "path": "HonorDmarcPolicy",
+          "op": "true"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "Anti-phishing policies should honor the DMARC policy (p=reject / p=quarantine) of the sending domain (HonorDmarcPolicy). Note: ORCA only scores policies that are enabled and actually applied to users (through rules or preset policies); this rule cannot see policy assignment, so every policy returned by the cmdlet is evaluated.",
+      "remediation": "Set HonorDmarcPolicy to $true.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Anti-phishing > policy > Spoof > Honor DMARC record policy when the message is detected as spoof.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Anti-phishing policies in Microsoft 365",
+          "url": "https://learn.microsoft.com/defender-office-365/anti-phishing-policies-about"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA244 (Test-ORCA244)"
+    },
+    {
+      "id": "EXO.ORCA.108",
+      "reference": "ORCA-108",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "DKIM signing is enabled for custom domains",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "PR.DS-02",
+      "source": "EXO_ORCA_DkimSigningConfig",
+      "mode": "all",
+      "conditions": [
+        {
+          "any": [
+            {
+              "path": "Domain",
+              "op": "regex",
+              "value": "\\.onmicrosoft\\.com$"
+            },
+            {
+              "path": "Enabled",
+              "op": "true"
+            }
+          ]
+        }
+      ],
+      "name": "Domain",
+      "fail_if_empty": false,
+      "empty_message": "No matching policy found",
+      "description": "DKIM signing should be enabled for every custom domain so receivers can verify mail really came from you. ORCA only checks accepted domains that have an MX record; this rule evaluates all DKIM signing configurations other than *.onmicrosoft.com.",
+      "remediation": "Enable DKIM signing for each custom domain.\n\nMicrosoft Defender portal > Email & collaboration > Policies & rules > Threat policies > Email authentication settings > DKIM. Set-DkimSigningConfig -Identity <domain> -Enabled $true",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Use DKIM to validate outbound email",
+          "url": "https://aka.ms/orca-dkim-docs-1"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA108 (Test-ORCA108)"
+    },
+    {
+      "id": "EXO.ORCA.235",
+      "reference": "ORCA-235",
+      "framework": "ORCA",
+      "area": "Exchange Online",
+      "title": "SPF hard fail (-all) is set for all domains with mail records",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "PR.DS-02",
+      "source": "DNS_MailAuth",
+      "mode": "all",
+      "filter": [
+        {
+          "path": "mx_records",
+          "op": "notempty"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "spf_all_qualifier",
+          "op": "eq",
+          "value": "-all"
+        }
+      ],
+      "name": "domain",
+      "fail_if_empty": false,
+      "empty_message": "No domain with MX records found",
+      "description": "Every domain that has an MX record should publish an SPF record ending in -all (hard fail) to reduce spoofing. ORCA passes only a hard fail; soft fail (~all) or a missing qualifier fails.",
+      "remediation": "Publish an SPF TXT record such as \"v=spf1 include:spf.protection.outlook.com -all\" for each domain.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Recommended settings for EOP and Microsoft Defender for Office 365 security",
+          "url": "https://aka.ms/orca-atpp-docs-6"
+        },
+        {
+          "text": "Set up SPF in Microsoft 365",
+          "url": "https://learn.microsoft.com/defender-office-365/email-authentication-spf-configure"
+        }
+      ],
+      "origin": "Maester ORCA check-ORCA235 (Test-ORCA235)"
+    }
+  ],
+  "not_ported": [
+    {
+      "origin": "ORCA-107",
+      "reason": "Needs to correlate quarantine policies (Get-QuarantinePolicy) with the spam/phish actions of applied anti-spam policies; cross-dataset logic"
+    },
+    {
+      "origin": "ORCA-108_1",
+      "reason": "DKIM selector CNAMEs must be resolved in DNS and compared with the Selector1CNAME/Selector2CNAME of the signing config only for MX-enabled domains with DKIM on; not expressible"
+    },
+    {
+      "origin": "ORCA-118_2",
+      "reason": "Complex transport rule logic (SCL -1 rules, sender domain/IP and Authentication-Results header conditions and exceptions)"
+    },
+    {
+      "origin": "ORCA-118_3",
+      "reason": "Needs to match AllowedSenderDomains against the accepted domains of the tenant (cross-dataset join)"
+    },
+    {
+      "origin": "ORCA-118_4",
+      "reason": "Complex transport rule logic plus matching against accepted domains"
+    },
+    {
+      "origin": "ORCA-143",
+      "reason": "Marked SkipInReport by ORCA (no longer part of the report); Safety Tips are covered by other tests"
+    },
+    {
+      "origin": "ORCA-226",
+      "reason": "Needs Get-SafeLinksRule / Get-ATPProtectionPolicyRule rule priority and recipient domain evaluation per accepted domain"
+    },
+    {
+      "origin": "ORCA-227",
+      "reason": "Needs Get-SafeAttachmentRule / Get-ATPProtectionPolicyRule rule priority and recipient domain evaluation per accepted domain"
+    },
+    {
+      "origin": "ORCA-230",
+      "reason": "Needs anti-phish rules and preset policy evaluation per accepted domain"
+    },
+    {
+      "origin": "ORCA-231",
+      "reason": "Needs anti-spam rules and preset policy evaluation per accepted domain"
+    },
+    {
+      "origin": "ORCA-232",
+      "reason": "Needs anti-malware rules and preset policy evaluation per accepted domain"
+    },
+    {
+      "origin": "ORCA-233",
+      "reason": "Needs MX record reports (Get-MxRecordReport) for each accepted domain and inbound connector evaluation"
+    },
+    {
+      "origin": "ORCA-233_1",
+      "reason": "Needs MX record reports (Get-MxRecordReport) for each accepted domain and inbound connector enhanced filtering configuration"
+    },
+    {
+      "origin": "ORCA-242",
+      "reason": "Needs Get-ProtectionAlert, which is a Security and Compliance PowerShell cmdlet and not available through the Exchange Online endpoint"
+    },
+    {
+      "origin": "ORCA-243",
+      "reason": "Needs MX record reports (Get-MxRecordReport) to find domains not pointing to EOP, combined with Get-ArcConfig"
+    }
+  ]
+}

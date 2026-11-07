@@ -1,0 +1,1327 @@
+{
+  "workload": "entra",
+  "sources": {},
+  "rules": [
+    {
+      "id": "ENTRA.MT.1003",
+      "reference": "MT.1003",
+      "framework": "Jolera Extended Controls",
+      "area": "Entra ID",
+      "title": "At least one Conditional Access policy targets all cloud apps",
+      "severity": "High",
+      "licence": "Entra ID P1",
+      "nist": "PR.AA-05",
+      "source": "CA_Policies",
+      "mode": "any",
+      "conditions": [
+        {
+          "path": "state",
+          "op": "eq",
+          "value": "enabled"
+        },
+        {
+          "path": "grantControls.builtInControls",
+          "op": "notcontains",
+          "value": "passwordChange"
+        },
+        {
+          "path": "conditions.applications.includeApplications",
+          "op": "contains",
+          "value": "All"
+        }
+      ],
+      "name": "displayName",
+      "fail_if_empty": false,
+      "empty_message": "No Conditional Access policies found",
+      "description": "Microsoft recommends at least one enabled Conditional Access policy that targets all cloud apps, so apps that have no policy of their own still get a baseline control. Policies that only force a password change are not counted.",
+      "remediation": "In the Entra admin center > Entra ID > Conditional Access > Policies, create or edit a policy so that Target resources is set to all resources (cloud apps) and enable it.",
+      "links": [
+        {
+          "text": "Plan a Conditional Access deployment",
+          "url": "https://learn.microsoft.com/entra/identity/conditional-access/plan-conditional-access"
+        }
+      ],
+      "origin": "Maester Test-MtCaAllAppsExists -SkipCheckAllUsers (MT.1003)"
+    },
+    {
+      "id": "ENTRA.MT.1004",
+      "reference": "MT.1004",
+      "framework": "Jolera Extended Controls",
+      "area": "Entra ID",
+      "title": "At least one Conditional Access policy targets all cloud apps and all users",
+      "severity": "High",
+      "licence": "Entra ID P1",
+      "nist": "PR.AA-05",
+      "source": "CA_Policies",
+      "mode": "any",
+      "conditions": [
+        {
+          "path": "state",
+          "op": "eq",
+          "value": "enabled"
+        },
+        {
+          "path": "grantControls.builtInControls",
+          "op": "notcontains",
+          "value": "passwordChange"
+        },
+        {
+          "path": "conditions.users.includeUsers",
+          "op": "contains",
+          "value": "All"
+        },
+        {
+          "path": "conditions.applications.includeApplications",
+          "op": "contains",
+          "value": "All"
+        }
+      ],
+      "name": "displayName",
+      "fail_if_empty": false,
+      "empty_message": "No Conditional Access policies found",
+      "description": "Microsoft recommends a fallback Conditional Access policy that applies to all cloud apps and all users, so no user or app is left outside Conditional Access. Policies that only force a password change are not counted.",
+      "remediation": "In the Entra admin center > Entra ID > Conditional Access > Policies, create or edit a policy with Users set to All users and Target resources set to all resources, then enable it. Exclude only emergency access accounts.",
+      "links": [
+        {
+          "text": "Plan a Conditional Access deployment",
+          "url": "https://learn.microsoft.com/entra/identity/conditional-access/plan-conditional-access"
+        }
+      ],
+      "origin": "Maester Test-MtCaAllAppsExists (MT.1004)"
+    },
+    {
+      "id": "ENTRA.MT.1008",
+      "reference": "MT.1008",
+      "framework": "Jolera Extended Controls",
+      "area": "Entra ID",
+      "title": "A Conditional Access policy requires MFA for Azure management",
+      "severity": "High",
+      "licence": "Entra ID P1",
+      "nist": "PR.AA-03",
+      "source": "CA_Policies",
+      "mode": "any",
+      "conditions": [
+        {
+          "path": "state",
+          "op": "eq",
+          "value": "enabled"
+        },
+        {
+          "path": "grantControls.builtInControls",
+          "op": "notcontains",
+          "value": "passwordChange"
+        },
+        {
+          "path": "grantControls.builtInControls",
+          "op": "notcontains",
+          "value": "riskRemediation"
+        },
+        {
+          "path": "conditions.userRiskLevels",
+          "op": "empty"
+        },
+        {
+          "path": "conditions.signInRiskLevels",
+          "op": "empty"
+        },
+        {
+          "any": [
+            {
+              "path": "grantControls.builtInControls",
+              "op": "contains",
+              "value": "mfa"
+            },
+            {
+              "path": "grantControls.authenticationStrength.requirementsSatisfied",
+              "op": "contains",
+              "value": "mfa"
+            }
+          ]
+        },
+        {
+          "any": [
+            {
+              "path": "conditions.users.includeUsers",
+              "op": "contains",
+              "value": "All"
+            },
+            {
+              "all": [
+                {
+                  "path": "conditions.users.includeRoles",
+                  "op": "contains",
+                  "value": "62e90394-69f5-4237-9190-012177145e10"
+                },
+                {
+                  "path": "conditions.users.includeRoles",
+                  "op": "contains",
+                  "value": "9b895d92-2cd3-44c7-9d02-a6ac2d5ea5c3"
+                },
+                {
+                  "path": "conditions.users.includeRoles",
+                  "op": "contains",
+                  "value": "c4e39bd9-1100-46d3-8c65-fb160da0071f"
+                },
+                {
+                  "path": "conditions.users.includeRoles",
+                  "op": "contains",
+                  "value": "b0f54661-2d74-4c50-afa3-1ec803f12efe"
+                },
+                {
+                  "path": "conditions.users.includeRoles",
+                  "op": "contains",
+                  "value": "158c047a-c907-4556-b7ef-446551a6b5f7"
+                },
+                {
+                  "path": "conditions.users.includeRoles",
+                  "op": "contains",
+                  "value": "b1be1c3e-b65d-4f19-8427-f6fa0d97feb9"
+                },
+                {
+                  "path": "conditions.users.includeRoles",
+                  "op": "contains",
+                  "value": "29232cdf-9323-42fd-ade2-1d097af3e4de"
+                },
+                {
+                  "path": "conditions.users.includeRoles",
+                  "op": "contains",
+                  "value": "729827e3-9c14-49f7-bb1b-9608f156bbb8"
+                },
+                {
+                  "path": "conditions.users.includeRoles",
+                  "op": "contains",
+                  "value": "966707d0-3269-4727-9be2-8c3a10f19b9d"
+                },
+                {
+                  "path": "conditions.users.includeRoles",
+                  "op": "contains",
+                  "value": "7be44c8a-adaf-4e2a-84d6-ab2649e08a13"
+                },
+                {
+                  "path": "conditions.users.includeRoles",
+                  "op": "contains",
+                  "value": "e8611ab8-c189-46e8-94e1-60213ab1f814"
+                },
+                {
+                  "path": "conditions.users.includeRoles",
+                  "op": "contains",
+                  "value": "194ae4cb-b126-40b2-bd5b-6091b380977d"
+                },
+                {
+                  "path": "conditions.users.includeRoles",
+                  "op": "contains",
+                  "value": "f28a1f50-f6e7-4571-818b-6a12f2af6b6c"
+                },
+                {
+                  "path": "conditions.users.includeRoles",
+                  "op": "contains",
+                  "value": "fe930be7-5e62-47db-91af-98c3a49a38b1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "any": [
+            {
+              "path": "conditions.applications.includeApplications",
+              "op": "contains",
+              "value": "797f4846-ba00-4fd7-ba43-dac1f8f63013"
+            },
+            {
+              "path": "conditions.applications.includeApplications",
+              "op": "contains",
+              "value": "MicrosoftAdminPortals"
+            },
+            {
+              "path": "conditions.applications.includeApplications",
+              "op": "contains",
+              "value": "All"
+            }
+          ]
+        }
+      ],
+      "name": "displayName",
+      "fail_if_empty": false,
+      "empty_message": "No Conditional Access policies found",
+      "description": "Azure management (Azure portal, ARM, CLI) gives control over cloud resources. An enabled policy must require MFA or an MFA authentication strength for all users, or for the 14 privileged roles Maester lists, and cover Windows Azure Service Management, the Microsoft Admin Portals or all apps. Policies that only apply on elevated sign-in or user risk or a forced password change are ignored.",
+      "remediation": "In the Entra admin center > Entra ID > Conditional Access > Policies, create a policy that includes all users (or the administrator roles), targets Windows Azure Service Management API and requires multifactor authentication or an MFA authentication strength.",
+      "links": [
+        {
+          "text": "Require MFA for Azure management",
+          "url": "https://learn.microsoft.com/entra/identity/conditional-access/policy-all-users-azure-management"
+        }
+      ],
+      "origin": "Maester Test-MtCaMfaForAdminManagement (MT.1008)"
+    },
+    {
+      "id": "ENTRA.MT.1014",
+      "reference": "MT.1014",
+      "framework": "Jolera Extended Controls",
+      "area": "Entra ID",
+      "title": "A Conditional Access policy requires a compliant or hybrid joined device for administrators",
+      "severity": "High",
+      "licence": "Entra ID P1",
+      "nist": "PR.AA-05",
+      "source": "CA_Policies",
+      "mode": "any",
+      "conditions": [
+        {
+          "path": "state",
+          "op": "eq",
+          "value": "enabled"
+        },
+        {
+          "any": [
+            {
+              "path": "grantControls.builtInControls",
+              "op": "contains",
+              "value": "compliantDevice"
+            },
+            {
+              "path": "grantControls.builtInControls",
+              "op": "contains",
+              "value": "domainJoinedDevice"
+            }
+          ]
+        },
+        {
+          "any": [
+            {
+              "path": "grantControls.operator",
+              "op": "eq",
+              "value": "AND"
+            },
+            {
+              "path": "grantControls.builtInControls",
+              "op": "in",
+              "value": [
+                "compliantDevice",
+                "domainJoinedDevice"
+              ]
+            }
+          ]
+        },
+        {
+          "path": "conditions.applications.includeApplications",
+          "op": "contains",
+          "value": "All"
+        },
+        {
+          "any": [
+            {
+              "path": "conditions.users.includeUsers",
+              "op": "contains",
+              "value": "All"
+            },
+            {
+              "path": "conditions.users.includeRoles",
+              "op": "contains",
+              "value": "62e90394-69f5-4237-9190-012177145e10"
+            }
+          ]
+        },
+        {
+          "any": [
+            {
+              "path": "conditions.users.includeUsers",
+              "op": "contains",
+              "value": "All"
+            },
+            {
+              "path": "conditions.users.includeRoles",
+              "op": "contains",
+              "value": "9b895d92-2cd3-44c7-9d02-a6ac2d5ea5c3"
+            }
+          ]
+        },
+        {
+          "any": [
+            {
+              "path": "conditions.users.includeUsers",
+              "op": "contains",
+              "value": "All"
+            },
+            {
+              "path": "conditions.users.includeRoles",
+              "op": "contains",
+              "value": "c4e39bd9-1100-46d3-8c65-fb160da0071f"
+            }
+          ]
+        },
+        {
+          "any": [
+            {
+              "path": "conditions.users.includeUsers",
+              "op": "contains",
+              "value": "All"
+            },
+            {
+              "path": "conditions.users.includeRoles",
+              "op": "contains",
+              "value": "b0f54661-2d74-4c50-afa3-1ec803f12efe"
+            }
+          ]
+        },
+        {
+          "any": [
+            {
+              "path": "conditions.users.includeUsers",
+              "op": "contains",
+              "value": "All"
+            },
+            {
+              "path": "conditions.users.includeRoles",
+              "op": "contains",
+              "value": "158c047a-c907-4556-b7ef-446551a6b5f7"
+            }
+          ]
+        },
+        {
+          "any": [
+            {
+              "path": "conditions.users.includeUsers",
+              "op": "contains",
+              "value": "All"
+            },
+            {
+              "path": "conditions.users.includeRoles",
+              "op": "contains",
+              "value": "b1be1c3e-b65d-4f19-8427-f6fa0d97feb9"
+            }
+          ]
+        },
+        {
+          "any": [
+            {
+              "path": "conditions.users.includeUsers",
+              "op": "contains",
+              "value": "All"
+            },
+            {
+              "path": "conditions.users.includeRoles",
+              "op": "contains",
+              "value": "29232cdf-9323-42fd-ade2-1d097af3e4de"
+            }
+          ]
+        },
+        {
+          "any": [
+            {
+              "path": "conditions.users.includeUsers",
+              "op": "contains",
+              "value": "All"
+            },
+            {
+              "path": "conditions.users.includeRoles",
+              "op": "contains",
+              "value": "729827e3-9c14-49f7-bb1b-9608f156bbb8"
+            }
+          ]
+        },
+        {
+          "any": [
+            {
+              "path": "conditions.users.includeUsers",
+              "op": "contains",
+              "value": "All"
+            },
+            {
+              "path": "conditions.users.includeRoles",
+              "op": "contains",
+              "value": "966707d0-3269-4727-9be2-8c3a10f19b9d"
+            }
+          ]
+        },
+        {
+          "any": [
+            {
+              "path": "conditions.users.includeUsers",
+              "op": "contains",
+              "value": "All"
+            },
+            {
+              "path": "conditions.users.includeRoles",
+              "op": "contains",
+              "value": "7be44c8a-adaf-4e2a-84d6-ab2649e08a13"
+            }
+          ]
+        },
+        {
+          "any": [
+            {
+              "path": "conditions.users.includeUsers",
+              "op": "contains",
+              "value": "All"
+            },
+            {
+              "path": "conditions.users.includeRoles",
+              "op": "contains",
+              "value": "e8611ab8-c189-46e8-94e1-60213ab1f814"
+            }
+          ]
+        },
+        {
+          "any": [
+            {
+              "path": "conditions.users.includeUsers",
+              "op": "contains",
+              "value": "All"
+            },
+            {
+              "path": "conditions.users.includeRoles",
+              "op": "contains",
+              "value": "194ae4cb-b126-40b2-bd5b-6091b380977d"
+            }
+          ]
+        },
+        {
+          "any": [
+            {
+              "path": "conditions.users.includeUsers",
+              "op": "contains",
+              "value": "All"
+            },
+            {
+              "path": "conditions.users.includeRoles",
+              "op": "contains",
+              "value": "f28a1f50-f6e7-4571-818b-6a12f2af6b6c"
+            }
+          ]
+        },
+        {
+          "any": [
+            {
+              "path": "conditions.users.includeUsers",
+              "op": "contains",
+              "value": "All"
+            },
+            {
+              "path": "conditions.users.includeRoles",
+              "op": "contains",
+              "value": "fe930be7-5e62-47db-91af-98c3a49a38b1"
+            }
+          ]
+        },
+        {
+          "path": "conditions.users.excludeRoles",
+          "op": "notcontains",
+          "value": "62e90394-69f5-4237-9190-012177145e10"
+        },
+        {
+          "path": "conditions.users.excludeRoles",
+          "op": "notcontains",
+          "value": "9b895d92-2cd3-44c7-9d02-a6ac2d5ea5c3"
+        },
+        {
+          "path": "conditions.users.excludeRoles",
+          "op": "notcontains",
+          "value": "c4e39bd9-1100-46d3-8c65-fb160da0071f"
+        },
+        {
+          "path": "conditions.users.excludeRoles",
+          "op": "notcontains",
+          "value": "b0f54661-2d74-4c50-afa3-1ec803f12efe"
+        },
+        {
+          "path": "conditions.users.excludeRoles",
+          "op": "notcontains",
+          "value": "158c047a-c907-4556-b7ef-446551a6b5f7"
+        },
+        {
+          "path": "conditions.users.excludeRoles",
+          "op": "notcontains",
+          "value": "b1be1c3e-b65d-4f19-8427-f6fa0d97feb9"
+        },
+        {
+          "path": "conditions.users.excludeRoles",
+          "op": "notcontains",
+          "value": "29232cdf-9323-42fd-ade2-1d097af3e4de"
+        },
+        {
+          "path": "conditions.users.excludeRoles",
+          "op": "notcontains",
+          "value": "729827e3-9c14-49f7-bb1b-9608f156bbb8"
+        },
+        {
+          "path": "conditions.users.excludeRoles",
+          "op": "notcontains",
+          "value": "966707d0-3269-4727-9be2-8c3a10f19b9d"
+        },
+        {
+          "path": "conditions.users.excludeRoles",
+          "op": "notcontains",
+          "value": "7be44c8a-adaf-4e2a-84d6-ab2649e08a13"
+        },
+        {
+          "path": "conditions.users.excludeRoles",
+          "op": "notcontains",
+          "value": "e8611ab8-c189-46e8-94e1-60213ab1f814"
+        },
+        {
+          "path": "conditions.users.excludeRoles",
+          "op": "notcontains",
+          "value": "194ae4cb-b126-40b2-bd5b-6091b380977d"
+        },
+        {
+          "path": "conditions.users.excludeRoles",
+          "op": "notcontains",
+          "value": "f28a1f50-f6e7-4571-818b-6a12f2af6b6c"
+        },
+        {
+          "path": "conditions.users.excludeRoles",
+          "op": "notcontains",
+          "value": "fe930be7-5e62-47db-91af-98c3a49a38b1"
+        }
+      ],
+      "name": "displayName",
+      "fail_if_empty": false,
+      "empty_message": "No Conditional Access policies found",
+      "description": "Administrator accounts should only sign in from managed devices. An enabled policy must target all apps, include every one of the 14 privileged roles Maester lists (or all users) without excluding any of them, and require a compliant or Microsoft Entra hybrid joined device (as the only grant, or combined with AND).",
+      "remediation": "In the Entra admin center > Entra ID > Conditional Access > Policies, create a policy for the Global, Security, Exchange, SharePoint, User, Application and other administrator roles that requires the device to be marked compliant or hybrid joined. Test in report-only first.",
+      "links": [
+        {
+          "text": "Require compliant or hybrid joined device for administrators",
+          "url": "https://learn.microsoft.com/entra/identity/conditional-access/policy-admin-compliant-device"
+        }
+      ],
+      "origin": "Maester Test-MtCaDeviceComplianceAdminsExists (MT.1014)"
+    },
+    {
+      "id": "ENTRA.MT.1019",
+      "reference": "MT.1019",
+      "framework": "Jolera Extended Controls",
+      "area": "Entra ID",
+      "title": "A Conditional Access policy enforces application restrictions for unmanaged devices",
+      "severity": "Medium",
+      "licence": "Entra ID P1",
+      "nist": "PR.AA-05",
+      "source": "CA_Policies",
+      "mode": "any",
+      "conditions": [
+        {
+          "path": "state",
+          "op": "eq",
+          "value": "enabled"
+        },
+        {
+          "path": "conditions.users.includeUsers",
+          "op": "contains",
+          "value": "All"
+        },
+        {
+          "path": "conditions.clientAppTypes",
+          "op": "contains",
+          "value": "All"
+        },
+        {
+          "path": "sessionControls.applicationEnforcedRestrictions.isEnabled",
+          "op": "true"
+        },
+        {
+          "path": "conditions.applications.includeApplications",
+          "op": "contains",
+          "value": "Office365"
+        }
+      ],
+      "name": "displayName",
+      "fail_if_empty": false,
+      "empty_message": "No Conditional Access policies found",
+      "description": "Application enforced restrictions let SharePoint Online and Exchange Online limit what users can do from unmanaged devices (for example browser-only access without download). An enabled policy must apply to all users and client app types, target Office 365 and turn on application enforced restrictions.",
+      "remediation": "In the Entra admin center > Entra ID > Conditional Access > Policies, create a policy for all users, target Office 365, and under Session select Use app enforced restrictions. Configure the matching limited-access policy in SharePoint and Exchange.",
+      "impact": "Users on unmanaged devices get limited, browser-only access to SharePoint, OneDrive and Exchange.",
+      "links": [
+        {
+          "text": "Use application enforced restrictions for unmanaged devices",
+          "url": "https://learn.microsoft.com/entra/identity/conditional-access/policy-all-users-app-enforced-restrictions"
+        }
+      ],
+      "origin": "Maester Test-MtCaApplicationEnforcedRestriction (MT.1019)"
+    },
+    {
+      "id": "ENTRA.MT.1072",
+      "reference": "MT.1072",
+      "framework": "Jolera Extended Controls",
+      "area": "Entra ID",
+      "title": "No Conditional Access policy uses the deprecated Approved Client App grant",
+      "severity": "High",
+      "licence": "Entra ID P1",
+      "nist": "PR.PS-01",
+      "source": "CA_Policies",
+      "mode": "none",
+      "conditions": [
+        {
+          "path": "state",
+          "op": "eq",
+          "value": "enabled"
+        },
+        {
+          "path": "grantControls.builtInControls",
+          "op": "contains",
+          "value": "approvedApplication"
+        }
+      ],
+      "name": "displayName",
+      "fail_if_empty": false,
+      "description": "The Require approved client app grant control is retired and Microsoft no longer enforces it, which leaves a policy that relies on it without the intended protection. Move to Require app protection policy.",
+      "remediation": "In the Entra admin center > Entra ID > Conditional Access > Policies, open each listed policy and replace Require approved client app with Require app protection policy (or add it alongside), then review the result in report-only mode.",
+      "links": [
+        {
+          "text": "Migrate approved client app to application protection policy",
+          "url": "https://learn.microsoft.com/entra/identity/conditional-access/migrate-approved-client-app"
+        }
+      ],
+      "origin": "Maester Test-MtCaApprovedClientApp (MT.1072)"
+    },
+    {
+      "id": "ENTRA.MT.1184",
+      "reference": "MT.1184",
+      "framework": "Jolera Extended Controls",
+      "area": "Entra ID",
+      "title": "No Conditional Access policy is missing a target resource",
+      "severity": "Medium",
+      "licence": "Entra ID P1",
+      "nist": "PR.PS-01",
+      "source": "CA_Policies",
+      "mode": "all",
+      "conditions": [
+        {
+          "any": [
+            {
+              "all": [
+                {
+                  "path": "conditions.applications.includeApplications",
+                  "op": "notempty"
+                },
+                {
+                  "path": "conditions.applications.includeApplications",
+                  "op": "notcontains",
+                  "value": "None"
+                }
+              ]
+            },
+            {
+              "path": "conditions.applications.includeUserActions",
+              "op": "notempty"
+            },
+            {
+              "path": "conditions.applications.includeAuthenticationContextClassReferences",
+              "op": "notempty"
+            },
+            {
+              "path": "conditions.applications.applicationFilter",
+              "op": "notempty"
+            }
+          ]
+        }
+      ],
+      "name": "displayName",
+      "fail_if_empty": false,
+      "description": "A policy can be saved with no cloud apps, user actions or authentication context selected. It then applies to nothing but looks like active protection. All policies (any state) must target at least one of these.",
+      "remediation": "Open each listed policy under Target resources and select cloud apps or resources, user actions or an authentication context, or delete the policy if it is no longer needed.",
+      "links": [
+        {
+          "text": "Conditional Access: cloud apps, actions and authentication context",
+          "url": "https://learn.microsoft.com/entra/identity/conditional-access/concept-conditional-access-cloud-apps"
+        }
+      ],
+      "origin": "Maester Test-MtCaUntargetedPolicy (MT.1184)"
+    },
+    {
+      "id": "ENTRA.MT.1197",
+      "reference": "MT.1197",
+      "framework": "Jolera Extended Controls",
+      "area": "Entra ID",
+      "title": "No dynamic group uses the retiring memberOf rule operator",
+      "severity": "High",
+      "licence": "Entra ID P1",
+      "nist": "PR.AA-05",
+      "source": "Groups",
+      "mode": "none",
+      "filter": [
+        {
+          "path": "groupTypes",
+          "op": "contains",
+          "value": "DynamicMembership"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "membershipRule",
+          "op": "regex",
+          "value": "memberOf"
+        }
+      ],
+      "name": "displayName",
+      "fail_if_empty": false,
+      "description": "Microsoft ends the memberOf preview for dynamic groups on 3 November 2026. Groups that still use it stop updating and keep stale membership, which can leave outdated app access, Conditional Access targeting, Microsoft 365 access or licence assignment in place.",
+      "remediation": "In the Entra admin center > Groups > All groups, open each listed group, record its membership and what depends on it, then replace the memberOf rule with attribute-based rules or convert the group to assigned membership.",
+      "links": [
+        {
+          "text": "Dynamic groups with memberOf and migration before retirement",
+          "url": "https://learn.microsoft.com/entra/identity/users/groups-dynamic-rule-member-of"
+        }
+      ],
+      "origin": "Maester Test-MtDynamicGroupMemberOfRule (MT.1197)"
+    },
+    {
+      "id": "ENTRA.MT.1182",
+      "reference": "MT.1182",
+      "framework": "Jolera Extended Controls",
+      "area": "Entra ID",
+      "title": "Verified managed domains publish a mature DMARC policy (p=reject, pct=100)",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "PR.DS-02",
+      "source": "DNS_MailAuth",
+      "mode": "all",
+      "filter": [
+        {
+          "path": "authentication_type",
+          "op": "eq",
+          "value": "Managed"
+        },
+        {
+          "path": "is_initial",
+          "op": "false"
+        },
+        {
+          "path": "domain",
+          "op": "regex",
+          "value": "^(?!.*onmicrosoft\\.com$)"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "dmarc_policy",
+          "op": "eq",
+          "value": "reject"
+        },
+        {
+          "path": "dmarc_pct",
+          "op": "ge",
+          "value": 100
+        }
+      ],
+      "name": "domain",
+      "fail_if_empty": false,
+      "description": "Without an enforced DMARC policy, spoofed mail using your domain can reach recipients. Every verified, managed (non-federated) domain except the initial onmicrosoft.com domain should publish p=reject with pct=100. Maester evaluates the registrable parent domain; here each verified domain is judged by its own DMARC data.",
+      "remediation": "Publish a DMARC TXT record at _dmarc.<domain> such as v=DMARC1; p=reject; pct=100; rua=mailto:<reports address>. Start with p=none or quarantine and move to reject once reports are clean.",
+      "links": [
+        {
+          "text": "Form the DMARC TXT record for your domain",
+          "url": "https://learn.microsoft.com/microsoft-365/security/office-365-security/email-authentication-dmarc-configure"
+        }
+      ],
+      "origin": "Maester Test-MtDomainsDmarcRecordMaturity (MT.1182)"
+    },
+    {
+      "id": "ENTRA.MT.1024",
+      "reference": "MT.1024",
+      "framework": "Jolera Extended Controls",
+      "area": "Entra ID",
+      "title": "Microsoft Entra recommendations are completed",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "ID.RA-01",
+      "source": "Entra_Recommendations",
+      "mode": "all",
+      "filter": [
+        {
+          "path": "status",
+          "op": "notcontains",
+          "value": "dismissed"
+        },
+        {
+          "path": "id",
+          "op": "regex",
+          "value": "^(?!.*(selfServicePasswordReset|adminMFAV2|mfaRegistrationV2|userRiskPolicy|insiderRiskPolicy|signinRiskPolicy)$)"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "status",
+          "op": "eq",
+          "value": "completedBySystem"
+        }
+      ],
+      "name": "displayName",
+      "fail_if_empty": false,
+      "description": "Microsoft Entra generates tenant recommendations for security hygiene. Each recommendation that has not been dismissed should be completed by the system. Recommendations already evaluated by separate rules (self-service password reset, admin MFA, MFA registration, user risk) and the Identity Protection ones that depend on Entra ID P2 are excluded here.",
+      "remediation": "Open the Entra admin center > Entra ID > Overview > Recommendations, open each listed item, follow its action steps, or dismiss it with a reason if it does not apply.",
+      "links": [
+        {
+          "text": "What are Microsoft Entra recommendations?",
+          "url": "https://learn.microsoft.com/entra/identity/monitoring-health/overview-recommendations"
+        }
+      ],
+      "origin": "Maester MT.1024 (Test-EntraRecommendations.Tests.ps1)"
+    },
+    {
+      "id": "ENTRA.MT.1024.insiderRiskPolicy",
+      "reference": "MT.1024.insiderRiskPolicy",
+      "framework": "Jolera Extended Controls",
+      "area": "Entra ID",
+      "title": "Microsoft Entra recommendation: protect against insider risk is completed",
+      "severity": "Medium",
+      "licence": "Entra ID P2",
+      "nist": "ID.RA-01",
+      "source": "Entra_Recommendations",
+      "mode": "all",
+      "filter": [
+        {
+          "path": "status",
+          "op": "notcontains",
+          "value": "dismissed"
+        },
+        {
+          "path": "id",
+          "op": "regex",
+          "value": "insiderRiskPolicy$"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "status",
+          "op": "eq",
+          "value": "completedBySystem"
+        }
+      ],
+      "name": "displayName",
+      "fail_if_empty": false,
+      "description": "The insider risk recommendation asks for a Conditional Access policy that uses insider risk. It needs Microsoft Entra ID P2 and is not evaluated by the other recommendation rules. Dismissed recommendations are skipped.",
+      "remediation": "Open the recommendation in Entra ID > Overview > Recommendations and follow its steps to add an insider risk based Conditional Access policy.",
+      "links": [
+        {
+          "text": "What are Microsoft Entra recommendations?",
+          "url": "https://learn.microsoft.com/entra/identity/monitoring-health/overview-recommendations"
+        }
+      ],
+      "origin": "Maester MT.1024 (Test-EntraRecommendations.Tests.ps1), insiderRiskPolicy"
+    }
+  ],
+  "not_ported": [
+    {
+      "origin": "MT.1020",
+      "reason": "needs CA policies joined to members of the Directory Synchronization Accounts roles (cross-dataset lookup of role members and CA scoping with exclusions)"
+    },
+    {
+      "origin": "MT.1035",
+      "reason": "needs a per-group lookup of isManagementRestricted / isAssignableToRole for every group referenced by Conditional Access"
+    },
+    {
+      "origin": "MT.1067",
+      "reason": "needs authentication method policy group targets joined against existing groups (per-object existence check)"
+    },
+    {
+      "origin": "MT.1022",
+      "reason": "needs the reports/azureADPremiumLicenseInsight report compared with the total user count (two sources and an arithmetic comparison)"
+    },
+    {
+      "origin": "MT.1023",
+      "reason": "needs the reports/azureADPremiumLicenseInsight report compared with the total user count (two sources and an arithmetic comparison)"
+    },
+    {
+      "origin": "MT.1058",
+      "reason": "needs Exchange application access policies tested per application with Exchange permissions (per-object Exchange calls)"
+    },
+    {
+      "origin": "MT.1084",
+      "reason": "Entra Connect seamless SSO per on-premises computer account; depends on the on-premises Entra Connect servers (hybrid / on-premises)"
+    },
+    {
+      "origin": "MT.1196",
+      "reason": "needs the Maester dynamic group rule parser that classifies which attributes users can influence (logic not expressible as conditions)"
+    },
+    {
+      "origin": "MT.1024.signinRiskPolicy",
+      "reason": "break-glass-only exception needs the configured emergency access accounts joined to the recommendation's impacted resources"
+    },
+    {
+      "origin": "MT.1033",
+      "reason": "needs the Conditional Access What If evaluation API (POST) for every regular user; per-object"
+    },
+    {
+      "origin": "MT.1034",
+      "reason": "needs the Conditional Access What If evaluation API (POST) for every emergency access user; per-object"
+    },
+    {
+      "origin": "Test-MtCaWIFBlockLegacyAuthentication / Test-MtConditionalAccessWhatIf",
+      "reason": "Conditional Access What If helpers, need a POST evaluation per user"
+    },
+    {
+      "origin": "MT.1060",
+      "reason": "drift comparison of user supplied baseline JSON files; not a tenant setting"
+    },
+    {
+      "origin": "MT.1056",
+      "reason": "Azure RBAC at tenant root scope (ARM); belongs in the Azure identity spec, not this one"
+    },
+    {
+      "origin": "MT.1064",
+      "reason": "Azure management group hierarchy settings (ARM); belongs in the Azure spec"
+    },
+    {
+      "origin": "MT.1065",
+      "reason": "Azure Recovery Services vaults (ARM, per-vault); belongs in the Azure spec"
+    },
+    {
+      "origin": "MT.1071",
+      "reason": "Azure DevOps scope; skipped by instruction"
+    },
+    {
+      "origin": "MT.1085",
+      "reason": "needs Defender XDR advanced hunting / exposure graph (XSPM); skipped"
+    },
+    {
+      "origin": "MT.1086",
+      "reason": "needs Defender XDR advanced hunting / exposure graph (XSPM); skipped"
+    },
+    {
+      "origin": "MT.1087",
+      "reason": "needs Defender XDR advanced hunting / exposure graph (XSPM); skipped"
+    },
+    {
+      "origin": "MT.1088",
+      "reason": "needs Defender XDR advanced hunting / exposure graph (XSPM); skipped"
+    },
+    {
+      "origin": "MT.1089",
+      "reason": "needs Defender XDR advanced hunting / exposure graph (XSPM); skipped"
+    },
+    {
+      "origin": "MT.1077",
+      "reason": "needs Defender XDR advanced hunting / exposure graph (XSPM); skipped"
+    },
+    {
+      "origin": "MT.1078",
+      "reason": "needs Defender XDR advanced hunting / exposure graph (XSPM); skipped"
+    },
+    {
+      "origin": "MT.1079",
+      "reason": "needs Defender XDR advanced hunting / exposure graph (XSPM); skipped"
+    },
+    {
+      "origin": "MT.1080",
+      "reason": "needs Defender XDR advanced hunting / exposure graph (XSPM); skipped"
+    },
+    {
+      "origin": "MT.1111",
+      "reason": "needs Defender XDR advanced hunting / exposure graph (XSPM); skipped"
+    },
+    {
+      "origin": "MT.1112",
+      "reason": "needs Defender XDR advanced hunting / exposure graph (XSPM); skipped"
+    },
+    {
+      "origin": "MT.1081",
+      "reason": "needs Defender XDR advanced hunting / exposure graph (XSPM); skipped (permanent hybrid users on control plane roles are already covered by PA-02)"
+    },
+    {
+      "origin": "MT.1181",
+      "reason": "AI agents scope: Conditional Access agent risk block policy; skipped by instruction"
+    },
+    {
+      "origin": "MT.1200",
+      "reason": "AI agents (Entra Agent ID) scope; skipped by instruction"
+    },
+    {
+      "origin": "MT.1201",
+      "reason": "AI agents (Entra Agent ID) scope; skipped by instruction"
+    },
+    {
+      "origin": "MT.1203",
+      "reason": "AI agents (Entra Agent ID) scope; skipped by instruction"
+    },
+    {
+      "origin": "MT.1204",
+      "reason": "AI agents (Entra Agent ID) scope; skipped by instruction"
+    },
+    {
+      "origin": "MT.1205",
+      "reason": "AI agents (Entra Agent ID) scope; skipped by instruction"
+    },
+    {
+      "origin": "MT.1206",
+      "reason": "AI agents (Entra Agent ID) scope; skipped by instruction"
+    },
+    {
+      "origin": "MT.1207",
+      "reason": "AI agents (Entra Agent ID) scope; skipped by instruction"
+    },
+    {
+      "origin": "MT.1208",
+      "reason": "AI agents (Entra Agent ID) scope; skipped by instruction"
+    },
+    {
+      "origin": "MT.1209",
+      "reason": "AI agents (Entra Agent ID) scope; skipped by instruction"
+    },
+    {
+      "origin": "MT.1210",
+      "reason": "AI agents (Entra Agent ID) scope; skipped by instruction"
+    },
+    {
+      "origin": "MT.1211",
+      "reason": "AI agents (Entra Agent ID) scope; skipped by instruction"
+    },
+    {
+      "origin": "MT.1212",
+      "reason": "AI agents (Entra Agent ID) scope; skipped by instruction"
+    },
+    {
+      "origin": "MT.1213",
+      "reason": "AI agents (Entra Agent ID) scope; skipped by instruction"
+    },
+    {
+      "origin": "MT.1223",
+      "reason": "AI agents (Entra Agent ID) scope; skipped by instruction"
+    }
+  ],
+  "covered_notes": [
+    {
+      "maester": "MT.1001",
+      "covered_by": "CA-01"
+    },
+    {
+      "maester": "MT.1002",
+      "covered_by": "ZTA.21775 (stricter: requires the default app management policy enabled with at least one credential restriction)"
+    },
+    {
+      "maester": "MT.1005",
+      "covered_by": "CA-02"
+    },
+    {
+      "maester": "MT.1006",
+      "covered_by": "CA-03"
+    },
+    {
+      "maester": "MT.1007",
+      "covered_by": "CA-04"
+    },
+    {
+      "maester": "MT.1009",
+      "covered_by": "CA-05"
+    },
+    {
+      "maester": "MT.1010",
+      "covered_by": "CA-06"
+    },
+    {
+      "maester": "MT.1011",
+      "covered_by": "CA-13"
+    },
+    {
+      "maester": "MT.1012",
+      "covered_by": "CA-07"
+    },
+    {
+      "maester": "MT.1013",
+      "covered_by": "CA-14"
+    },
+    {
+      "maester": "MT.1015",
+      "covered_by": "CA-08"
+    },
+    {
+      "maester": "MT.1016",
+      "covered_by": "CA-09"
+    },
+    {
+      "maester": "MT.1017",
+      "covered_by": "CA-10"
+    },
+    {
+      "maester": "MT.1018",
+      "covered_by": "CA-11"
+    },
+    {
+      "maester": "MT.1021",
+      "covered_by": "ID-12"
+    },
+    {
+      "maester": "MT.1024.selfServicePasswordReset",
+      "covered_by": "REC-selfServicePasswordReset"
+    },
+    {
+      "maester": "MT.1024.x_adminMFAV2",
+      "covered_by": "REC-x_adminMFAV2"
+    },
+    {
+      "maester": "MT.1024.x_mfaRegistrationV2",
+      "covered_by": "REC-x_mfaRegistrationV2"
+    },
+    {
+      "maester": "MT.1024.x_userRiskPolicy",
+      "covered_by": "REC-x_userRiskPolicy"
+    },
+    {
+      "maester": "MT.1025",
+      "covered_by": "PA-01"
+    },
+    {
+      "maester": "MT.1026",
+      "covered_by": "PA-02"
+    },
+    {
+      "maester": "MT.1027",
+      "covered_by": "PA-03"
+    },
+    {
+      "maester": "MT.1028",
+      "covered_by": "PA-04"
+    },
+    {
+      "maester": "MT.1029",
+      "covered_by": "PA-05"
+    },
+    {
+      "maester": "MT.1030",
+      "covered_by": "PA-06"
+    },
+    {
+      "maester": "MT.1031",
+      "covered_by": "PA-07"
+    },
+    {
+      "maester": "MT.1032",
+      "covered_by": "PA-08"
+    },
+    {
+      "maester": "MT.1036",
+      "covered_by": "CA-17"
+    },
+    {
+      "maester": "MT.1038",
+      "covered_by": "CA-18"
+    },
+    {
+      "maester": "MT.1049",
+      "covered_by": "CA-16"
+    },
+    {
+      "maester": "MT.1050",
+      "covered_by": "APP-07"
+    },
+    {
+      "maester": "MT.1051",
+      "covered_by": "APP-08"
+    },
+    {
+      "maester": "MT.1052",
+      "covered_by": "CA-15"
+    },
+    {
+      "maester": "MT.1055",
+      "covered_by": "ID-07"
+    },
+    {
+      "maester": "MT.1057",
+      "covered_by": "APP-01"
+    },
+    {
+      "maester": "MT.1061",
+      "covered_by": "CA-12"
+    },
+    {
+      "maester": "MT.1063",
+      "covered_by": "APP-04"
+    },
+    {
+      "maester": "MT.1066",
+      "covered_by": "CA-19"
+    },
+    {
+      "maester": "MT.1068",
+      "covered_by": "ID-08"
+    },
+    {
+      "maester": "MT.1069",
+      "covered_by": "ID-09"
+    },
+    {
+      "maester": "MT.1070",
+      "covered_by": "ID-13"
+    },
+    {
+      "maester": "MT.1073",
+      "covered_by": "HY-01"
+    },
+    {
+      "maester": "MT.1075",
+      "covered_by": "APP-05"
+    },
+    {
+      "maester": "MT.1090",
+      "covered_by": "ID-14"
+    },
+    {
+      "maester": "MT.1091",
+      "covered_by": "ID-15"
+    },
+    {
+      "maester": "MT.1106",
+      "covered_by": "EM-01"
+    },
+    {
+      "maester": "MT.1107",
+      "covered_by": "EM-02"
+    },
+    {
+      "maester": "MT.1108",
+      "covered_by": "EM-03"
+    },
+    {
+      "maester": "MT.1109",
+      "covered_by": "EM-04"
+    },
+    {
+      "maester": "MT.1110",
+      "covered_by": "EM-05"
+    },
+    {
+      "maester": "MT.1147",
+      "covered_by": "HY-03"
+    },
+    {
+      "maester": "MT.1183",
+      "covered_by": "HY-02"
+    },
+    {
+      "maester": "MT.1185",
+      "covered_by": "ZTA.21844"
+    },
+    {
+      "maester": "MT.1186",
+      "covered_by": "APP-06"
+    },
+    {
+      "maester": "MT.1198",
+      "covered_by": "APP-02"
+    },
+    {
+      "maester": "MT.1199",
+      "covered_by": "APP-03"
+    },
+    {
+      "maester": "CUS.SH.001",
+      "covered_by": "SH-01"
+    },
+    {
+      "maester": "CUS.SH.002",
+      "covered_by": "SH-02"
+    },
+    {
+      "maester": "CUS.SH.003",
+      "covered_by": "SH-03"
+    },
+    {
+      "maester": "CUS.SH.004",
+      "covered_by": "SH-04"
+    },
+    {
+      "maester": "CUS.SH.005",
+      "covered_by": "SH-05"
+    }
+  ]
+}

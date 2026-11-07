@@ -1,0 +1,11 @@
+# secrets and client data: never commit
+.env
+config/companies.json
+runs/
+# python / editors / office
+__pycache__/
+*.pyc
+.venv/
+venv/
+~$*
+*.log

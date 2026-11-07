@@ -1,0 +1,778 @@
+{
+ "workload": "intune",
+ "sources": {
+  "INTUNEZ_CompliancePolicies": {
+   "type": "graph",
+   "api": "v1.0",
+   "uri": "deviceManagement/deviceCompliancePolicies?$expand=assignments",
+   "permission": "DeviceManagementConfiguration.Read.All"
+  },
+  "INTUNEZ_AndroidDOCompliancePolicies": {
+   "type": "graph",
+   "api": "beta",
+   "uri": "deviceManagement/deviceCompliancePolicies?$filter=isOf('microsoft.graph.androidDeviceOwnerCompliancePolicy')&$expand=assignments",
+   "permission": "DeviceManagementConfiguration.Read.All"
+  },
+  "INTUNEZ_AndroidWorkProfileCompliancePolicies": {
+   "type": "graph",
+   "api": "beta",
+   "uri": "deviceManagement/deviceCompliancePolicies?$filter=isOf('microsoft.graph.androidWorkProfileCompliancePolicy')&$expand=assignments",
+   "permission": "DeviceManagementConfiguration.Read.All"
+  },
+  "INTUNEZ_IosAppProtection": {
+   "type": "graph",
+   "api": "v1.0",
+   "uri": "deviceAppManagement/iosManagedAppProtections?$expand=assignments",
+   "permission": "DeviceManagementApps.Read.All"
+  },
+  "INTUNEZ_AndroidAppProtection": {
+   "type": "graph",
+   "api": "v1.0",
+   "uri": "deviceAppManagement/androidManagedAppProtections?$expand=assignments",
+   "permission": "DeviceManagementApps.Read.All"
+  },
+  "INTUNEZ_DeviceConfigurations": {
+   "type": "graph",
+   "api": "beta",
+   "uri": "deviceManagement/deviceConfigurations?$expand=assignments",
+   "permission": "DeviceManagementConfiguration.Read.All"
+  },
+  "INTUNEZ_EnrollmentNotifications": {
+   "type": "graph",
+   "api": "beta",
+   "uri": "deviceManagement/deviceEnrollmentConfigurations?$expand=assignments&$filter=deviceEnrollmentConfigurationType eq 'EnrollmentNotificationsConfiguration'",
+   "permission": "DeviceManagementServiceConfig.Read.All"
+  },
+  "INTUNEZ_SecurityBaselines": {
+   "type": "graph",
+   "api": "beta",
+   "uri": "deviceManagement/intents?$expand=assignments",
+   "permission": "DeviceManagementConfiguration.Read.All"
+  },
+  "INTUNEZ_CleanupRules": {
+   "type": "graph",
+   "api": "beta",
+   "uri": "deviceManagement/managedDeviceCleanupRules",
+   "permission": "DeviceManagementConfiguration.Read.All"
+  },
+  "INTUNEZ_MtdConnectors": {
+   "type": "graph",
+   "api": "beta",
+   "uri": "deviceManagement/mobileThreatDefenseConnectors",
+   "permission": "DeviceManagementConfiguration.Read.All"
+  },
+  "INTUNEZ_IosWifi": {
+   "type": "graph",
+   "api": "beta",
+   "uri": "deviceManagement/deviceConfigurations?$filter=isof('microsoft.graph.iosWiFiConfiguration')&$expand=assignments",
+   "permission": "DeviceManagementConfiguration.Read.All"
+  },
+  "INTUNEZ_AndroidDOWifi": {
+   "type": "graph",
+   "api": "beta",
+   "uri": "deviceManagement/deviceConfigurations?$filter=isof('microsoft.graph.androidDeviceOwnerEnterpriseWiFiConfiguration')&$expand=assignments",
+   "permission": "DeviceManagementConfiguration.Read.All"
+  },
+  "INTUNEZ_MacWifi": {
+   "type": "graph",
+   "api": "beta",
+   "uri": "deviceManagement/deviceConfigurations?$filter=isof('microsoft.graph.macOSWiFiConfiguration')&$expand=assignments",
+   "permission": "DeviceManagementConfiguration.Read.All"
+  }
+ },
+ "rules": [
+  {
+   "id": "INTUNE.ZTA.24541",
+   "reference": "ZTA 24541",
+   "framework": "Zero Trust Assessment",
+   "area": "Intune",
+   "title": "Compliance policies protect Windows devices",
+   "severity": "High",
+   "licence": "Intune",
+   "nist": "PR.PS-01",
+   "source": "INTUNEZ_CompliancePolicies",
+   "mode": "any",
+   "filter": [
+    {
+     "path": "@odata.type",
+     "op": "in",
+     "value": [
+      "#microsoft.graph.windows10CompliancePolicy",
+      "#microsoft.graph.windows11CompliancePolicy"
+     ]
+    }
+   ],
+   "conditions": [
+    {
+     "path": "assignments",
+     "op": "notempty"
+    }
+   ],
+   "name": "displayName",
+   "fail_if_empty": true,
+   "empty_message": "No Windows compliance policy exists",
+   "description": "At least one Intune compliance policy for Windows (windows10CompliancePolicy / windows11CompliancePolicy) must exist and be assigned. Without it, noncompliant Windows endpoints can reach corporate resources and Conditional Access cannot rely on device health.",
+   "remediation": "Intune admin center > Devices > Compliance > Create policy (Windows 10 and later), configure BitLocker, password, firewall and OS version requirements, then assign it to device or user groups.",
+   "links": [
+    {
+     "text": "Create and assign Intune compliance policies",
+     "url": "https://learn.microsoft.com/intune/device-security/compliance/create-policy"
+    },
+    {
+     "text": "Windows compliance settings reference",
+     "url": "https://learn.microsoft.com/intune/device-security/compliance/ref-windows-settings"
+    }
+   ],
+   "origin": "Zero Trust Assessment Test-Assessment.24541"
+  },
+  {
+   "id": "INTUNE.ZTA.24542",
+   "reference": "ZTA 24542",
+   "framework": "Zero Trust Assessment",
+   "area": "Intune",
+   "title": "Compliance policies protect macOS devices",
+   "severity": "High",
+   "licence": "Intune",
+   "nist": "PR.PS-01",
+   "source": "INTUNEZ_CompliancePolicies",
+   "mode": "any",
+   "filter": [
+    {
+     "path": "@odata.type",
+     "op": "in",
+     "value": [
+      "#microsoft.graph.macOSCompliancePolicy"
+     ]
+    }
+   ],
+   "conditions": [
+    {
+     "path": "assignments",
+     "op": "notempty"
+    }
+   ],
+   "name": "displayName",
+   "fail_if_empty": true,
+   "empty_message": "No macOS compliance policy exists",
+   "description": "At least one Intune compliance policy for macOS must exist and be assigned so that macOS devices are evaluated for health before accessing corporate data.",
+   "remediation": "Intune admin center > Devices > Compliance > Create policy (macOS), define FileVault, firewall, Gatekeeper and OS requirements, then assign it.",
+   "links": [
+    {
+     "text": "Create and assign Intune compliance policies",
+     "url": "https://learn.microsoft.com/intune/device-security/compliance/create-policy"
+    }
+   ],
+   "origin": "Zero Trust Assessment Test-Assessment.24542"
+  },
+  {
+   "id": "INTUNE.ZTA.24543",
+   "reference": "ZTA 24543",
+   "framework": "Zero Trust Assessment",
+   "area": "Intune",
+   "title": "Compliance policies protect iOS/iPadOS devices",
+   "severity": "High",
+   "licence": "Intune",
+   "nist": "PR.PS-01",
+   "source": "INTUNEZ_CompliancePolicies",
+   "mode": "any",
+   "filter": [
+    {
+     "path": "@odata.type",
+     "op": "in",
+     "value": [
+      "#microsoft.graph.iosCompliancePolicy",
+      "#microsoft.graph.iosDeviceCompliancePolicy"
+     ]
+    }
+   ],
+   "conditions": [
+    {
+     "path": "assignments",
+     "op": "notempty"
+    }
+   ],
+   "name": "displayName",
+   "fail_if_empty": true,
+   "empty_message": "No iOS/iPadOS compliance policy exists",
+   "description": "At least one Intune compliance policy for iOS/iPadOS must exist and be assigned so that Apple mobile devices are evaluated for jailbreak status, passcode and OS version.",
+   "remediation": "Intune admin center > Devices > Compliance > Create policy (iOS/iPadOS), set passcode, jailbreak and OS version requirements, then assign it.",
+   "links": [
+    {
+     "text": "Create and assign Intune compliance policies",
+     "url": "https://learn.microsoft.com/intune/device-security/compliance/create-policy"
+    }
+   ],
+   "origin": "Zero Trust Assessment Test-Assessment.24543"
+  },
+  {
+   "id": "INTUNE.ZTA.24545",
+   "reference": "ZTA 24545",
+   "framework": "Zero Trust Assessment",
+   "area": "Intune",
+   "title": "Compliance policies protect fully managed and corporate-owned Android devices",
+   "severity": "High",
+   "licence": "Intune",
+   "nist": "PR.PS-01",
+   "source": "INTUNEZ_AndroidDOCompliancePolicies",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "assignments",
+     "op": "notempty"
+    }
+   ],
+   "name": "displayName",
+   "fail_if_empty": true,
+   "empty_message": "No Android Enterprise fully managed compliance policy exists",
+   "description": "At least one compliance policy for Android Enterprise fully managed / corporate-owned devices must exist and be assigned.",
+   "remediation": "Intune admin center > Devices > Compliance > Create policy > Android Enterprise > Fully managed, dedicated, and corporate-owned work profile, then assign it.",
+   "links": [
+    {
+     "text": "Create and assign Intune compliance policies",
+     "url": "https://learn.microsoft.com/intune/device-security/compliance/create-policy"
+    }
+   ],
+   "origin": "Zero Trust Assessment Test-Assessment.24545"
+  },
+  {
+   "id": "INTUNE.ZTA.24547",
+   "reference": "ZTA 24547",
+   "framework": "Zero Trust Assessment",
+   "area": "Intune",
+   "title": "Compliance policies protect personally owned Android devices",
+   "severity": "High",
+   "licence": "Intune",
+   "nist": "PR.PS-01",
+   "source": "INTUNEZ_AndroidWorkProfileCompliancePolicies",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "assignments",
+     "op": "notempty"
+    }
+   ],
+   "name": "displayName",
+   "fail_if_empty": true,
+   "empty_message": "No Android work profile compliance policy exists",
+   "description": "At least one compliance policy for Android Enterprise personally-owned work profile devices must exist and be assigned.",
+   "remediation": "Intune admin center > Devices > Compliance > Create policy > Android Enterprise > Personally-owned work profile, then assign it.",
+   "links": [
+    {
+     "text": "Create and assign Intune compliance policies",
+     "url": "https://learn.microsoft.com/intune/device-security/compliance/create-policy"
+    }
+   ],
+   "origin": "Zero Trust Assessment Test-Assessment.24547"
+  },
+  {
+   "id": "INTUNE.ZTA.24548",
+   "reference": "ZTA 24548",
+   "framework": "Zero Trust Assessment",
+   "area": "Intune",
+   "title": "Data on iOS/iPadOS is protected by app protection policies",
+   "severity": "High",
+   "licence": "Intune",
+   "nist": "PR.DS-01",
+   "source": "INTUNEZ_IosAppProtection",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "isAssigned",
+     "op": "true"
+    }
+   ],
+   "name": "displayName",
+   "fail_if_empty": true,
+   "empty_message": "No iOS app protection policy exists",
+   "description": "At least one assigned Intune app protection policy for iOS/iPadOS must exist to stop corporate data leaking into unmanaged apps.",
+   "remediation": "Intune admin center > Apps > App protection policies > Create > iOS/iPadOS, configure data transfer, encryption and access requirements, then assign it.",
+   "links": [
+    {
+     "text": "Create app protection policies",
+     "url": "https://learn.microsoft.com/intune/app-management/protection/create-policy"
+    },
+    {
+     "text": "iOS app protection settings reference",
+     "url": "https://learn.microsoft.com/intune/app-management/protection/ref-settings-ios"
+    }
+   ],
+   "origin": "Zero Trust Assessment Test-Assessment.24548"
+  },
+  {
+   "id": "INTUNE.ZTA.24549",
+   "reference": "ZTA 24549",
+   "framework": "Zero Trust Assessment",
+   "area": "Intune",
+   "title": "Data on Android is protected by app protection policies",
+   "severity": "High",
+   "licence": "Intune",
+   "nist": "PR.DS-01",
+   "source": "INTUNEZ_AndroidAppProtection",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "isAssigned",
+     "op": "true"
+    }
+   ],
+   "name": "displayName",
+   "fail_if_empty": true,
+   "empty_message": "No Android app protection policy exists",
+   "description": "At least one assigned Intune app protection policy for Android must exist to stop corporate data leaking into unmanaged apps.",
+   "remediation": "Intune admin center > Apps > App protection policies > Create > Android, configure data transfer, encryption and access requirements, then assign it.",
+   "links": [
+    {
+     "text": "Create app protection policies",
+     "url": "https://learn.microsoft.com/intune/app-management/protection/create-policy"
+    }
+   ],
+   "origin": "Zero Trust Assessment Test-Assessment.24549"
+  },
+  {
+   "id": "INTUNE.ZTA.24553",
+   "reference": "ZTA 24553",
+   "framework": "Zero Trust Assessment",
+   "area": "Intune",
+   "title": "Windows Update policies are enforced to reduce risk from unpatched vulnerabilities",
+   "severity": "High",
+   "licence": "Intune",
+   "nist": "PR.PS-02",
+   "source": "INTUNEZ_DeviceConfigurations",
+   "mode": "any",
+   "filter": [
+    {
+     "path": "@odata.type",
+     "op": "in",
+     "value": [
+      "#microsoft.graph.windowsUpdateForBusinessConfiguration"
+     ]
+    }
+   ],
+   "conditions": [
+    {
+     "path": "assignments",
+     "op": "notempty"
+    }
+   ],
+   "name": "displayName",
+   "fail_if_empty": true,
+   "empty_message": "No Windows Update ring exists",
+   "description": "At least one assigned Windows Update for Business update ring (windowsUpdateForBusinessConfiguration) must exist so that Windows devices receive security patches on schedule.",
+   "remediation": "Intune admin center > Devices > Windows > Windows updates > Update rings > Create profile, then assign it.",
+   "links": [
+    {
+     "text": "Manage Windows software updates in Intune",
+     "url": "https://learn.microsoft.com/intune/device-updates/windows/configure"
+    },
+    {
+     "text": "Update rings",
+     "url": "https://learn.microsoft.com/intune/device-updates/windows/manage-update-rings"
+    }
+   ],
+   "origin": "Zero Trust Assessment Test-Assessment.24553"
+  },
+  {
+   "id": "INTUNE.ZTA.24572",
+   "reference": "ZTA 24572",
+   "framework": "Zero Trust Assessment",
+   "area": "Intune",
+   "title": "Device enrollment notifications are enforced to ensure user awareness and secure onboarding",
+   "severity": "Medium",
+   "licence": "Intune",
+   "nist": "DE.CM-03",
+   "source": "INTUNEZ_EnrollmentNotifications",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "assignments",
+     "op": "notempty"
+    }
+   ],
+   "name": "displayName",
+   "fail_if_empty": true,
+   "empty_message": "No enrollment notification policy exists",
+   "description": "An assigned enrollment notification policy should exist so users learn when a device is enrolled, helping detect unauthorised enrolment.",
+   "remediation": "Intune admin center > Devices > Enrollment > Enrollment notifications > Create notification, then assign it.",
+   "links": [
+    {
+     "text": "Set up enrollment notifications",
+     "url": "https://learn.microsoft.com/intune/device-enrollment/setup-notifications"
+    }
+   ],
+   "origin": "Zero Trust Assessment Test-Assessment.24572"
+  },
+  {
+   "id": "INTUNE.ZTA.24573",
+   "reference": "ZTA 24573",
+   "framework": "Zero Trust Assessment",
+   "area": "Intune",
+   "title": "Security baselines are applied to Windows devices to strengthen security posture",
+   "severity": "High",
+   "licence": "Intune",
+   "nist": "PR.PS-01",
+   "source": "INTUNEZ_SecurityBaselines",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "isAssigned",
+     "op": "true"
+    }
+   ],
+   "name": "displayName",
+   "fail_if_empty": true,
+   "empty_message": "No security baseline profile exists",
+   "description": "At least one assigned Intune security baseline profile must exist to standardise hardened Windows settings.",
+   "remediation": "Intune admin center > Endpoint security > Security baselines > pick a baseline > Create profile, then assign it.",
+   "links": [
+    {
+     "text": "Deploy security baselines",
+     "url": "https://learn.microsoft.com/intune/device-security/security-baselines/configure-baselines"
+    },
+    {
+     "text": "Monitor baseline compliance",
+     "url": "https://learn.microsoft.com/intune/device-security/security-baselines/monitor-baselines"
+    }
+   ],
+   "origin": "Zero Trust Assessment Test-Assessment.24573"
+  },
+  {
+   "id": "INTUNE.ZTA.24576",
+   "reference": "ZTA 24576",
+   "framework": "Zero Trust Assessment",
+   "area": "Intune",
+   "title": "Endpoint Analytics is enabled to help identify risks on Windows devices",
+   "severity": "Low",
+   "licence": "Intune",
+   "nist": "DE.CM-09",
+   "source": "INTUNEZ_DeviceConfigurations",
+   "mode": "any",
+   "filter": [
+    {
+     "path": "@odata.type",
+     "op": "in",
+     "value": [
+      "#microsoft.graph.windowsHealthMonitoringConfiguration"
+     ]
+    }
+   ],
+   "conditions": [
+    {
+     "path": "assignments",
+     "op": "notempty"
+    }
+   ],
+   "name": "displayName",
+   "fail_if_empty": true,
+   "empty_message": "No endpoint analytics (health monitoring) profile exists",
+   "description": "An assigned Windows health monitoring profile (windowsHealthMonitoringConfiguration) must exist to enable endpoint analytics data collection.",
+   "remediation": "Intune admin center > Reports > Endpoint analytics > Settings > Intune data collection policy, and assign it to Windows devices.",
+   "links": [
+    {
+     "text": "Configure endpoint analytics",
+     "url": "https://learn.microsoft.com/intune/endpoint-analytics/configure"
+    }
+   ],
+   "origin": "Zero Trust Assessment Test-Assessment.24576"
+  },
+  {
+   "id": "INTUNE.ZTA.24802",
+   "reference": "ZTA 24802",
+   "framework": "Zero Trust Assessment",
+   "area": "Intune",
+   "title": "Device cleanup rules maintain tenant hygiene by hiding inactive devices",
+   "severity": "Low",
+   "licence": "Intune",
+   "nist": "ID.AM-08",
+   "source": "INTUNEZ_CleanupRules",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "id",
+     "op": "exists"
+    }
+   ],
+   "name": "id",
+   "fail_if_empty": true,
+   "empty_message": "No device cleanup rule exists",
+   "description": "At least one Intune device cleanup rule should exist so stale devices are hidden and the device inventory stays accurate.",
+   "remediation": "Intune admin center > Devices > Organize devices > Device cleanup rules > configure the number of days before inactive devices are removed.",
+   "links": [
+    {
+     "text": "Create a device cleanup rule",
+     "url": "https://learn.microsoft.com/intune/governance/configure-cleanup-rules"
+    }
+   ],
+   "origin": "Zero Trust Assessment Test-Assessment.24802"
+  },
+  {
+   "id": "INTUNE.ZTA.24871",
+   "reference": "ZTA 24871",
+   "framework": "Zero Trust Assessment",
+   "area": "Intune",
+   "title": "Defender for Endpoint automatic enrollment is enforced to reduce risk from unmanaged Android threats",
+   "severity": "High",
+   "licence": "Intune",
+   "nist": "DE.CM-09",
+   "source": "INTUNEZ_MtdConnectors",
+   "mode": "any",
+   "filter": [
+    {
+     "path": "id",
+     "op": "eq",
+     "value": "fc780465-2017-40d4-a0c5-307022471b92"
+    }
+   ],
+   "conditions": [
+    {
+     "path": "partnerState",
+     "op": "eq",
+     "value": "enabled"
+    },
+    {
+     "path": "androidEnabled",
+     "op": "true"
+    }
+   ],
+   "name": "id",
+   "fail_if_empty": true,
+   "empty_message": "Defender for Endpoint connector is not configured",
+   "description": "The Microsoft Defender for Endpoint connector must be enabled in Intune with Android device connection turned on, so Android devices are automatically onboarded for mobile threat defence.",
+   "remediation": "Intune admin center > Endpoint security > Microsoft Defender for Endpoint > turn on Connect Android devices to Microsoft Defender for Endpoint.",
+   "links": [
+    {
+     "text": "Integrate Defender for Endpoint with Intune",
+     "url": "https://learn.microsoft.com/intune/device-security/microsoft-defender/configure-integration"
+    }
+   ],
+   "origin": "Zero Trust Assessment Test-Assessment.24871"
+  },
+  {
+   "id": "INTUNE.ZTA.24839",
+   "reference": "ZTA 24839",
+   "framework": "Zero Trust Assessment",
+   "area": "Intune",
+   "title": "Secure Wi-Fi profiles protect iOS devices from unauthorized network access",
+   "severity": "High",
+   "licence": "Intune",
+   "nist": "PR.IR-01",
+   "source": "INTUNEZ_IosWifi",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "assignments",
+     "op": "notempty"
+    },
+    {
+     "any": [
+      {
+       "path": "wifiSecurityType",
+       "op": "in",
+       "value": [
+        "wpa2Enterprise",
+        "wpaEnterprise"
+       ]
+      },
+      {
+       "path": "wiFiSecurityType",
+       "op": "in",
+       "value": [
+        "wpa2Enterprise",
+        "wpaEnterprise"
+       ]
+      }
+     ]
+    }
+   ],
+   "name": "displayName",
+   "fail_if_empty": true,
+   "empty_message": "No enterprise Wi-Fi profile for iOS/iPadOS exists",
+   "description": "At least one assigned iOS/iPadOS Wi-Fi profile using enterprise (certificate/802.1X) authentication must exist, instead of pre-shared keys.",
+   "remediation": "Intune admin center > Devices > Configuration > Create > iOS/iPadOS > Wi-Fi, choose an Enterprise security type, then assign it.",
+   "links": [
+    {
+     "text": "Wi-Fi settings in Intune",
+     "url": "https://learn.microsoft.com/intune/device-configuration/wifi/wi-fi-settings-configure"
+    }
+   ],
+   "origin": "Zero Trust Assessment Test-Assessment.24839"
+  },
+  {
+   "id": "INTUNE.ZTA.24840",
+   "reference": "ZTA 24840",
+   "framework": "Zero Trust Assessment",
+   "area": "Intune",
+   "title": "Secure Wi-Fi profiles protect Android devices from unauthorized network access",
+   "severity": "High",
+   "licence": "Intune",
+   "nist": "PR.IR-01",
+   "source": "INTUNEZ_AndroidDOWifi",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "assignments",
+     "op": "notempty"
+    },
+    {
+     "any": [
+      {
+       "path": "wifiSecurityType",
+       "op": "in",
+       "value": [
+        "wpaEnterprise"
+       ]
+      },
+      {
+       "path": "wiFiSecurityType",
+       "op": "in",
+       "value": [
+        "wpaEnterprise"
+       ]
+      }
+     ]
+    }
+   ],
+   "name": "displayName",
+   "fail_if_empty": true,
+   "empty_message": "No enterprise Wi-Fi profile for Android Enterprise exists",
+   "description": "At least one assigned Android Enterprise Wi-Fi profile using enterprise (certificate/802.1X) authentication must exist, instead of pre-shared keys.",
+   "remediation": "Intune admin center > Devices > Configuration > Create > Android Enterprise > Wi-Fi, choose an Enterprise security type, then assign it.",
+   "links": [
+    {
+     "text": "Wi-Fi settings in Intune",
+     "url": "https://learn.microsoft.com/intune/device-configuration/wifi/wi-fi-settings-configure"
+    }
+   ],
+   "origin": "Zero Trust Assessment Test-Assessment.24840"
+  },
+  {
+   "id": "INTUNE.ZTA.24870",
+   "reference": "ZTA 24870",
+   "framework": "Zero Trust Assessment",
+   "area": "Intune",
+   "title": "Secure Wi-Fi profiles protect macOS devices from unauthorized network access",
+   "severity": "High",
+   "licence": "Intune",
+   "nist": "PR.IR-01",
+   "source": "INTUNEZ_MacWifi",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "assignments",
+     "op": "notempty"
+    },
+    {
+     "any": [
+      {
+       "path": "wifiSecurityType",
+       "op": "in",
+       "value": [
+        "wpaEnterprise"
+       ]
+      },
+      {
+       "path": "wiFiSecurityType",
+       "op": "in",
+       "value": [
+        "wpaEnterprise"
+       ]
+      }
+     ]
+    }
+   ],
+   "name": "displayName",
+   "fail_if_empty": true,
+   "empty_message": "No enterprise Wi-Fi profile for macOS exists",
+   "description": "At least one assigned macOS Wi-Fi profile using enterprise (certificate/802.1X) authentication must exist, instead of pre-shared keys.",
+   "remediation": "Intune admin center > Devices > Configuration > Create > macOS > Wi-Fi, choose an Enterprise security type, then assign it.",
+   "links": [
+    {
+     "text": "Wi-Fi settings in Intune",
+     "url": "https://learn.microsoft.com/intune/device-configuration/wifi/wi-fi-settings-configure"
+    }
+   ],
+   "origin": "Zero Trust Assessment Test-Assessment.24870"
+  }
+ ],
+ "not_ported": [
+  {
+   "origin": "ZTA 24540",
+   "reason": "reads Settings Catalog policies from the local DuckDB export (templateFamily endpointSecurityFirewall), no Graph endpoint"
+  },
+  {
+   "origin": "ZTA 24550",
+   "reason": "BitLocker: DuckDB settings-catalog data plus deviceConfigurations, nested setting instance logic and assignment helpers"
+  },
+  {
+   "origin": "ZTA 24551",
+   "reason": "Windows Hello for Business: combines enrollment configurations with DuckDB settings-catalog setting filters"
+  },
+  {
+   "origin": "ZTA 24552",
+   "reason": "macOS firewall: DuckDB settings-catalog data only"
+  },
+  {
+   "origin": "ZTA 24554",
+   "reason": "iOS update policies: MDM deviceConfigurations plus DDM configurationPolicies with per-policy assignment calls"
+  },
+  {
+   "origin": "ZTA 24555",
+   "reason": "scope tags: needs a per-tag assignments call for every non-default tag"
+  },
+  {
+   "origin": "ZTA 24560",
+   "reason": "Windows LAPS: DuckDB settings-catalog data only"
+  },
+  {
+   "origin": "ZTA 24561",
+   "reason": "macOS LAPS: multi-step DEP token, enrollment profile and imported device identity calls"
+  },
+  {
+   "origin": "ZTA 24564",
+   "reason": "local account usage: DuckDB settings-catalog setting match"
+  },
+  {
+   "origin": "ZTA 24568",
+   "reason": "Platform SSO: DuckDB settings-catalog setting match with nested property helpers"
+  },
+  {
+   "origin": "ZTA 24569",
+   "reason": "FileVault: settings-catalog configurationPolicies with nested setting logic plus deviceConfigurations"
+  },
+  {
+   "origin": "ZTA 24574",
+   "reason": "ASR rules: DuckDB settings-catalog setting match"
+  },
+  {
+   "origin": "ZTA 24575",
+   "reason": "Defender Antivirus for Windows: DuckDB settings-catalog data"
+  },
+  {
+   "origin": "ZTA 24690",
+   "reason": "macOS update policies: MDM and DDM sources with per-policy assignment calls"
+  },
+  {
+   "origin": "ZTA 24784",
+   "reason": "Defender Antivirus for macOS: DuckDB settings-catalog data"
+  },
+  {
+   "origin": "ZTA 24794",
+   "reason": "Terms and Conditions: requires a per-policy assignments call"
+  },
+  {
+   "origin": "ZTA 24823",
+   "reason": "Company Portal branding: per-profile assignments calls and branding property summary logic"
+  },
+  {
+   "origin": "ZTA 24824",
+   "reason": "Conditional Access compliant device: pass logic spans several policies (no platform filter, or android, iOS, macOS and windows each covered), not a single-row rule"
+  },
+  {
+   "origin": "ZTA 24827",
+   "reason": "Conditional Access approved/protected app: pass logic combines platform coverage across several policies, not a single-row rule"
+  },
+  {
+   "origin": "ZTA 24546",
+   "reason": "policies/mobileDeviceManagementPolicies does not support app-only (client credentials) calls"
+  }
+ ]
+}

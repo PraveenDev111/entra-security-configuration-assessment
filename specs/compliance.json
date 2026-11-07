@@ -1,0 +1,65 @@
+{
+  "workload": "compliance",
+  "sources": {
+    "PURVIEW_AdminAuditLogConfig": {
+      "type": "exo",
+      "cmdlet": "Get-AdminAuditLogConfig",
+      "params": {}
+    }
+  },
+  "rules": [
+    {
+      "id": "PURVIEW.MT.1172",
+      "reference": "MT.1172",
+      "framework": "Jolera Extended Controls",
+      "area": "Security and compliance",
+      "title": "Unified audit log ingestion is enabled",
+      "severity": "High",
+      "licence": "",
+      "nist": "PR.PS-04",
+      "source": "PURVIEW_AdminAuditLogConfig",
+      "mode": "first",
+      "conditions": [
+        {
+          "path": "UnifiedAuditLogIngestionEnabled",
+          "op": "true"
+        }
+      ],
+      "name": "Name",
+      "fail_if_empty": false,
+      "empty_message": "Audit log configuration could not be read",
+      "description": "The Microsoft 365 unified audit log is the foundation for Microsoft Purview Audit, eDiscovery, Insider Risk Management, Communication Compliance and the DSPM for AI activity explorer. When ingestion is disabled, tenant activity across Exchange, SharePoint, OneDrive, Teams, Entra ID and Copilot is not captured, so investigations and compliance searches return nothing.",
+      "remediation": "Connect to Exchange Online PowerShell as a Compliance Administrator or higher and run `Set-AdminAuditLogConfig -UnifiedAuditLogIngestionEnabled $true`. Allow up to 60 minutes for ingestion to start, then verify in Microsoft Purview audit search (https://purview.microsoft.com/audit/auditsearch).",
+      "impact": "No user impact. Audit records start to be stored and may consume Purview audit retention capacity.",
+      "links": [
+        {
+          "text": "Turn auditing on or off",
+          "url": "https://learn.microsoft.com/purview/audit-log-enable-disable"
+        },
+        {
+          "text": "Search the audit log",
+          "url": "https://learn.microsoft.com/purview/audit-search"
+        }
+      ],
+      "origin": "Maester Test-MtPurviewAuditLogIngestion"
+    }
+  ],
+  "not_ported": [
+    {
+      "origin": "Maester Test-MtPurviewAiDlpPolicy (MT.1175)",
+      "reason": "Needs Get-DlpCompliancePolicy from the Security and Compliance (IPPS) endpoint, not the Exchange Online REST endpoint, and the Copilot-location match ORs several schema-variant properties (MicrosoftCopilotLocation, Workload, Locations, EnforcementPlanes) with a simulation-mode exception; cannot be expressed exactly"
+    },
+    {
+      "origin": "Maester Test-MtPurviewAiInsiderRiskPolicy (MT.1174)",
+      "reason": "Needs Get-InsiderRiskPolicy (Security and Compliance PowerShell only, E5/IRM licence) and a permissive name/scenario regex across several properties"
+    },
+    {
+      "origin": "Maester Test-MtPurviewAiRetentionPolicy (MT.1176)",
+      "reason": "Needs two Security and Compliance cmdlets (Get-RetentionCompliancePolicy and Get-AppRetentionCompliancePolicy, the latter possibly absent) combined with schema-variant matching on Copilot locations/applications"
+    },
+    {
+      "origin": "Maester Test-MtPurviewAiSensitivityLabelsForFiles (MT.1173)",
+      "reason": "Needs Get-Label and Get-LabelPolicy (Security and Compliance PowerShell) cross-referenced by label GUID/name; a join across two datasets is not supported"
+    }
+  ]
+}

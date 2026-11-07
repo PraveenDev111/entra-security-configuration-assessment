@@ -1,0 +1,3355 @@
+{
+ "workload": "exchange",
+ "sources": {
+  "EXO_OrganizationConfig": {
+   "type": "exo",
+   "cmdlet": "Get-OrganizationConfig",
+   "params": {}
+  },
+  "EXO_RemoteDomain": {
+   "type": "exo",
+   "cmdlet": "Get-RemoteDomain",
+   "params": {}
+  },
+  "EXO_TransportConfig": {
+   "type": "exo",
+   "cmdlet": "Get-TransportConfig",
+   "params": {}
+  },
+  "EXO_TransportRule": {
+   "type": "exo",
+   "cmdlet": "Get-TransportRule",
+   "params": {}
+  },
+  "EXO_SharingPolicy": {
+   "type": "exo",
+   "cmdlet": "Get-SharingPolicy",
+   "params": {}
+  },
+  "EXO_HostedConnectionFilterPolicy": {
+   "type": "exo",
+   "cmdlet": "Get-HostedConnectionFilterPolicy",
+   "params": {}
+  },
+  "EXO_MalwareFilterPolicy": {
+   "type": "exo",
+   "cmdlet": "Get-MalwareFilterPolicy",
+   "params": {}
+  },
+  "EXO_HostedContentFilterPolicy": {
+   "type": "exo",
+   "cmdlet": "Get-HostedContentFilterPolicy",
+   "params": {}
+  },
+  "EXO_AntiPhishPolicy": {
+   "type": "exo",
+   "cmdlet": "Get-AntiPhishPolicy",
+   "params": {}
+  },
+  "EXO_SafeLinksPolicy": {
+   "type": "exo",
+   "cmdlet": "Get-SafeLinksPolicy",
+   "params": {}
+  },
+  "EXO_SafeAttachmentPolicy": {
+   "type": "exo",
+   "cmdlet": "Get-SafeAttachmentPolicy",
+   "params": {}
+  },
+  "EXO_AtpPolicyForO365": {
+   "type": "exo",
+   "cmdlet": "Get-AtpPolicyForO365",
+   "params": {}
+  },
+  "EXO_HostedOutboundSpamFilterPolicy": {
+   "type": "exo",
+   "cmdlet": "Get-HostedOutboundSpamFilterPolicy",
+   "params": {}
+  },
+  "EXO_DkimSigningConfig": {
+   "type": "exo",
+   "cmdlet": "Get-DkimSigningConfig",
+   "params": {}
+  },
+  "EXO_AdminAuditLogConfig": {
+   "type": "exo",
+   "cmdlet": "Get-AdminAuditLogConfig",
+   "params": {}
+  },
+  "EXO_OwaMailboxPolicy": {
+   "type": "exo",
+   "cmdlet": "Get-OwaMailboxPolicy",
+   "params": {}
+  },
+  "EXO_TeamsProtectionPolicy": {
+   "type": "exo",
+   "cmdlet": "Get-TeamsProtectionPolicy",
+   "params": {}
+  },
+  "EXO_ManagementRoleAssignment": {
+   "type": "exo",
+   "cmdlet": "Get-ManagementRoleAssignment",
+   "params": {}
+  }
+ },
+ "rules": [
+  {
+   "id": "EXO.CISA.1.1",
+   "reference": "MS.EXO.1.1v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "Automatic forwarding to external domains is disabled",
+   "severity": "High",
+   "licence": "",
+   "nist": "PR.DS-02",
+   "source": "EXO_RemoteDomain",
+   "mode": "all",
+   "conditions": [
+    {
+     "path": "AutoForwardEnabled",
+     "op": "false"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "No remote domains returned",
+   "description": "Every remote domain (including the default `*` entry) must have automatic forwarding disabled so mailbox rules and forwarding cannot silently send mail to external recipients. Auto-forwarding is a common data-exfiltration technique after account compromise.",
+   "remediation": "Exchange admin center > Mail flow > Remote domains > open each domain (including Default) > uncheck 'Allow automatic forwarding'. Or: `Set-RemoteDomain -Identity Default -AutoForwardEnabled $false`.",
+   "impact": "Users can no longer auto-forward mail to external addresses.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    },
+    {
+     "text": "Control automatic forwarding",
+     "url": "https://learn.microsoft.com/en-us/defender-office-365/outbound-spam-policies-external-email-forwarding"
+    }
+   ],
+   "origin": "Maester Test-MtCisaAutoExternalForwarding"
+  },
+  {
+   "id": "EXO.CISA.2.2",
+   "reference": "MS.EXO.2.2v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "SPF record authorizes Exchange Online for each custom domain",
+   "severity": "Medium",
+   "licence": "",
+   "nist": "PR.DS-02",
+   "source": "DNS_MailAuth",
+   "mode": "all",
+   "filter": [
+    {
+     "path": "is_initial",
+     "op": "false"
+    }
+   ],
+   "conditions": [
+    {
+     "any": [
+      {
+       "path": "spf_record",
+       "op": "regex",
+       "value": "include:(spf\\.protection\\.)?outlook\\.com(\\s|$)"
+      },
+      {
+       "path": "spf_record",
+       "op": "contains",
+       "value": "redirect="
+      }
+     ]
+    }
+   ],
+   "name": "domain",
+   "fail_if_empty": false,
+   "description": "Each verified custom domain must publish an SPF record that includes spf.protection.outlook.com (or outlook.com), designating Exchange Online as an approved sender. Domains using a redirect modifier are treated as delegated and accepted. Initial onmicrosoft.com domains are excluded.",
+   "remediation": "Publish a TXT record for each domain such as `v=spf1 include:spf.protection.outlook.com -all`, adding any other legitimate senders.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    },
+    {
+     "text": "Set up SPF",
+     "url": "https://learn.microsoft.com/en-us/defender-office-365/email-authentication-spf-configure"
+    }
+   ],
+   "origin": "Maester Test-MtCisaSpfDirective"
+  },
+  {
+   "id": "EXO.CISA.3.1",
+   "reference": "MS.EXO.3.1v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "DKIM signing is enabled for all custom domains",
+   "severity": "Medium",
+   "licence": "",
+   "nist": "PR.DS-02",
+   "source": "EXO_DkimSigningConfig",
+   "mode": "all",
+   "filter": [
+    {
+     "path": "Domain",
+     "op": "notcontains",
+     "value": ".onmicrosoft.com"
+    }
+   ],
+   "conditions": [
+    {
+     "path": "Enabled",
+     "op": "true"
+    }
+   ],
+   "name": "Domain",
+   "fail_if_empty": false,
+   "description": "DKIM signing must be enabled for each custom domain so recipients can verify message integrity and sender domain. Initial onmicrosoft.com domains are signed automatically by Microsoft and are excluded. Parked (non-sending) domains cannot be excluded by this check.",
+   "remediation": "Defender portal > Email & collaboration > Policies & rules > Threat policies > Email authentication settings > DKIM > select the domain > enable signing. Or `Set-DkimSigningConfig -Identity <domain> -Enabled $true`.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    },
+    {
+     "text": "Set up DKIM",
+     "url": "https://learn.microsoft.com/en-us/defender-office-365/email-authentication-dkim-configure"
+    }
+   ],
+   "origin": "Maester Test-MtCisaDkim"
+  },
+  {
+   "id": "EXO.CISA.3.1.dns",
+   "reference": "MS.EXO.3.1v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "DKIM selector CNAME records are published in DNS",
+   "severity": "Medium",
+   "licence": "",
+   "nist": "PR.DS-02",
+   "source": "DNS_MailAuth",
+   "mode": "all",
+   "filter": [
+    {
+     "path": "is_initial",
+     "op": "false"
+    }
+   ],
+   "conditions": [
+    {
+     "path": "dkim_selector1_cname",
+     "op": "notempty"
+    },
+    {
+     "path": "dkim_selector2_cname",
+     "op": "notempty"
+    }
+   ],
+   "name": "domain",
+   "fail_if_empty": false,
+   "description": "Both Microsoft DKIM selector CNAME records (selector1 and selector2) must exist for each custom domain so signing and key rotation work. The source test validates the active selector only; this check requires both.",
+   "remediation": "In your DNS zone create CNAME records `selector1._domainkey.<domain>` and `selector2._domainkey.<domain>` pointing to the values shown in the Defender portal DKIM page.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    }
+   ],
+   "origin": "Maester Test-MtCisaDkim"
+  },
+  {
+   "id": "EXO.CISA.4.1",
+   "reference": "MS.EXO.4.1v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "A DMARC record is published for each custom domain",
+   "severity": "Medium",
+   "licence": "",
+   "nist": "PR.DS-02",
+   "source": "DNS_MailAuth",
+   "mode": "all",
+   "filter": [
+    {
+     "path": "is_initial",
+     "op": "false"
+    }
+   ],
+   "conditions": [
+    {
+     "path": "dmarc_record",
+     "op": "notempty"
+    }
+   ],
+   "name": "domain",
+   "fail_if_empty": false,
+   "description": "A DMARC policy must be published for every second-level domain so receivers know how to handle unauthenticated mail that spoofs your domain.",
+   "remediation": "Publish a TXT record at `_dmarc.<domain>`, for example `v=DMARC1; p=reject; rua=mailto:dmarc-reports@<domain>`.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    },
+    {
+     "text": "Set up DMARC",
+     "url": "https://learn.microsoft.com/en-us/defender-office-365/email-authentication-dmarc-configure"
+    }
+   ],
+   "origin": "Maester Test-MtCisaDmarcRecordExist"
+  },
+  {
+   "id": "EXO.CISA.4.2",
+   "reference": "MS.EXO.4.2v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "DMARC policy is set to reject",
+   "severity": "High",
+   "licence": "",
+   "nist": "PR.DS-02",
+   "source": "DNS_MailAuth",
+   "mode": "all",
+   "filter": [
+    {
+     "path": "is_initial",
+     "op": "false"
+    }
+   ],
+   "conditions": [
+    {
+     "path": "dmarc_policy",
+     "op": "eq",
+     "value": "reject"
+    }
+   ],
+   "name": "domain",
+   "fail_if_empty": false,
+   "description": "The DMARC policy (p=) must be `reject` so spoofed messages are blocked rather than delivered or only quarantined.",
+   "remediation": "Move the `p=` tag of the `_dmarc` TXT record to `reject` after monitoring reports and fixing legitimate senders.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    },
+    {
+     "text": "Set up DMARC",
+     "url": "https://learn.microsoft.com/en-us/defender-office-365/email-authentication-dmarc-configure"
+    }
+   ],
+   "origin": "Maester Test-MtCisaDmarcRecordReject"
+  },
+  {
+   "id": "EXO.CISA.4.3",
+   "reference": "MS.EXO.4.3v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "DMARC aggregate reports are sent to CISA",
+   "severity": "Medium",
+   "licence": "",
+   "nist": "DE.CM-09",
+   "source": "DNS_MailAuth",
+   "mode": "all",
+   "filter": [
+    {
+     "path": "is_initial",
+     "op": "false"
+    }
+   ],
+   "conditions": [
+    {
+     "path": "dmarc_rua",
+     "op": "contains",
+     "value": "reports@dmarc.cyber.dhs.gov"
+    }
+   ],
+   "name": "domain",
+   "fail_if_empty": false,
+   "description": "US federal agency control: the DMARC rua tag must include reports@dmarc.cyber.dhs.gov. Not relevant to non-government tenants.",
+   "remediation": "Add `mailto:reports@dmarc.cyber.dhs.gov` to the `rua=` list of the `_dmarc` TXT record.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    },
+    {
+     "text": "Set up DMARC",
+     "url": "https://learn.microsoft.com/en-us/defender-office-365/email-authentication-dmarc-configure"
+    }
+   ],
+   "origin": "Maester Test-MtCisaDmarcAggregateCisa"
+  },
+  {
+   "id": "EXO.CISA.5.1",
+   "reference": "MS.EXO.5.1v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "SMTP AUTH is disabled organization-wide",
+   "severity": "High",
+   "licence": "",
+   "nist": "PR.AA-03",
+   "source": "EXO_TransportConfig",
+   "mode": "first",
+   "conditions": [
+    {
+     "path": "SmtpClientAuthenticationDisabled",
+     "op": "true"
+    }
+   ],
+   "fail_if_empty": true,
+   "empty_message": "Transport configuration not returned",
+   "description": "Authenticated SMTP client submission (SMTP AUTH) uses legacy basic authentication that is easy to abuse with password spraying. It should be disabled tenant-wide and enabled only per mailbox where unavoidable.",
+   "remediation": "Exchange admin center > Settings > Mail flow > turn off SMTP AUTH, or `Set-TransportConfig -SmtpClientAuthenticationDisabled $true`.",
+   "impact": "Devices and apps that send mail with SMTP AUTH stop working unless re-enabled per mailbox.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    },
+    {
+     "text": "Authenticated client SMTP submission",
+     "url": "https://learn.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/authenticated-client-smtp-submission"
+    }
+   ],
+   "origin": "Maester Test-MtCisaSmtpAuthentication"
+  },
+  {
+   "id": "EXO.CISA.6.1",
+   "reference": "MS.EXO.6.1v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "Contact folders are not shared with all domains",
+   "severity": "Medium",
+   "licence": "",
+   "nist": "PR.DS-01",
+   "source": "EXO_SharingPolicy",
+   "mode": "none",
+   "filter": [
+    {
+     "path": "Enabled",
+     "op": "true"
+    }
+   ],
+   "conditions": [
+    {
+     "path": "Domains",
+     "op": "regex",
+     "value": "^(\\*|Anonymous):.*ContactsSharing"
+    }
+   ],
+   "name": "Name",
+   "fail_if_empty": false,
+   "description": "No enabled sharing policy may share contact folders with all domains (`*`) or anonymously. Evaluation note: the list-valued Domains property must match when any entry matches.",
+   "remediation": "Exchange admin center > Settings > Sharing > Individual sharing policies > edit each policy and remove contact sharing for `*` / Anonymous (or disable the policy).",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    }
+   ],
+   "origin": "Maester Test-MtCisaContactSharing"
+  },
+  {
+   "id": "EXO.CISA.6.2",
+   "reference": "MS.EXO.6.2v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "Calendar details are not shared with all domains",
+   "severity": "Medium",
+   "licence": "",
+   "nist": "PR.DS-01",
+   "source": "EXO_SharingPolicy",
+   "mode": "none",
+   "filter": [
+    {
+     "path": "Enabled",
+     "op": "true"
+    }
+   ],
+   "conditions": [
+    {
+     "path": "Domains",
+     "op": "regex",
+     "value": "^(\\*|Anonymous):.*CalendarSharing"
+    }
+   ],
+   "name": "Name",
+   "fail_if_empty": false,
+   "description": "No enabled sharing policy may share calendar details with all domains (`*`) or anonymously. Evaluation note: the list-valued Domains property must match when any entry matches.",
+   "remediation": "Exchange admin center > Settings > Sharing > Individual sharing policies > edit each policy and remove calendar sharing for `*` / Anonymous (or disable the policy).",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    }
+   ],
+   "origin": "Maester Test-MtCisaCalendarSharing"
+  },
+  {
+   "id": "EXO.CISA.14.1.standard",
+   "reference": "MS.EXO.14.1v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "The Standard preset security policy exists for anti-spam policies",
+   "severity": "High",
+   "licence": "",
+   "nist": "PR.PS-01",
+   "source": "EXO_HostedContentFilterPolicy",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "RecommendedPolicyType",
+     "op": "eq",
+     "value": "Standard"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "No policies returned",
+   "description": "CISA expects the Standard preset security policy to be configured so anti-spam policies follow Microsoft recommended settings. Passes when a policy of recommended type Standard exists.",
+   "remediation": "Defender portal > Email & collaboration > Policies & rules > Threat policies > Preset Security Policies > turn on Standard and Strict protection and scope them to users.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    },
+    {
+     "text": "Preset security policies",
+     "url": "https://learn.microsoft.com/en-us/defender-office-365/preset-security-policies"
+    }
+   ],
+   "origin": "Maester Test-MtCisaSpamFilter"
+  },
+  {
+   "id": "EXO.CISA.14.1.strict",
+   "reference": "MS.EXO.14.1v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "The Strict preset security policy exists for anti-spam policies",
+   "severity": "High",
+   "licence": "",
+   "nist": "PR.PS-01",
+   "source": "EXO_HostedContentFilterPolicy",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "RecommendedPolicyType",
+     "op": "eq",
+     "value": "Strict"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "No policies returned",
+   "description": "CISA expects the Strict preset security policy to be configured so anti-spam policies follow Microsoft recommended settings. Passes when a policy of recommended type Strict exists.",
+   "remediation": "Defender portal > Email & collaboration > Policies & rules > Threat policies > Preset Security Policies > turn on Standard and Strict protection and scope them to users.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    },
+    {
+     "text": "Preset security policies",
+     "url": "https://learn.microsoft.com/en-us/defender-office-365/preset-security-policies"
+    }
+   ],
+   "origin": "Maester Test-MtCisaSpamFilter"
+  },
+  {
+   "id": "EXO.CISA.11.1.standard",
+   "reference": "MS.EXO.11.1v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "The Standard preset security policy exists for anti-phishing policies",
+   "severity": "Medium",
+   "licence": "Defender for Office 365 Plan 1",
+   "nist": "PR.PS-01",
+   "source": "EXO_AntiPhishPolicy",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "RecommendedPolicyType",
+     "op": "eq",
+     "value": "Standard"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "No policies returned",
+   "description": "CISA expects the Standard preset security policy to be configured so anti-phishing policies follow Microsoft recommended settings. Passes when a policy of recommended type Standard exists.",
+   "remediation": "Defender portal > Email & collaboration > Policies & rules > Threat policies > Preset Security Policies > turn on Standard and Strict protection and scope them to users.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    },
+    {
+     "text": "Preset security policies",
+     "url": "https://learn.microsoft.com/en-us/defender-office-365/preset-security-policies"
+    }
+   ],
+   "origin": "Maester Test-MtCisaImpersonation"
+  },
+  {
+   "id": "EXO.CISA.11.1.strict",
+   "reference": "MS.EXO.11.1v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "The Strict preset security policy exists for anti-phishing policies",
+   "severity": "Medium",
+   "licence": "Defender for Office 365 Plan 1",
+   "nist": "PR.PS-01",
+   "source": "EXO_AntiPhishPolicy",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "RecommendedPolicyType",
+     "op": "eq",
+     "value": "Strict"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "No policies returned",
+   "description": "CISA expects the Strict preset security policy to be configured so anti-phishing policies follow Microsoft recommended settings. Passes when a policy of recommended type Strict exists.",
+   "remediation": "Defender portal > Email & collaboration > Policies & rules > Threat policies > Preset Security Policies > turn on Standard and Strict protection and scope them to users.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    },
+    {
+     "text": "Preset security policies",
+     "url": "https://learn.microsoft.com/en-us/defender-office-365/preset-security-policies"
+    }
+   ],
+   "origin": "Maester Test-MtCisaImpersonation"
+  },
+  {
+   "id": "EXO.CISA.15.1.standard",
+   "reference": "MS.EXO.15.1v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "The Standard preset security policy exists for Safe Links policies",
+   "severity": "Medium",
+   "licence": "Defender for Office 365 Plan 1",
+   "nist": "PR.PS-01",
+   "source": "EXO_SafeLinksPolicy",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "RecommendedPolicyType",
+     "op": "eq",
+     "value": "Standard"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "No policies returned",
+   "description": "CISA expects the Standard preset security policy to be configured so Safe Links policies follow Microsoft recommended settings. Passes when a policy of recommended type Standard exists.",
+   "remediation": "Defender portal > Email & collaboration > Policies & rules > Threat policies > Preset Security Policies > turn on Standard and Strict protection and scope them to users.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    },
+    {
+     "text": "Preset security policies",
+     "url": "https://learn.microsoft.com/en-us/defender-office-365/preset-security-policies"
+    }
+   ],
+   "origin": "Maester Test-MtCisaSafeLink"
+  },
+  {
+   "id": "EXO.CISA.15.1.strict",
+   "reference": "MS.EXO.15.1v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "The Strict preset security policy exists for Safe Links policies",
+   "severity": "Medium",
+   "licence": "Defender for Office 365 Plan 1",
+   "nist": "PR.PS-01",
+   "source": "EXO_SafeLinksPolicy",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "RecommendedPolicyType",
+     "op": "eq",
+     "value": "Strict"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "No policies returned",
+   "description": "CISA expects the Strict preset security policy to be configured so Safe Links policies follow Microsoft recommended settings. Passes when a policy of recommended type Strict exists.",
+   "remediation": "Defender portal > Email & collaboration > Policies & rules > Threat policies > Preset Security Policies > turn on Standard and Strict protection and scope them to users.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    },
+    {
+     "text": "Preset security policies",
+     "url": "https://learn.microsoft.com/en-us/defender-office-365/preset-security-policies"
+    }
+   ],
+   "origin": "Maester Test-MtCisaSafeLink"
+  },
+  {
+   "id": "EXO.CISA.9.2.standard",
+   "reference": "MS.EXO.9.2v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "The Standard preset security policy exists for anti-malware policies",
+   "severity": "Medium",
+   "licence": "",
+   "nist": "PR.PS-01",
+   "source": "EXO_MalwareFilterPolicy",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "RecommendedPolicyType",
+     "op": "eq",
+     "value": "Standard"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "No policies returned",
+   "description": "CISA expects the Standard preset security policy to be configured so anti-malware policies follow Microsoft recommended settings. Passes when a policy of recommended type Standard exists.",
+   "remediation": "Defender portal > Email & collaboration > Policies & rules > Threat policies > Preset Security Policies > turn on Standard and Strict protection and scope them to users.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    },
+    {
+     "text": "Preset security policies",
+     "url": "https://learn.microsoft.com/en-us/defender-office-365/preset-security-policies"
+    }
+   ],
+   "origin": "Maester Test-MtCisaAttachmentFileType"
+  },
+  {
+   "id": "EXO.CISA.9.2.strict",
+   "reference": "MS.EXO.9.2v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "The Strict preset security policy exists for anti-malware policies",
+   "severity": "Medium",
+   "licence": "",
+   "nist": "PR.PS-01",
+   "source": "EXO_MalwareFilterPolicy",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "RecommendedPolicyType",
+     "op": "eq",
+     "value": "Strict"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "No policies returned",
+   "description": "CISA expects the Strict preset security policy to be configured so anti-malware policies follow Microsoft recommended settings. Passes when a policy of recommended type Strict exists.",
+   "remediation": "Defender portal > Email & collaboration > Policies & rules > Threat policies > Preset Security Policies > turn on Standard and Strict protection and scope them to users.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    },
+    {
+     "text": "Preset security policies",
+     "url": "https://learn.microsoft.com/en-us/defender-office-365/preset-security-policies"
+    }
+   ],
+   "origin": "Maester Test-MtCisaAttachmentFileType"
+  },
+  {
+   "id": "EXO.CISA.9.2",
+   "reference": "MS.EXO.9.2v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "An anti-malware policy has the common attachment filter enabled",
+   "severity": "Medium",
+   "licence": "",
+   "nist": "DE.CM-09",
+   "source": "EXO_MalwareFilterPolicy",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "EnableFileFilter",
+     "op": "true"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "No anti-malware policies returned",
+   "description": "At least one anti-malware policy must enable the common attachments filter (EnableFileFilter), which blocks risky file types by true file type as well as extension.",
+   "remediation": "Defender portal > Policies & rules > Threat policies > Anti-malware > edit the policy > enable 'Enable the common attachments filter'.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    },
+    {
+     "text": "Anti-malware policies",
+     "url": "https://learn.microsoft.com/en-us/defender-office-365/anti-malware-policies-configure"
+    }
+   ],
+   "origin": "Maester Test-MtCisaAttachmentFileType"
+  },
+  {
+   "id": "EXO.CISA.9.3",
+   "reference": "MS.EXO.9.3v2",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "An anti-malware policy enforces the disallowed file type filter",
+   "severity": "High",
+   "licence": "",
+   "nist": "DE.CM-09",
+   "source": "EXO_MalwareFilterPolicy",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "EnableFileFilter",
+     "op": "true"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "No anti-malware policies returned",
+   "description": "Disallowed file types must be determined and enforced; at least one anti-malware policy must have the common attachments filter turned on.",
+   "remediation": "Defender portal > Policies & rules > Threat policies > Anti-malware > edit the policy > enable the common attachments filter and review the selected file types.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    },
+    {
+     "text": "Anti-malware policies",
+     "url": "https://learn.microsoft.com/en-us/defender-office-365/anti-malware-policies-configure"
+    }
+   ],
+   "origin": "Maester Test-MtCisaBlockFileType (calls Test-MtCisaAttachmentFileType)"
+  },
+  {
+   "id": "EXO.CISA.9.5",
+   "reference": "MS.EXO.9.5v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "Click-to-run file types (.exe, .cmd, .vbe) are blocked",
+   "severity": "High",
+   "licence": "",
+   "nist": "DE.CM-09",
+   "source": "EXO_MalwareFilterPolicy",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "EnableFileFilter",
+     "op": "true"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "cmd"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "exe"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "vbe"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "No anti-malware policies returned",
+   "description": "At least one anti-malware policy must enable the common attachments filter and include the cmd, exe and vbe file types.",
+   "remediation": "Defender portal > Anti-malware policy > Common attachments filter > select file types cmd, exe and vbe (the Standard/Strict preset policies already include them).",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    },
+    {
+     "text": "Anti-malware policies",
+     "url": "https://learn.microsoft.com/en-us/defender-office-365/anti-malware-policies-configure"
+    }
+   ],
+   "origin": "Maester Test-MtCisaBlockExecutable"
+  },
+  {
+   "id": "EXO.CISA.11.1",
+   "reference": "MS.EXO.11.1v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "A policy has full impersonation protection enabled",
+   "severity": "High",
+   "licence": "Defender for Office 365 Plan 1",
+   "nist": "DE.CM-09",
+   "source": "EXO_AntiPhishPolicy",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "Enabled",
+     "op": "true"
+    },
+    {
+     "path": "ImpersonationProtectionState",
+     "op": "eq",
+     "value": "Automatic"
+    },
+    {
+     "path": "EnableOrganizationDomainsProtection",
+     "op": "true"
+    },
+    {
+     "path": "EnableTargetedDomainsProtection",
+     "op": "true"
+    },
+    {
+     "path": "EnableTargetedUserProtection",
+     "op": "true"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "No anti-phishing policies returned",
+   "description": "At least one enabled anti-phishing policy must have automatic impersonation protection with organization domain, targeted domain and targeted user protection on.",
+   "remediation": "Defender portal > Policies & rules > Threat policies > Anti-phishing > edit the policy > Phishing threshold & protection > turn on user and domain impersonation and organization domain protection, and add protected users/domains.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    }
+   ],
+   "origin": "Maester Test-MtCisaImpersonation"
+  },
+  {
+   "id": "EXO.CISA.11.2",
+   "reference": "MS.EXO.11.2v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "A policy displays impersonation safety tips",
+   "severity": "Medium",
+   "licence": "Defender for Office 365 Plan 1",
+   "nist": "DE.CM-09",
+   "source": "EXO_AntiPhishPolicy",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "Enabled",
+     "op": "true"
+    },
+    {
+     "path": "EnableSimilarDomainsSafetyTips",
+     "op": "true"
+    },
+    {
+     "path": "EnableSimilarUsersSafetyTips",
+     "op": "true"
+    },
+    {
+     "path": "EnableUnusualCharactersSafetyTips",
+     "op": "true"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "No anti-phishing policies returned",
+   "description": "At least one enabled anti-phishing policy must show safety tips for similar domains, similar users and unusual characters.",
+   "remediation": "Defender portal > Anti-phishing policy > Actions > Safety tips & indicators > enable all three tips.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    }
+   ],
+   "origin": "Maester Test-MtCisaImpersonationTip"
+  },
+  {
+   "id": "EXO.CISA.11.3",
+   "reference": "MS.EXO.11.3v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "A policy has mailbox intelligence protection enabled",
+   "severity": "Medium",
+   "licence": "Defender for Office 365 Plan 1",
+   "nist": "DE.CM-09",
+   "source": "EXO_AntiPhishPolicy",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "Enabled",
+     "op": "true"
+    },
+    {
+     "path": "EnableMailboxIntelligence",
+     "op": "true"
+    },
+    {
+     "path": "EnableMailboxIntelligenceProtection",
+     "op": "true"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "No anti-phishing policies returned",
+   "description": "At least one enabled anti-phishing policy must use mailbox intelligence and mailbox intelligence protection.",
+   "remediation": "Defender portal > Anti-phishing policy > Phishing threshold & protection > enable mailbox intelligence and 'Enable intelligence for impersonation protection'.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    }
+   ],
+   "origin": "Maester Test-MtCisaMailboxIntelligence"
+  },
+  {
+   "id": "EXO.CISA.12.1",
+   "reference": "MS.EXO.12.1v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "No connection filter IP allow list exists",
+   "severity": "Medium",
+   "licence": "",
+   "nist": "PR.IR-01",
+   "source": "EXO_HostedConnectionFilterPolicy",
+   "mode": "all",
+   "conditions": [
+    {
+     "path": "IPAllowList",
+     "op": "empty"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "No connection filter policy returned",
+   "description": "Connection filter IP allow lists bypass spam filtering and should not be used.",
+   "remediation": "Defender portal > Policies & rules > Threat policies > Anti-spam > Connection filter policy > clear the IP Allow list.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    }
+   ],
+   "origin": "Maester Test-MtCisaAntiSpamAllowList"
+  },
+  {
+   "id": "EXO.CISA.12.2",
+   "reference": "MS.EXO.12.2v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "Connection filter safe list is disabled",
+   "severity": "Medium",
+   "licence": "",
+   "nist": "PR.IR-01",
+   "source": "EXO_HostedConnectionFilterPolicy",
+   "mode": "all",
+   "conditions": [
+    {
+     "path": "EnableSafeList",
+     "op": "false"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "No connection filter policy returned",
+   "description": "The connection filter 'safe list' option bypasses filtering for senders Microsoft deems safe and should be off.",
+   "remediation": "Defender portal > Anti-spam > Connection filter policy > Edit > uncheck 'Turn on safe list'.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    }
+   ],
+   "origin": "Maester Test-MtCisaAntiSpamSafeList"
+  },
+  {
+   "id": "EXO.CISA.13.1",
+   "reference": "MS.EXO.13.1v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "Mailbox auditing is enabled",
+   "severity": "High",
+   "licence": "",
+   "nist": "PR.PS-04",
+   "source": "EXO_OrganizationConfig",
+   "mode": "first",
+   "conditions": [
+    {
+     "path": "AuditDisabled",
+     "op": "false"
+    }
+   ],
+   "fail_if_empty": true,
+   "empty_message": "Organization config not returned",
+   "description": "Mailbox auditing must not be disabled organization-wide so mailbox activity is recorded for investigations.",
+   "remediation": "`Set-OrganizationConfig -AuditDisabled $false`.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    },
+    {
+     "text": "Manage mailbox auditing",
+     "url": "https://learn.microsoft.com/en-us/purview/audit-mailboxes"
+    }
+   ],
+   "origin": "Maester Test-MtCisaMailboxAuditing"
+  },
+  {
+   "id": "EXO.CISA.17.1",
+   "reference": "MS.EXO.17.1v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "Purview Audit (Standard) logging is enabled",
+   "severity": "High",
+   "licence": "",
+   "nist": "PR.PS-04",
+   "source": "EXO_AdminAuditLogConfig",
+   "mode": "first",
+   "conditions": [
+    {
+     "path": "UnifiedAuditLogIngestionEnabled",
+     "op": "true"
+    }
+   ],
+   "fail_if_empty": true,
+   "empty_message": "Audit log configuration not returned",
+   "description": "The unified audit log must be turned on so user and admin activity across Microsoft 365 is recorded.",
+   "remediation": "Purview portal > Audit > Start recording user and admin activity, or `Set-AdminAuditLogConfig -UnifiedAuditLogIngestionEnabled $true`.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    },
+    {
+     "text": "Turn auditing on or off",
+     "url": "https://learn.microsoft.com/en-us/purview/audit-log-enable-disable"
+    }
+   ],
+   "origin": "Maester Test-MtCisaAuditLog"
+  },
+  {
+   "id": "EXO.CISA.14.2",
+   "reference": "MS.EXO.14.2v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "Preset spam policies move spam and high confidence spam to Junk or Quarantine",
+   "severity": "Medium",
+   "licence": "",
+   "nist": "DE.CM-09",
+   "source": "EXO_HostedContentFilterPolicy",
+   "mode": "all",
+   "filter": [
+    {
+     "path": "RecommendedPolicyType",
+     "op": "in",
+     "value": [
+      "Standard",
+      "Strict"
+     ]
+    }
+   ],
+   "conditions": [
+    {
+     "path": "SpamAction",
+     "op": "in",
+     "value": [
+      "MoveToJmf",
+      "Quarantine"
+     ]
+    },
+    {
+     "path": "HighConfidenceSpamAction",
+     "op": "in",
+     "value": [
+      "MoveToJmf",
+      "Quarantine"
+     ]
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "No Standard or Strict preset anti-spam policy found",
+   "description": "The Standard and Strict preset anti-spam policies must move spam and high-confidence spam to the Junk Email folder or quarantine. Existence of both presets is checked by the 14.1 rules.",
+   "remediation": "Defender portal > Anti-spam policies > edit policy > Actions > set spam and high-confidence spam to 'Move to Junk Email folder' or 'Quarantine message'.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    }
+   ],
+   "origin": "Maester Test-MtCisaSpamAction"
+  },
+  {
+   "id": "EXO.CISA.14.3",
+   "reference": "MS.EXO.14.3v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "No allowed sender domains in anti-spam policies",
+   "severity": "Medium",
+   "licence": "",
+   "nist": "DE.CM-09",
+   "source": "EXO_HostedContentFilterPolicy",
+   "mode": "all",
+   "conditions": [
+    {
+     "path": "AllowedSenderDomains",
+     "op": "empty"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "No anti-spam policies returned",
+   "description": "Allowed sender domains bypass spam filtering and can be abused by spoofing; none should be configured in inbound anti-spam policies.",
+   "remediation": "Defender portal > Anti-spam policies > edit policy > Allowed and blocked senders and domains > remove all allowed domains.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    }
+   ],
+   "origin": "Maester Test-MtCisaSpamBypass"
+  },
+  {
+   "id": "EXO.CISA.15.1",
+   "reference": "MS.EXO.15.1v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "A Safe Links policy scans URLs in email",
+   "severity": "Medium",
+   "licence": "Defender for Office 365 Plan 1",
+   "nist": "DE.CM-09",
+   "source": "EXO_SafeLinksPolicy",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "EnableSafeLinksForEmail",
+     "op": "true"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "No Safe Links policies returned",
+   "description": "At least one Safe Links policy must have Safe Links protection for email messages enabled.",
+   "remediation": "Defender portal > Policies & rules > Threat policies > Safe Links > edit policy > turn on Safe Links for email.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    }
+   ],
+   "origin": "Maester Test-MtCisaSafeLink"
+  },
+  {
+   "id": "EXO.CISA.15.2",
+   "reference": "MS.EXO.15.2v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "A Safe Links policy scans direct download links",
+   "severity": "High",
+   "licence": "Defender for Office 365 Plan 1",
+   "nist": "DE.CM-09",
+   "source": "EXO_SafeLinksPolicy",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "ScanUrls",
+     "op": "true"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "No Safe Links policies returned",
+   "description": "At least one Safe Links policy must have real-time URL scanning (ScanUrls) enabled so direct download links are checked.",
+   "remediation": "Safe Links policy > 'Scan URLs' / real-time URL scanning > enable.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    }
+   ],
+   "origin": "Maester Test-MtCisaSafeLinkDownloadScan"
+  },
+  {
+   "id": "EXO.CISA.15.3",
+   "reference": "MS.EXO.15.3v1",
+   "framework": "CISA SCuBA",
+   "area": "Exchange Online",
+   "title": "A Safe Links policy tracks user clicks",
+   "severity": "Medium",
+   "licence": "Defender for Office 365 Plan 1",
+   "nist": "DE.CM-09",
+   "source": "EXO_SafeLinksPolicy",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "TrackClicks",
+     "op": "true"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "No Safe Links policies returned",
+   "description": "At least one Safe Links policy must record user clicks on URLs.",
+   "remediation": "Safe Links policy > 'Track user clicks' > enable.",
+   "links": [
+    {
+     "text": "CISA ScubaGear Exchange Online baseline",
+     "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/exo.md"
+    }
+   ],
+   "origin": "Maester Test-MtCisaSafeLinkClickTracking"
+  },
+  {
+   "id": "EXO.CIS.1.3.3",
+   "reference": "1.3.3",
+   "framework": "CIS Microsoft 365",
+   "area": "Exchange Online",
+   "title": "'External sharing' of calendars is not available",
+   "severity": "Medium",
+   "licence": "",
+   "nist": "PR.DS-01",
+   "source": "EXO_SharingPolicy",
+   "mode": "none",
+   "filter": [
+    {
+     "path": "Enabled",
+     "op": "true"
+    }
+   ],
+   "conditions": [
+    {
+     "path": "Domains",
+     "op": "regex",
+     "value": "^(\\*|Anonymous):.*CalendarSharing"
+    }
+   ],
+   "name": "Name",
+   "fail_if_empty": false,
+   "description": "No enabled sharing policy may allow calendar details to be shared with all domains or anonymously. Evaluation note: the list-valued Domains property must match when any entry matches.",
+   "remediation": "Exchange admin center > Settings > Sharing > edit individual sharing policies to remove calendar sharing with `*` / Anonymous, or `Set-SharingPolicy -Identity <name> -Enabled $false`.",
+   "links": [
+    {
+     "text": "CIS Microsoft 365 Foundations Benchmark",
+     "url": "https://www.cisecurity.org/benchmark/microsoft_365"
+    }
+   ],
+   "origin": "Maester Test-MtCisCalendarSharing"
+  },
+  {
+   "id": "EXO.CIS.1.3.6",
+   "reference": "1.3.6",
+   "framework": "CIS Microsoft 365",
+   "area": "Exchange Online",
+   "title": "Customer Lockbox is enabled",
+   "severity": "High",
+   "licence": "Microsoft 365 E5 (or Customer Lockbox add-on)",
+   "nist": "PR.AA-05",
+   "source": "EXO_OrganizationConfig",
+   "mode": "first",
+   "conditions": [
+    {
+     "path": "CustomerLockBoxEnabled",
+     "op": "true"
+    }
+   ],
+   "fail_if_empty": true,
+   "empty_message": "Organization config not returned",
+   "description": "Customer Lockbox requires your approval before Microsoft support engineers can access tenant content.",
+   "remediation": "Microsoft 365 admin center > Settings > Org settings > Security & privacy > Customer lockbox > require approval, or `Set-OrganizationConfig -CustomerLockBoxEnabled $true`.",
+   "links": [
+    {
+     "text": "CIS Microsoft 365 Foundations Benchmark",
+     "url": "https://www.cisecurity.org/benchmark/microsoft_365"
+    },
+    {
+     "text": "Customer Lockbox",
+     "url": "https://learn.microsoft.com/en-us/purview/customer-lockbox-requests"
+    }
+   ],
+   "origin": "Maester Test-MtCisCustomerLockBox"
+  },
+  {
+   "id": "EXO.CIS.2.1.2",
+   "reference": "2.1.2",
+   "framework": "CIS Microsoft 365",
+   "area": "Exchange Online",
+   "title": "Common attachment types filter is enabled (default policy)",
+   "severity": "Medium",
+   "licence": "",
+   "nist": "DE.CM-09",
+   "source": "EXO_MalwareFilterPolicy",
+   "mode": "all",
+   "filter": [
+    {
+     "path": "IsDefault",
+     "op": "true"
+    }
+   ],
+   "conditions": [
+    {
+     "path": "EnableFileFilter",
+     "op": "true"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "ani"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "apk"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "app"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "appx"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "arj"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "bat"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "cab"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "cmd"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "com"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "deb"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "dex"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "dll"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "docm"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "elf"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "exe"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "hta"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "img"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "iso"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "jar"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "jnlp"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "kext"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "lha"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "lib"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "library"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "lnk"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "lzh"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "macho"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "msc"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "msi"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "msix"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "msp"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "mst"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "pif"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "ppa"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "ppam"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "reg"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "rev"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "scf"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "scr"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "sct"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "sys"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "uif"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "vb"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "vbe"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "vbs"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "vxd"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "wsc"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "wsf"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "wsh"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "xll"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "xz"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "z"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "ace"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "Default anti-malware policy not found",
+   "description": "The default anti-malware policy must enable the common attachments filter and block all CIS-listed default file extensions.",
+   "remediation": "Defender portal > Anti-malware > Default policy > enable the common attachments filter and select all recommended file types.",
+   "links": [
+    {
+     "text": "CIS Microsoft 365 Foundations Benchmark",
+     "url": "https://www.cisecurity.org/benchmark/microsoft_365"
+    }
+   ],
+   "origin": "Maester Test-MtCisAttachmentFilter"
+  },
+  {
+   "id": "EXO.CIS.2.1.3",
+   "reference": "2.1.3",
+   "framework": "CIS Microsoft 365",
+   "area": "Exchange Online",
+   "title": "Notifications for internal users sending malware are enabled (default policy)",
+   "severity": "Medium",
+   "licence": "",
+   "nist": "DE.CM-09",
+   "source": "EXO_MalwareFilterPolicy",
+   "mode": "all",
+   "filter": [
+    {
+     "path": "IsDefault",
+     "op": "true"
+    }
+   ],
+   "conditions": [
+    {
+     "path": "EnableInternalSenderAdminNotifications",
+     "op": "true"
+    },
+    {
+     "path": "InternalSenderAdminAddress",
+     "op": "notempty"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "Default anti-malware policy not found",
+   "description": "The default anti-malware policy must notify an administrator when an internal sender is detected sending malware, with a notification address set.",
+   "remediation": "Defender portal > Anti-malware > Default policy > Notifications > enable admin notification for internal senders and enter the admin address.",
+   "links": [
+    {
+     "text": "CIS Microsoft 365 Foundations Benchmark",
+     "url": "https://www.cisecurity.org/benchmark/microsoft_365"
+    }
+   ],
+   "origin": "Maester Test-MtCisInternalMalwareNotification"
+  },
+  {
+   "id": "EXO.CIS.2.1.4",
+   "reference": "2.1.4",
+   "framework": "CIS Microsoft 365",
+   "area": "Exchange Online",
+   "title": "Safe Attachments built-in protection policy blocks and quarantines to admin only",
+   "severity": "High",
+   "licence": "Defender for Office 365 Plan 1",
+   "nist": "DE.CM-09",
+   "source": "EXO_SafeAttachmentPolicy",
+   "mode": "all",
+   "filter": [
+    {
+     "path": "Name",
+     "op": "eq",
+     "value": "Built-In Protection Policy"
+    }
+   ],
+   "conditions": [
+    {
+     "path": "Enable",
+     "op": "true"
+    },
+    {
+     "path": "Action",
+     "op": "eq",
+     "value": "Block"
+    },
+    {
+     "path": "QuarantineTag",
+     "op": "eq",
+     "value": "AdminOnlyAccessPolicy"
+    }
+   ],
+   "name": "Name",
+   "fail_if_empty": true,
+   "empty_message": "Built-In Protection Policy not found",
+   "description": "The Built-In Protection Policy for Safe Attachments must be enabled with action Block and the AdminOnlyAccessPolicy quarantine policy.",
+   "remediation": "Defender portal > Threat policies > Safe Attachments > Built-in protection > set response to Block and quarantine policy to AdminOnlyAccessPolicy.",
+   "links": [
+    {
+     "text": "CIS Microsoft 365 Foundations Benchmark",
+     "url": "https://www.cisecurity.org/benchmark/microsoft_365"
+    }
+   ],
+   "origin": "Maester Test-MtCisSafeAttachment"
+  },
+  {
+   "id": "EXO.CIS.2.1.5",
+   "reference": "2.1.5",
+   "framework": "CIS Microsoft 365",
+   "area": "Exchange Online",
+   "title": "Safe Attachments for SharePoint, OneDrive and Teams is enabled",
+   "severity": "High",
+   "licence": "Defender for Office 365 Plan 1",
+   "nist": "DE.CM-09",
+   "source": "EXO_AtpPolicyForO365",
+   "mode": "first",
+   "conditions": [
+    {
+     "path": "EnableATPForSPOTeamsODB",
+     "op": "true"
+    },
+    {
+     "path": "EnableSafeDocs",
+     "op": "true"
+    },
+    {
+     "path": "AllowSafeDocsOpen",
+     "op": "false"
+    }
+   ],
+   "fail_if_empty": true,
+   "empty_message": "ATP policy not returned",
+   "description": "Safe Attachments must be on for SharePoint, OneDrive and Teams, with Safe Documents enabled and click-through on Protected View blocked.",
+   "remediation": "Defender portal > Threat policies > Safe Attachments > Global settings > enable ATP for SharePoint, OneDrive and Teams and Safe Documents; disable 'Allow people to click through Protected View'.",
+   "links": [
+    {
+     "text": "CIS Microsoft 365 Foundations Benchmark",
+     "url": "https://www.cisecurity.org/benchmark/microsoft_365"
+    }
+   ],
+   "origin": "Maester Test-MtCisSafeAttachmentsAtpPolicy"
+  },
+  {
+   "id": "EXO.CIS.2.1.6",
+   "reference": "2.1.6",
+   "framework": "CIS Microsoft 365",
+   "area": "Exchange Online",
+   "title": "Outbound spam policy notifies administrators (default policy)",
+   "severity": "Medium",
+   "licence": "",
+   "nist": "DE.CM-09",
+   "source": "EXO_HostedOutboundSpamFilterPolicy",
+   "mode": "all",
+   "filter": [
+    {
+     "path": "IsDefault",
+     "op": "true"
+    }
+   ],
+   "conditions": [
+    {
+     "path": "BccSuspiciousOutboundMail",
+     "op": "true"
+    },
+    {
+     "path": "NotifyOutboundSpam",
+     "op": "true"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "Default outbound spam policy not found",
+   "description": "The default outbound spam policy must BCC suspicious outbound mail and notify admins about outbound spam.",
+   "remediation": "Defender portal > Anti-spam > Anti-spam outbound policy (Default) > enable 'Send a copy of suspicious outbound messages' and 'Notify specific people'.",
+   "links": [
+    {
+     "text": "CIS Microsoft 365 Foundations Benchmark",
+     "url": "https://www.cisecurity.org/benchmark/microsoft_365"
+    }
+   ],
+   "origin": "Maester Test-MtCisOutboundSpamFilterPolicy"
+  },
+  {
+   "id": "EXO.CIS.2.1.7",
+   "reference": "2.1.7",
+   "framework": "CIS Microsoft 365",
+   "area": "Exchange Online",
+   "title": "Default anti-phishing policy is configured as recommended",
+   "severity": "Medium",
+   "licence": "Defender for Office 365 Plan 1",
+   "nist": "DE.CM-09",
+   "source": "EXO_AntiPhishPolicy",
+   "mode": "all",
+   "filter": [
+    {
+     "path": "IsDefault",
+     "op": "true"
+    }
+   ],
+   "conditions": [
+    {
+     "path": "Enabled",
+     "op": "true"
+    },
+    {
+     "path": "EnableMailboxIntelligenceProtection",
+     "op": "true"
+    },
+    {
+     "path": "EnableMailboxIntelligence",
+     "op": "true"
+    },
+    {
+     "path": "EnableSpoofIntelligence",
+     "op": "true"
+    },
+    {
+     "path": "PhishThresholdLevel",
+     "op": "ge",
+     "value": 2
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "Default anti-phishing policy not found",
+   "description": "The default anti-phishing policy must be enabled with mailbox intelligence, intelligence protection, spoof intelligence, and a phishing threshold of 2 or higher.",
+   "remediation": "Defender portal > Threat policies > Anti-phishing > Default policy > enable mailbox intelligence and spoof intelligence and set the phishing email threshold to 2 (Aggressive) or higher.",
+   "links": [
+    {
+     "text": "CIS Microsoft 365 Foundations Benchmark",
+     "url": "https://www.cisecurity.org/benchmark/microsoft_365"
+    }
+   ],
+   "origin": "Maester Test-MtCisSafeAntiPhishingPolicy"
+  },
+  {
+   "id": "EXO.CIS.2.1.9",
+   "reference": "2.1.9",
+   "framework": "CIS Microsoft 365",
+   "area": "Exchange Online",
+   "title": "DKIM is enabled for all Exchange Online domains",
+   "severity": "High",
+   "licence": "",
+   "nist": "PR.DS-02",
+   "source": "EXO_DkimSigningConfig",
+   "mode": "all",
+   "filter": [
+    {
+     "path": "Domain",
+     "op": "notcontains",
+     "value": ".onmicrosoft.com"
+    }
+   ],
+   "conditions": [
+    {
+     "path": "Enabled",
+     "op": "true"
+    }
+   ],
+   "name": "Domain",
+   "fail_if_empty": true,
+   "empty_message": "No DKIM signing configuration returned",
+   "description": "DKIM signing must be enabled for every custom domain. Initial onmicrosoft.com domains are excluded; parked domains cannot be excluded by this check.",
+   "remediation": "Defender portal > Email authentication settings > DKIM > enable signing for each domain.",
+   "links": [
+    {
+     "text": "CIS Microsoft 365 Foundations Benchmark",
+     "url": "https://www.cisecurity.org/benchmark/microsoft_365"
+    },
+    {
+     "text": "Set up DKIM",
+     "url": "https://learn.microsoft.com/en-us/defender-office-365/email-authentication-dkim-configure"
+    }
+   ],
+   "origin": "Maester Test-MtCisDkim"
+  },
+  {
+   "id": "EXO.CIS.2.1.9.dns",
+   "reference": "2.1.9",
+   "framework": "CIS Microsoft 365",
+   "area": "Exchange Online",
+   "title": "DKIM selector CNAME records are published for all custom domains",
+   "severity": "High",
+   "licence": "",
+   "nist": "PR.DS-02",
+   "source": "DNS_MailAuth",
+   "mode": "all",
+   "filter": [
+    {
+     "path": "is_initial",
+     "op": "false"
+    }
+   ],
+   "conditions": [
+    {
+     "path": "dkim_selector1_cname",
+     "op": "notempty"
+    },
+    {
+     "path": "dkim_selector2_cname",
+     "op": "notempty"
+    }
+   ],
+   "name": "domain",
+   "fail_if_empty": false,
+   "description": "Both DKIM selector CNAME records must be present in DNS for each custom domain. The source test validates the active selector only; this check requires both.",
+   "remediation": "Create `selector1._domainkey.<domain>` and `selector2._domainkey.<domain>` CNAME records with the values from the Defender portal.",
+   "links": [
+    {
+     "text": "CIS Microsoft 365 Foundations Benchmark",
+     "url": "https://www.cisecurity.org/benchmark/microsoft_365"
+    },
+    {
+     "text": "Set up DKIM",
+     "url": "https://learn.microsoft.com/en-us/defender-office-365/email-authentication-dkim-configure"
+    }
+   ],
+   "origin": "Maester Test-MtCisDkim"
+  },
+  {
+   "id": "EXO.CIS.2.1.11",
+   "reference": "2.1.11",
+   "framework": "CIS Microsoft 365",
+   "area": "Exchange Online",
+   "title": "Comprehensive attachment filtering is applied",
+   "severity": "High",
+   "licence": "",
+   "nist": "DE.CM-09",
+   "source": "EXO_MalwareFilterPolicy",
+   "mode": "any",
+   "conditions": [
+    {
+     "path": "EnableFileFilter",
+     "op": "true"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "7z"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "a3x"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "ace"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "ade"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "adp"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "ani"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "apk"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "app"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "appinstaller"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "applescript"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "application"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "appref-ms"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "appx"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "appxbundle"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "arj"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "asd"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "asx"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "bas"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "bat"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "bgi"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "bz2"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "cab"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "chm"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "cmd"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "com"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "cpl"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "crt"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "cs"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "csh"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "daa"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "dbf"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "dcr"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "deb"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "desktopthemepackfile"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "dex"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "diagcab"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "dif"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "dir"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "dll"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "dmg"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "doc"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "docm"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "dot"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "dotm"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "elf"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "eml"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "exe"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "fxp"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "gadget"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "gz"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "hlp"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "hta"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "htc"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "htm"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "html"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "hwpx"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "ics"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "img"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "inf"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "ins"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "iqy"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "iso"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "isp"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "jar"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "jnlp"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "js"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "jse"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "kext"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "ksh"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "lha"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "lib"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "library"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "library-ms"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "lnk"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "lzh"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "macho"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "mam"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "mda"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "mdb"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "mde"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "mdt"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "mdw"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "mdz"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "mht"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "mhtml"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "mof"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "msc"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "msi"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "msix"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "msp"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "msrcincident"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "mst"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "ocx"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "odt"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "ops"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "oxps"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "pcd"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "pif"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "plg"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "pot"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "potm"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "ppa"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "ppam"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "ppkg"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "pps"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "ppsm"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "ppt"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "pptm"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "prf"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "prg"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "ps1"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "ps11"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "ps11xml"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "ps1xml"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "ps2"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "ps2xml"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "psc1"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "psc2"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "pub"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "py"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "pyc"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "pyo"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "pyw"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "pyz"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "pyzw"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "rar"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "reg"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "rev"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "rtf"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "scf"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "scpt"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "scr"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "sct"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "searchConnector-ms"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "service"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "settingcontent-ms"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "sh"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "shb"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "shs"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "shtm"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "shtml"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "sldm"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "slk"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "so"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "spl"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "stm"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "svg"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "swf"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "sys"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "tar"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "theme"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "themepack"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "timer"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "uif"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "url"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "uue"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "vb"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "vbe"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "vbs"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "vhd"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "vhdx"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "vxd"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "wbk"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "website"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "wim"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "wiz"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "ws"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "wsc"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "wsf"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "wsh"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "xla"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "xlam"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "xlc"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "xll"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "xlm"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "xls"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "xlsb"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "xlsm"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "xlt"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "xltm"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "xlw"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "xnk"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "xps"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "xsl"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "xz"
+    },
+    {
+     "path": "FileTypes",
+     "op": "contains",
+     "value": "z"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "No anti-malware policies returned",
+   "description": "At least one anti-malware policy with the common attachments filter enabled must block every CIS Level 2 file extension. The source test unions the extensions across all file-filter-enabled policies; this check requires them all in a single policy.",
+   "remediation": "Defender portal > Anti-malware > edit the policy > common attachments filter > select all CIS-recommended file types.",
+   "links": [
+    {
+     "text": "CIS Microsoft 365 Foundations Benchmark",
+     "url": "https://www.cisecurity.org/benchmark/microsoft_365"
+    }
+   ],
+   "origin": "Maester Test-MtCisAttachmentFilterComprehensive"
+  },
+  {
+   "id": "EXO.CIS.2.1.12",
+   "reference": "2.1.12",
+   "framework": "CIS Microsoft 365",
+   "area": "Exchange Online",
+   "title": "Connection filter IP allow list is not used (default policy)",
+   "severity": "Medium",
+   "licence": "",
+   "nist": "PR.IR-01",
+   "source": "EXO_HostedConnectionFilterPolicy",
+   "mode": "all",
+   "filter": [
+    {
+     "path": "IsDefault",
+     "op": "true"
+    }
+   ],
+   "conditions": [
+    {
+     "path": "IPAllowList",
+     "op": "empty"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "Default connection filter policy not found",
+   "description": "The default connection filter policy must have an empty IP Allow list.",
+   "remediation": "Defender portal > Anti-spam > Connection filter policy (Default) > remove all IP Allow list entries.",
+   "links": [
+    {
+     "text": "CIS Microsoft 365 Foundations Benchmark",
+     "url": "https://www.cisecurity.org/benchmark/microsoft_365"
+    }
+   ],
+   "origin": "Maester Test-MtCisHostedConnectionFilterPolicy"
+  },
+  {
+   "id": "EXO.CIS.2.1.13",
+   "reference": "2.1.13",
+   "framework": "CIS Microsoft 365",
+   "area": "Exchange Online",
+   "title": "Connection filter safe list is off (default policy)",
+   "severity": "Medium",
+   "licence": "",
+   "nist": "PR.IR-01",
+   "source": "EXO_HostedConnectionFilterPolicy",
+   "mode": "all",
+   "filter": [
+    {
+     "path": "IsDefault",
+     "op": "true"
+    }
+   ],
+   "conditions": [
+    {
+     "path": "EnableSafeList",
+     "op": "false"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "Default connection filter policy not found",
+   "description": "The default connection filter policy must not use the Microsoft safe list.",
+   "remediation": "Defender portal > Anti-spam > Connection filter policy (Default) > uncheck 'Turn on safe list'.",
+   "links": [
+    {
+     "text": "CIS Microsoft 365 Foundations Benchmark",
+     "url": "https://www.cisecurity.org/benchmark/microsoft_365"
+    }
+   ],
+   "origin": "Maester Test-MtCisConnectionFilterSafeList"
+  },
+  {
+   "id": "EXO.CIS.2.4.4",
+   "reference": "2.4.4",
+   "framework": "CIS Microsoft 365",
+   "area": "Exchange Online",
+   "title": "Zero-hour auto purge for Microsoft Teams is on",
+   "severity": "Medium",
+   "licence": "Defender for Office 365",
+   "nist": "DE.CM-09",
+   "source": "EXO_TeamsProtectionPolicy",
+   "mode": "all",
+   "conditions": [
+    {
+     "path": "ZapEnabled",
+     "op": "true"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "Teams protection policy not returned",
+   "description": "ZAP for Teams removes messages later found to be malicious or phishing.",
+   "remediation": "Defender portal > Settings > Email & collaboration > Microsoft Teams protection > turn on zero-hour auto purge, or `Set-TeamsProtectionPolicy -ZapEnabled $true`.",
+   "links": [
+    {
+     "text": "CIS Microsoft 365 Foundations Benchmark",
+     "url": "https://www.cisecurity.org/benchmark/microsoft_365"
+    }
+   ],
+   "origin": "Maester Test-MtCisZAP"
+  },
+  {
+   "id": "EXO.CIS.3.1.1",
+   "reference": "3.1.1",
+   "framework": "CIS Microsoft 365",
+   "area": "Exchange Online",
+   "title": "Microsoft 365 audit log search is enabled",
+   "severity": "High",
+   "licence": "",
+   "nist": "PR.PS-04",
+   "source": "EXO_AdminAuditLogConfig",
+   "mode": "first",
+   "conditions": [
+    {
+     "path": "UnifiedAuditLogIngestionEnabled",
+     "op": "true"
+    }
+   ],
+   "fail_if_empty": true,
+   "empty_message": "Audit log configuration not returned",
+   "description": "Audit log search must be enabled so activity is recorded and searchable.",
+   "remediation": "Purview portal > Audit > Start recording, or `Set-AdminAuditLogConfig -UnifiedAuditLogIngestionEnabled $true`.",
+   "links": [
+    {
+     "text": "CIS Microsoft 365 Foundations Benchmark",
+     "url": "https://www.cisecurity.org/benchmark/microsoft_365"
+    }
+   ],
+   "origin": "Maester Test-MtCisAuditLogSearch"
+  },
+  {
+   "id": "EXO.CIS.6.5.3",
+   "reference": "6.5.3",
+   "framework": "CIS Microsoft 365",
+   "area": "Exchange Online",
+   "title": "Additional storage providers are restricted in Outlook on the web",
+   "severity": "Medium",
+   "licence": "",
+   "nist": "PR.DS-01",
+   "source": "EXO_OwaMailboxPolicy",
+   "mode": "all",
+   "filter": [
+    {
+     "path": "IsDefault",
+     "op": "true"
+    }
+   ],
+   "conditions": [
+    {
+     "path": "AdditionalStorageProvidersAvailable",
+     "op": "false"
+    }
+   ],
+   "name": "Identity",
+   "fail_if_empty": true,
+   "empty_message": "Default OWA mailbox policy not found",
+   "description": "The default OWA mailbox policy must not allow additional storage providers such as Dropbox or Box.",
+   "remediation": "`Set-OwaMailboxPolicy -Identity OwaMailboxPolicy-Default -AdditionalStorageProvidersAvailable $false`.",
+   "links": [
+    {
+     "text": "CIS Microsoft 365 Foundations Benchmark",
+     "url": "https://www.cisecurity.org/benchmark/microsoft_365"
+    }
+   ],
+   "origin": "Maester Test-MtCisExoAdditionalStorageProvider"
+  },
+  {
+   "id": "EXO.JEC.1",
+   "reference": "JEC.EXO.1",
+   "framework": "Jolera Extended Controls",
+   "area": "Exchange Online",
+   "title": "MailTips for external recipients are enabled",
+   "severity": "Low",
+   "licence": "",
+   "nist": "PR.AT-01",
+   "source": "EXO_OrganizationConfig",
+   "mode": "first",
+   "conditions": [
+    {
+     "path": "MailTipsExternalRecipientsTipsEnabled",
+     "op": "true"
+    }
+   ],
+   "fail_if_empty": true,
+   "empty_message": "Organization config not returned",
+   "description": "MailTips warn users when they address external recipients, reducing accidental data disclosure.",
+   "remediation": "`Set-OrganizationConfig -MailTipsExternalRecipientsTipsEnabled $true`.",
+   "links": [
+    {
+     "text": "CIS Microsoft 365 Foundations Benchmark",
+     "url": "https://www.cisecurity.org/benchmark/microsoft_365"
+    }
+   ],
+   "origin": "Maester MT.1039 Test-MtExoMailTip"
+  },
+  {
+   "id": "EXO.JEC.2",
+   "reference": "JEC.EXO.2",
+   "framework": "Jolera Extended Controls",
+   "area": "Exchange Online",
+   "title": "Users cannot install Outlook add-ins",
+   "severity": "High",
+   "licence": "",
+   "nist": "PR.PS-05",
+   "source": "EXO_ManagementRoleAssignment",
+   "mode": "none",
+   "filter": [
+    {
+     "path": "Role",
+     "op": "in",
+     "value": [
+      "My Custom Apps",
+      "My Marketplace Apps",
+      "My ReadWriteMailbox Apps"
+     ]
+    }
+   ],
+   "conditions": [
+    {
+     "path": "RoleAssigneeName",
+     "op": "eq",
+     "value": "Default Role Assignment Policy"
+    }
+   ],
+   "name": "Name",
+   "fail_if_empty": false,
+   "description": "The Default Role Assignment Policy must not include the roles My Custom Apps, My Marketplace Apps or My ReadWriteMailbox Apps, which let users install add-ins that can read mailbox content.",
+   "remediation": "Exchange admin center > Roles > User roles > Default Role Assignment Policy > uncheck the three app roles.",
+   "impact": "Users can no longer self-install Outlook add-ins.",
+   "links": [
+    {
+     "text": "CIS Microsoft 365 Foundations Benchmark",
+     "url": "https://www.cisecurity.org/benchmark/microsoft_365"
+    }
+   ],
+   "origin": "Maester MT.1041 Test-MtExoOutlookAddin"
+  },
+  {
+   "id": "EXO.JEC.3",
+   "reference": "JEC.EXO.3",
+   "framework": "Jolera Extended Controls",
+   "area": "Exchange Online",
+   "title": "No transport rule sets SCL to -1",
+   "severity": "Medium",
+   "licence": "",
+   "nist": "PR.PS-01",
+   "source": "EXO_TransportRule",
+   "mode": "none",
+   "conditions": [
+    {
+     "path": "SetScl",
+     "op": "eq",
+     "value": "-1"
+    }
+   ],
+   "name": "Name",
+   "fail_if_empty": false,
+   "description": "Transport rules that set SCL to -1 bypass spam and phish filtering for matching mail and can be abused.",
+   "remediation": "Exchange admin center > Mail flow > Rules > remove or change rules that set the spam confidence level to -1 (bypass spam filtering).",
+   "links": [
+    {
+     "text": "CIS Microsoft 365 Foundations Benchmark",
+     "url": "https://www.cisecurity.org/benchmark/microsoft_365"
+    }
+   ],
+   "origin": "Maester MT.1043 Test-MtExoSetScl"
+  },
+  {
+   "id": "EXO.JEC.4",
+   "reference": "JEC.EXO.4",
+   "framework": "Jolera Extended Controls",
+   "area": "Exchange Online",
+   "title": "Modern authentication is enabled for Exchange Online",
+   "severity": "High",
+   "licence": "",
+   "nist": "PR.AA-03",
+   "source": "EXO_OrganizationConfig",
+   "mode": "first",
+   "conditions": [
+    {
+     "path": "OAuth2ClientProfileEnabled",
+     "op": "true"
+    }
+   ],
+   "fail_if_empty": true,
+   "empty_message": "Organization config not returned",
+   "description": "Modern authentication (OAuth2) must be enabled so clients can use MFA and Conditional Access.",
+   "remediation": "`Set-OrganizationConfig -OAuth2ClientProfileEnabled $true`.",
+   "links": [
+    {
+     "text": "CIS Microsoft 365 Foundations Benchmark",
+     "url": "https://www.cisecurity.org/benchmark/microsoft_365"
+    }
+   ],
+   "origin": "Maester MT.1044 Test-MtExoModernAuth"
+  },
+  {
+   "id": "EXO.JEC.5",
+   "reference": "JEC.EXO.5",
+   "framework": "Jolera Extended Controls",
+   "area": "Exchange Online",
+   "title": "Direct Send is rejected",
+   "severity": "Medium",
+   "licence": "",
+   "nist": "PR.AA-03",
+   "source": "EXO_OrganizationConfig",
+   "mode": "first",
+   "conditions": [
+    {
+     "path": "RejectDirectSend",
+     "op": "true"
+    }
+   ],
+   "fail_if_empty": true,
+   "empty_message": "Organization config not returned",
+   "description": "Direct Send lets unauthenticated devices send mail as your domain to your tenant; it should be rejected unless required.",
+   "remediation": "`Set-OrganizationConfig -RejectDirectSend $true`.",
+   "impact": "Devices that relay unauthenticated via your MX endpoint stop working; move them to authenticated submission or a connector.",
+   "links": [
+    {
+     "text": "CIS Microsoft 365 Foundations Benchmark",
+     "url": "https://www.cisecurity.org/benchmark/microsoft_365"
+    }
+   ],
+   "origin": "Maester MT.1062 Test-MtExoRejectDirectSend"
+  }
+ ],
+ "not_ported": [
+  {
+   "origin": "MS.EXO.2.1v1",
+   "reason": "Deprecated by CISA (May 2024)"
+  },
+  {
+   "origin": "MS.EXO.4.4v1",
+   "reason": "Test-MtCisaDmarcReport has no active Pester test (helper function only)"
+  },
+  {
+   "origin": "MS.EXO.7.1v1",
+   "reason": "Passes if Get-ExternalInOutlook is enabled OR a transport rule matches: an OR across two datasets cannot be expressed"
+  },
+  {
+   "origin": "MS.EXO.8.1v1",
+   "reason": "Needs Security and Compliance PowerShell (Get-DlpCompliancePolicy), not available through the Exchange Online REST endpoint"
+  },
+  {
+   "origin": "MS.EXO.8.2v1",
+   "reason": "Needs Get-DlpCompliancePolicy and Get-DlpComplianceRule (Security and Compliance PowerShell)"
+  },
+  {
+   "origin": "MS.EXO.8.3v1",
+   "reason": "Cannot validate third-party solutions"
+  },
+  {
+   "origin": "MS.EXO.8.4v1",
+   "reason": "Needs Get-DlpCompliancePolicy and Get-DlpComplianceRule (Security and Compliance PowerShell)"
+  },
+  {
+   "origin": "MS.EXO.9.1v2",
+   "reason": "Pass/fail depends on computed IsEnabled (preset state from Get-EOPProtectionPolicyRule and Get-MalwareFilterRule): needs a join across datasets"
+  },
+  {
+   "origin": "MS.EXO.9.4v1",
+   "reason": "Cannot validate third-party filtering solutions"
+  },
+  {
+   "origin": "MS.EXO.10.1v1",
+   "reason": "Same as MS.EXO.9.1v2: needs computed IsEnabled via rule/preset state join"
+  },
+  {
+   "origin": "MS.EXO.10.2v1",
+   "reason": "Needs computed IsEnabled via rule/preset state join (quarantine tag checked only for enabled policies)"
+  },
+  {
+   "origin": "MS.EXO.10.3v1",
+   "reason": "Needs computed IsEnabled via rule/preset state join (ZAP checked only for enabled policies)"
+  },
+  {
+   "origin": "MS.EXO.14.4v1",
+   "reason": "Cannot validate third-party filtering solutions"
+  },
+  {
+   "origin": "MS.EXO.16.1v1",
+   "reason": "Needs Get-ProtectionAlert (Security and Compliance PowerShell) and Defender for Office 365 licence detection"
+  },
+  {
+   "origin": "MS.EXO.16.2v1",
+   "reason": "Not available for API validation"
+  },
+  {
+   "origin": "MS.EXO.17.2v1",
+   "reason": "Deprecated by CISA (March 2025)"
+  },
+  {
+   "origin": "MS.EXO.17.3v1",
+   "reason": "Needs Get-UnifiedAuditLogRetentionPolicy (Security and Compliance PowerShell)"
+  },
+  {
+   "origin": "CIS 1.2.2 (Test-MtCisSharedMailboxSignIn)",
+   "reason": "Needs per-mailbox data (shared mailboxes via Get-EXOMailbox plus Graph accountEnabled)"
+  },
+  {
+   "origin": "CIS 2.1.1 (Test-MtCisSafeLink)",
+   "reason": "Evaluates only the priority 0 Safe Links policy: needs a join between Get-SafeLinksRule and Get-SafeLinksPolicy"
+  },
+  {
+   "origin": "MT.1074 (Test-MtLimitOnMicrosoftDomainUsage)",
+   "reason": "Needs per-mailbox data (Get-Mailbox) or Defender advanced hunting KQL"
+  },
+  {
+   "origin": "MT.1076 (Test-MtExoMoeraMailActivity)",
+   "reason": "Needs the Graph email activity usage report CSV, not a JSON collection"
+  },
+  {
+   "origin": "MT.1083 (Test-MtExoDelicensingResiliency)",
+   "reason": "Applies only to tenants with more than 5000 Exchange licences: needs licence count logic"
+  }
+ ]
+}

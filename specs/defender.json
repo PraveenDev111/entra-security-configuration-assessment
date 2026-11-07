@@ -1,0 +1,103 @@
+{
+  "workload": "defender",
+  "sources": {},
+  "rules": [],
+  "not_ported": [
+    {
+      "origin": "Maester Test-MtMdeArchiveScanning",
+      "reason": "Microsoft Defender Antivirus endpoint policy check: evaluates Intune settings catalog (configurationPolicies) settings per policy, only for policies with active assignments (per-policy assignment lookups), after counting MDE-managed Windows devices; needs a per-setting nested settingInstance match with AllPolicies/AnyPolicy logic and a not-configured case; not expressible with single-dataset rules"
+    },
+    {
+      "origin": "Maester Test-MtMdeBehaviorMonitoring",
+      "reason": "Microsoft Defender Antivirus endpoint policy check: evaluates Intune settings catalog (configurationPolicies) settings per policy, only for policies with active assignments (per-policy assignment lookups), after counting MDE-managed Windows devices; needs a per-setting nested settingInstance match with AllPolicies/AnyPolicy logic and a not-configured case; not expressible with single-dataset rules"
+    },
+    {
+      "origin": "Maester Test-MtMdeCatchupFullScan",
+      "reason": "Microsoft Defender Antivirus endpoint policy check: evaluates Intune settings catalog (configurationPolicies) settings per policy, only for policies with active assignments (per-policy assignment lookups), after counting MDE-managed Windows devices; needs a per-setting nested settingInstance match with AllPolicies/AnyPolicy logic and a not-configured case; not expressible with single-dataset rules"
+    },
+    {
+      "origin": "Maester Test-MtMdeCatchupQuickScan",
+      "reason": "Microsoft Defender Antivirus endpoint policy check: evaluates Intune settings catalog (configurationPolicies) settings per policy, only for policies with active assignments (per-policy assignment lookups), after counting MDE-managed Windows devices; needs a per-setting nested settingInstance match with AllPolicies/AnyPolicy logic and a not-configured case; not expressible with single-dataset rules"
+    },
+    {
+      "origin": "Maester Test-MtMdeCloudBlockLevel",
+      "reason": "Microsoft Defender Antivirus endpoint policy check: evaluates Intune settings catalog (configurationPolicies) settings per policy, only for policies with active assignments (per-policy assignment lookups), after counting MDE-managed Windows devices; needs a per-setting nested settingInstance match with AllPolicies/AnyPolicy logic and a not-configured case; not expressible with single-dataset rules"
+    },
+    {
+      "origin": "Maester Test-MtMdeCloudExtendedTimeout",
+      "reason": "Microsoft Defender Antivirus endpoint policy check: evaluates Intune settings catalog (configurationPolicies) settings per policy, only for policies with active assignments (per-policy assignment lookups), after counting MDE-managed Windows devices; needs a per-setting nested settingInstance match with AllPolicies/AnyPolicy logic and a not-configured case; not expressible with single-dataset rules"
+    },
+    {
+      "origin": "Maester Test-MtMdeCloudProtection",
+      "reason": "Microsoft Defender Antivirus endpoint policy check: evaluates Intune settings catalog (configurationPolicies) settings per policy, only for policies with active assignments (per-policy assignment lookups), after counting MDE-managed Windows devices; needs a per-setting nested settingInstance match with AllPolicies/AnyPolicy logic and a not-configured case; not expressible with single-dataset rules"
+    },
+    {
+      "origin": "Maester Test-MtMdeCpuLoadFactor",
+      "reason": "Microsoft Defender Antivirus endpoint policy check: evaluates Intune settings catalog (configurationPolicies) settings per policy, only for policies with active assignments (per-policy assignment lookups), after counting MDE-managed Windows devices; needs a per-setting nested settingInstance match with AllPolicies/AnyPolicy logic and a not-configured case; not expressible with single-dataset rules"
+    },
+    {
+      "origin": "Maester Test-MtMdeDisableLocalAdminMerge",
+      "reason": "Microsoft Defender Antivirus endpoint policy check: evaluates Intune settings catalog (configurationPolicies) settings per policy, only for policies with active assignments (per-policy assignment lookups), after counting MDE-managed Windows devices; needs a per-setting nested settingInstance match with AllPolicies/AnyPolicy logic and a not-configured case; not expressible with single-dataset rules"
+    },
+    {
+      "origin": "Maester Test-MtMdeEmailScanning",
+      "reason": "Microsoft Defender Antivirus endpoint policy check: evaluates Intune settings catalog (configurationPolicies) settings per policy, only for policies with active assignments (per-policy assignment lookups), after counting MDE-managed Windows devices; needs a per-setting nested settingInstance match with AllPolicies/AnyPolicy logic and a not-configured case; not expressible with single-dataset rules"
+    },
+    {
+      "origin": "Maester Test-MtMdeMappedDriveScanning",
+      "reason": "Microsoft Defender Antivirus endpoint policy check: evaluates Intune settings catalog (configurationPolicies) settings per policy, only for policies with active assignments (per-policy assignment lookups), after counting MDE-managed Windows devices; needs a per-setting nested settingInstance match with AllPolicies/AnyPolicy logic and a not-configured case; not expressible with single-dataset rules"
+    },
+    {
+      "origin": "Maester Test-MtMdeNetworkFileScanning",
+      "reason": "Microsoft Defender Antivirus endpoint policy check: evaluates Intune settings catalog (configurationPolicies) settings per policy, only for policies with active assignments (per-policy assignment lookups), after counting MDE-managed Windows devices; needs a per-setting nested settingInstance match with AllPolicies/AnyPolicy logic and a not-configured case; not expressible with single-dataset rules"
+    },
+    {
+      "origin": "Maester Test-MtMdeNetworkProtection",
+      "reason": "Microsoft Defender Antivirus endpoint policy check: evaluates Intune settings catalog (configurationPolicies) settings per policy, only for policies with active assignments (per-policy assignment lookups), after counting MDE-managed Windows devices; needs a per-setting nested settingInstance match with AllPolicies/AnyPolicy logic and a not-configured case; not expressible with single-dataset rules"
+    },
+    {
+      "origin": "Maester Test-MtMdePuaProtection",
+      "reason": "Microsoft Defender Antivirus endpoint policy check: evaluates Intune settings catalog (configurationPolicies) settings per policy, only for policies with active assignments (per-policy assignment lookups), after counting MDE-managed Windows devices; needs a per-setting nested settingInstance match with AllPolicies/AnyPolicy logic and a not-configured case; not expressible with single-dataset rules"
+    },
+    {
+      "origin": "Maester Test-MtMdeQuickScanTime",
+      "reason": "Microsoft Defender Antivirus endpoint policy check: evaluates Intune settings catalog (configurationPolicies) settings per policy, only for policies with active assignments (per-policy assignment lookups), after counting MDE-managed Windows devices; needs a per-setting nested settingInstance match with AllPolicies/AnyPolicy logic and a not-configured case; not expressible with single-dataset rules"
+    },
+    {
+      "origin": "Maester Test-MtMdeRealtimeMonitoring",
+      "reason": "Microsoft Defender Antivirus endpoint policy check: evaluates Intune settings catalog (configurationPolicies) settings per policy, only for policies with active assignments (per-policy assignment lookups), after counting MDE-managed Windows devices; needs a per-setting nested settingInstance match with AllPolicies/AnyPolicy logic and a not-configured case; not expressible with single-dataset rules"
+    },
+    {
+      "origin": "Maester Test-MtMdeRealtimeScanDirection",
+      "reason": "Microsoft Defender Antivirus endpoint policy check: evaluates Intune settings catalog (configurationPolicies) settings per policy, only for policies with active assignments (per-policy assignment lookups), after counting MDE-managed Windows devices; needs a per-setting nested settingInstance match with AllPolicies/AnyPolicy logic and a not-configured case; not expressible with single-dataset rules"
+    },
+    {
+      "origin": "Maester Test-MtMdeRemovableDriveScanning",
+      "reason": "Microsoft Defender Antivirus endpoint policy check: evaluates Intune settings catalog (configurationPolicies) settings per policy, only for policies with active assignments (per-policy assignment lookups), after counting MDE-managed Windows devices; needs a per-setting nested settingInstance match with AllPolicies/AnyPolicy logic and a not-configured case; not expressible with single-dataset rules"
+    },
+    {
+      "origin": "Maester Test-MtMdeRetainCleanedMalware",
+      "reason": "Microsoft Defender Antivirus endpoint policy check: evaluates Intune settings catalog (configurationPolicies) settings per policy, only for policies with active assignments (per-policy assignment lookups), after counting MDE-managed Windows devices; needs a per-setting nested settingInstance match with AllPolicies/AnyPolicy logic and a not-configured case; not expressible with single-dataset rules"
+    },
+    {
+      "origin": "Maester Test-MtMdeScheduleScanDay",
+      "reason": "Microsoft Defender Antivirus endpoint policy check: evaluates Intune settings catalog (configurationPolicies) settings per policy, only for policies with active assignments (per-policy assignment lookups), after counting MDE-managed Windows devices; needs a per-setting nested settingInstance match with AllPolicies/AnyPolicy logic and a not-configured case; not expressible with single-dataset rules"
+    },
+    {
+      "origin": "Maester Test-MtMdeScriptScanning",
+      "reason": "Microsoft Defender Antivirus endpoint policy check: evaluates Intune settings catalog (configurationPolicies) settings per policy, only for policies with active assignments (per-policy assignment lookups), after counting MDE-managed Windows devices; needs a per-setting nested settingInstance match with AllPolicies/AnyPolicy logic and a not-configured case; not expressible with single-dataset rules"
+    },
+    {
+      "origin": "Maester Test-MtMdeSignatureBeforeScan",
+      "reason": "Microsoft Defender Antivirus endpoint policy check: evaluates Intune settings catalog (configurationPolicies) settings per policy, only for policies with active assignments (per-policy assignment lookups), after counting MDE-managed Windows devices; needs a per-setting nested settingInstance match with AllPolicies/AnyPolicy logic and a not-configured case; not expressible with single-dataset rules"
+    },
+    {
+      "origin": "Maester Test-MtMdeSignatureUpdateInterval",
+      "reason": "Microsoft Defender Antivirus endpoint policy check: evaluates Intune settings catalog (configurationPolicies) settings per policy, only for policies with active assignments (per-policy assignment lookups), after counting MDE-managed Windows devices; needs a per-setting nested settingInstance match with AllPolicies/AnyPolicy logic and a not-configured case; not expressible with single-dataset rules"
+    },
+    {
+      "origin": "Maester Test-MtMdeSubmitSamplesConsent",
+      "reason": "Microsoft Defender Antivirus endpoint policy check: evaluates Intune settings catalog (configurationPolicies) settings per policy, only for policies with active assignments (per-policy assignment lookups), after counting MDE-managed Windows devices; needs a per-setting nested settingInstance match with AllPolicies/AnyPolicy logic and a not-configured case; not expressible with single-dataset rules"
+    }
+  ]
+}

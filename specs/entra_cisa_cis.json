@@ -1,0 +1,720 @@
+{
+  "workload": "entra",
+  "sources": {},
+  "rules": [
+    {
+      "id": "ENTRA.CISA.1.1a",
+      "reference": "MS.AAD.1.1v1",
+      "framework": "CISA SCuBA",
+      "area": "Entra ID",
+      "title": "A Conditional Access policy blocks legacy authentication clients of type 'other' for all users and apps",
+      "severity": "High",
+      "licence": "Entra ID P1",
+      "nist": "PR.AA-03",
+      "source": "CA_Policies",
+      "mode": "any",
+      "filter": [
+        {
+          "path": "state",
+          "op": "eq",
+          "value": "enabled"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "grantControls.builtInControls",
+          "op": "contains",
+          "value": "block"
+        },
+        {
+          "path": "conditions.clientAppTypes",
+          "op": "contains",
+          "value": "other"
+        },
+        {
+          "path": "conditions.users.includeUsers",
+          "op": "contains",
+          "value": "All"
+        },
+        {
+          "path": "conditions.applications.includeApplications",
+          "op": "contains",
+          "value": "All"
+        }
+      ],
+      "name": "displayName",
+      "fail_if_empty": true,
+      "empty_message": "No Conditional Access policies were collected",
+      "description": "CISA requires legacy authentication to be blocked. This part checks that an enabled Conditional Access policy blocks the 'Other clients' (legacy protocols) client app type for all users and all cloud apps. The Exchange ActiveSync part is checked by ENTRA.CISA.1.1b.",
+      "remediation": "Entra admin center > Protection > Conditional Access > create a policy: Users All users, Target resources All resources, Conditions > Client apps > Other clients (legacy authentication clients), Grant > Block access. Enable the policy.",
+      "links": [
+        {
+          "text": "CISA SCuBA M365 Entra ID baseline",
+          "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/aad.md"
+        },
+        {
+          "text": "Block legacy authentication",
+          "url": "https://learn.microsoft.com/entra/identity/conditional-access/policy-block-legacy-authentication"
+        }
+      ],
+      "origin": "Maester Test-MtCisaBlockLegacyAuth"
+    },
+    {
+      "id": "ENTRA.CISA.1.1b",
+      "reference": "MS.AAD.1.1v1",
+      "framework": "CISA SCuBA",
+      "area": "Entra ID",
+      "title": "A Conditional Access policy blocks Exchange ActiveSync clients for all users and apps",
+      "severity": "High",
+      "licence": "Entra ID P1",
+      "nist": "PR.AA-03",
+      "source": "CA_Policies",
+      "mode": "any",
+      "filter": [
+        {
+          "path": "state",
+          "op": "eq",
+          "value": "enabled"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "grantControls.builtInControls",
+          "op": "contains",
+          "value": "block"
+        },
+        {
+          "path": "conditions.clientAppTypes",
+          "op": "contains",
+          "value": "exchangeActiveSync"
+        },
+        {
+          "path": "conditions.users.includeUsers",
+          "op": "contains",
+          "value": "All"
+        },
+        {
+          "path": "conditions.applications.includeApplications",
+          "op": "contains",
+          "value": "All"
+        }
+      ],
+      "name": "displayName",
+      "fail_if_empty": true,
+      "empty_message": "No Conditional Access policies were collected",
+      "description": "CISA requires legacy authentication to be blocked. This part checks that an enabled Conditional Access policy blocks Exchange ActiveSync clients for all users and all cloud apps (the 'other' clients part is checked by ENTRA.CISA.1.1a).",
+      "remediation": "Entra admin center > Protection > Conditional Access > create a policy: All users, All resources, Conditions > Client apps > Exchange ActiveSync clients, Grant > Block access. Enable the policy.",
+      "links": [
+        {
+          "text": "CISA SCuBA M365 Entra ID baseline",
+          "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/aad.md"
+        },
+        {
+          "text": "Block legacy authentication",
+          "url": "https://learn.microsoft.com/entra/identity/conditional-access/policy-block-legacy-authentication"
+        }
+      ],
+      "origin": "Maester Test-MtCisaBlockLegacyAuth"
+    },
+    {
+      "id": "ENTRA.CISA.2.1",
+      "reference": "MS.AAD.2.1v1",
+      "framework": "CISA SCuBA",
+      "area": "Entra ID",
+      "title": "A Conditional Access policy blocks users detected as high risk",
+      "severity": "High",
+      "licence": "Entra ID P2",
+      "nist": "PR.AA-03",
+      "source": "CA_Policies",
+      "mode": "any",
+      "filter": [
+        {
+          "path": "state",
+          "op": "eq",
+          "value": "enabled"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "grantControls.builtInControls",
+          "op": "contains",
+          "value": "block"
+        },
+        {
+          "path": "conditions.applications.includeApplications",
+          "op": "contains",
+          "value": "all"
+        },
+        {
+          "path": "conditions.userRiskLevels",
+          "op": "contains",
+          "value": "high"
+        },
+        {
+          "path": "conditions.users.includeUsers",
+          "op": "contains",
+          "value": "All"
+        }
+      ],
+      "name": "displayName",
+      "fail_if_empty": true,
+      "empty_message": "No Conditional Access policies were collected",
+      "description": "Users that Entra ID Protection detects as high risk are likely compromised. An enabled policy for all users and all apps must block access for high user risk.",
+      "remediation": "Entra admin center > Protection > Conditional Access > create a policy: All users, All resources, Conditions > User risk = High, Grant > Block access. Enable the policy.",
+      "links": [
+        {
+          "text": "CISA SCuBA M365 Entra ID baseline",
+          "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/aad.md"
+        },
+        {
+          "text": "User risk-based Conditional Access",
+          "url": "https://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-risk-user"
+        }
+      ],
+      "origin": "Maester Test-MtCisaBlockHighRiskUser"
+    },
+    {
+      "id": "ENTRA.CISA.2.3",
+      "reference": "MS.AAD.2.3v1",
+      "framework": "CISA SCuBA",
+      "area": "Entra ID",
+      "title": "A Conditional Access policy blocks sign-ins detected as high risk",
+      "severity": "High",
+      "licence": "Entra ID P2",
+      "nist": "PR.AA-03",
+      "source": "CA_Policies",
+      "mode": "any",
+      "filter": [
+        {
+          "path": "state",
+          "op": "eq",
+          "value": "enabled"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "grantControls.builtInControls",
+          "op": "contains",
+          "value": "block"
+        },
+        {
+          "path": "conditions.applications.includeApplications",
+          "op": "contains",
+          "value": "all"
+        },
+        {
+          "path": "conditions.signInRiskLevels",
+          "op": "contains",
+          "value": "high"
+        },
+        {
+          "path": "conditions.users.includeUsers",
+          "op": "contains",
+          "value": "All"
+        }
+      ],
+      "name": "displayName",
+      "fail_if_empty": true,
+      "empty_message": "No Conditional Access policies were collected",
+      "description": "Sign-ins detected as high risk by Entra ID Protection should be blocked. An enabled policy for all users and all apps must block access for high sign-in risk.",
+      "remediation": "Entra admin center > Protection > Conditional Access > create a policy: All users, All resources, Conditions > Sign-in risk = High, Grant > Block access. Enable the policy.",
+      "links": [
+        {
+          "text": "CISA SCuBA M365 Entra ID baseline",
+          "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/aad.md"
+        },
+        {
+          "text": "Sign-in risk-based Conditional Access",
+          "url": "https://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-risk"
+        }
+      ],
+      "origin": "Maester Test-MtCisaBlockHighRiskSignIn"
+    },
+    {
+      "id": "ENTRA.CISA.3.1",
+      "reference": "MS.AAD.3.1v1",
+      "framework": "CISA SCuBA",
+      "area": "Entra ID",
+      "title": "A Conditional Access policy enforces phishing-resistant MFA for all users and apps",
+      "severity": "High",
+      "licence": "Entra ID P1",
+      "nist": "PR.AA-03",
+      "source": "CA_Policies",
+      "mode": "any",
+      "filter": [
+        {
+          "path": "state",
+          "op": "eq",
+          "value": "enabled"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "conditions.applications.includeApplications",
+          "op": "contains",
+          "value": "All"
+        },
+        {
+          "path": "conditions.users.includeUsers",
+          "op": "contains",
+          "value": "All"
+        },
+        {
+          "path": "grantControls.authenticationStrength.displayName",
+          "op": "eq",
+          "value": "Phishing-resistant MFA"
+        }
+      ],
+      "name": "displayName",
+      "fail_if_empty": true,
+      "empty_message": "No Conditional Access policies were collected",
+      "description": "CISA requires phishing-resistant MFA for all users. This checks for an enabled policy covering all users and all apps that requires the built-in 'Phishing-resistant MFA' authentication strength.",
+      "remediation": "Entra admin center > Protection > Conditional Access > policy for All users and All resources > Grant > Require authentication strength > Phishing-resistant MFA. Enable the policy once users have registered FIDO2, Windows Hello for Business or certificate-based authentication.",
+      "impact": "Users without a phishing-resistant method registered are blocked until they register one.",
+      "links": [
+        {
+          "text": "CISA SCuBA M365 Entra ID baseline",
+          "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/aad.md"
+        },
+        {
+          "text": "Authentication strengths",
+          "url": "https://learn.microsoft.com/entra/identity/authentication/concept-authentication-strengths"
+        }
+      ],
+      "origin": "Maester Test-MtCisaPhishResistant"
+    },
+    {
+      "id": "ENTRA.CISA.3.2",
+      "reference": "MS.AAD.3.2v1",
+      "framework": "CISA SCuBA",
+      "area": "Entra ID",
+      "title": "A Conditional Access policy requires MFA for all users and apps",
+      "severity": "High",
+      "licence": "Entra ID P1",
+      "nist": "PR.AA-03",
+      "source": "CA_Policies",
+      "mode": "any",
+      "filter": [
+        {
+          "path": "state",
+          "op": "eq",
+          "value": "enabled"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "conditions.applications.includeApplications",
+          "op": "contains",
+          "value": "All"
+        },
+        {
+          "path": "conditions.users.includeUsers",
+          "op": "contains",
+          "value": "All"
+        },
+        {
+          "any": [
+            {
+              "path": "grantControls.builtInControls",
+              "op": "contains",
+              "value": "mfa"
+            },
+            {
+              "path": "grantControls.authenticationStrength.requirementsSatisfied",
+              "op": "contains",
+              "value": "mfa"
+            }
+          ]
+        }
+      ],
+      "name": "displayName",
+      "fail_if_empty": true,
+      "empty_message": "No Conditional Access policies were collected",
+      "description": "If phishing-resistant MFA is not enforced, CISA requires another MFA method for all users. This checks for an enabled policy for all users and all apps that requires MFA (grant control or an authentication strength that satisfies MFA; phishing-resistant strengths also satisfy it).",
+      "remediation": "Entra admin center > Protection > Conditional Access > policy for All users and All resources > Grant > Require multifactor authentication (or an authentication strength). Enable the policy.",
+      "links": [
+        {
+          "text": "CISA SCuBA M365 Entra ID baseline",
+          "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/aad.md"
+        },
+        {
+          "text": "Require MFA for all users",
+          "url": "https://learn.microsoft.com/entra/identity/conditional-access/policy-all-users-mfa"
+        }
+      ],
+      "origin": "Maester Test-MtCisaMfa"
+    },
+    {
+      "id": "ENTRA.CISA.3.6",
+      "reference": "MS.AAD.3.6v1",
+      "framework": "CISA SCuBA",
+      "area": "Entra ID",
+      "title": "A Conditional Access policy requires phishing-resistant MFA for all highly privileged roles",
+      "severity": "High",
+      "licence": "Entra ID P1",
+      "nist": "PR.AA-03",
+      "source": "CA_Policies",
+      "mode": "any",
+      "filter": [
+        {
+          "path": "state",
+          "op": "eq",
+          "value": "enabled"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "conditions.applications.includeApplications",
+          "op": "contains",
+          "value": "All"
+        },
+        {
+          "path": "conditions.users.includeRoles",
+          "op": "contains",
+          "value": "62e90394-69f5-4237-9190-012177145e10"
+        },
+        {
+          "path": "conditions.users.includeRoles",
+          "op": "contains",
+          "value": "fe930be7-5e62-47db-91af-98c3a49a38b1"
+        },
+        {
+          "path": "conditions.users.includeRoles",
+          "op": "contains",
+          "value": "29232cdf-9323-42fd-ade2-1d097af3e4de"
+        },
+        {
+          "path": "conditions.users.includeRoles",
+          "op": "contains",
+          "value": "f28a1f50-f6e7-4571-818b-6a12f2af6b6c"
+        },
+        {
+          "path": "conditions.users.includeRoles",
+          "op": "contains",
+          "value": "9b895d92-2cd3-44c7-9d02-a6ac2d5ea5c3"
+        },
+        {
+          "path": "conditions.users.includeRoles",
+          "op": "contains",
+          "value": "e8611ab8-c189-46e8-94e1-60213ab1f814"
+        },
+        {
+          "path": "conditions.users.includeRoles",
+          "op": "contains",
+          "value": "158c047a-c907-4556-b7ef-446551a6b5f7"
+        },
+        {
+          "path": "conditions.users.includeRoles",
+          "op": "contains",
+          "value": "8ac3fc64-6eca-42ea-9e69-59f4c7b60eb2"
+        },
+        {
+          "path": "grantControls.authenticationStrength.displayName",
+          "op": "eq",
+          "value": "Phishing-resistant MFA"
+        }
+      ],
+      "name": "displayName",
+      "fail_if_empty": true,
+      "empty_message": "No Conditional Access policies were collected",
+      "description": "CISA lists eight highly privileged roles (Global Administrator, Privileged Role Administrator, Privileged Authentication Administrator, Security Administrator, Exchange Administrator, SharePoint Administrator, Conditional Access Administrator and Intune Administrator). An enabled policy for all apps must include all of them and require the 'Phishing-resistant MFA' authentication strength.",
+      "remediation": "Entra admin center > Protection > Conditional Access > policy targeting Directory roles (all highly privileged roles), All resources > Grant > Require authentication strength > Phishing-resistant MFA. Enable the policy.",
+      "links": [
+        {
+          "text": "CISA SCuBA M365 Entra ID baseline",
+          "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/aad.md"
+        },
+        {
+          "text": "Authentication strengths",
+          "url": "https://learn.microsoft.com/entra/identity/authentication/concept-authentication-strengths"
+        }
+      ],
+      "origin": "Maester Test-MtCisaPrivilegedPhishResistant"
+    },
+    {
+      "id": "ENTRA.CISA.3.7",
+      "reference": "MS.AAD.3.7v1",
+      "framework": "CISA SCuBA",
+      "area": "Entra ID",
+      "title": "A Conditional Access policy requires managed (compliant) devices for all users and apps",
+      "severity": "Medium",
+      "licence": "Entra ID P1",
+      "nist": "PR.AA-03",
+      "source": "CA_Policies",
+      "mode": "any",
+      "filter": [
+        {
+          "path": "state",
+          "op": "eq",
+          "value": "enabled"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "conditions.applications.includeApplications",
+          "op": "contains",
+          "value": "All"
+        },
+        {
+          "path": "conditions.users.includeUsers",
+          "op": "contains",
+          "value": "All"
+        },
+        {
+          "path": "grantControls.builtInControls",
+          "op": "contains",
+          "value": "compliantDevice"
+        }
+      ],
+      "name": "displayName",
+      "fail_if_empty": true,
+      "empty_message": "No Conditional Access policies were collected",
+      "description": "CISA recommends requiring managed devices for authentication. An enabled policy for all users and all apps must require a compliant device (a policy that offers compliant or hybrid-joined device also counts).",
+      "remediation": "Entra admin center > Protection > Conditional Access > policy for All users and All resources > Grant > Require device to be marked as compliant (optionally OR Require Microsoft Entra hybrid joined device).",
+      "impact": "Unmanaged devices lose access to cloud apps.",
+      "links": [
+        {
+          "text": "CISA SCuBA M365 Entra ID baseline",
+          "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/aad.md"
+        },
+        {
+          "text": "Require compliant device",
+          "url": "https://learn.microsoft.com/entra/identity/conditional-access/policy-all-users-device-compliance"
+        }
+      ],
+      "origin": "Maester Test-MtCisaManagedDevice"
+    },
+    {
+      "id": "ENTRA.CISA.3.8",
+      "reference": "MS.AAD.3.8v1",
+      "framework": "CISA SCuBA",
+      "area": "Entra ID",
+      "title": "A Conditional Access policy requires managed devices to register security information (MFA)",
+      "severity": "Medium",
+      "licence": "Entra ID P1",
+      "nist": "PR.AA-03",
+      "source": "CA_Policies",
+      "mode": "any",
+      "filter": [
+        {
+          "path": "state",
+          "op": "eq",
+          "value": "enabled"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "conditions.applications.includeUserActions",
+          "op": "contains",
+          "value": "urn:user:registersecurityinfo"
+        },
+        {
+          "path": "conditions.users.includeUsers",
+          "op": "contains",
+          "value": "All"
+        },
+        {
+          "path": "grantControls.builtInControls",
+          "op": "contains",
+          "value": "compliantDevice"
+        }
+      ],
+      "name": "displayName",
+      "fail_if_empty": true,
+      "empty_message": "No Conditional Access policies were collected",
+      "description": "CISA recommends managed devices be required to register MFA. An enabled policy using the 'Register security information' user action for all users must require a compliant device (compliant or hybrid-joined also counts).",
+      "remediation": "Entra admin center > Protection > Conditional Access > policy for All users, Target > User actions > Register security information > Grant > Require device to be marked as compliant.",
+      "links": [
+        {
+          "text": "CISA SCuBA M365 Entra ID baseline",
+          "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/aad.md"
+        },
+        {
+          "text": "Securing security info registration",
+          "url": "https://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-registration"
+        }
+      ],
+      "origin": "Maester Test-MtCisaManagedDeviceRegistration"
+    },
+    {
+      "id": "ENTRA.CISA.5.3",
+      "reference": "MS.AAD.5.3v1",
+      "framework": "CISA SCuBA",
+      "area": "Entra ID",
+      "title": "The admin consent workflow is enabled, notifies reviewers and has at least one reviewer",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "PR.AA-05",
+      "source": "AdminConsentPolicy",
+      "mode": "first",
+      "conditions": [
+        {
+          "path": "isEnabled",
+          "op": "true"
+        },
+        {
+          "path": "notifyReviewers",
+          "op": "true"
+        },
+        {
+          "path": "reviewers",
+          "op": "len_ge",
+          "value": 1
+        }
+      ],
+      "name": "id",
+      "fail_if_empty": true,
+      "empty_message": "Admin consent request policy was not collected",
+      "description": "An admin consent workflow lets users request access to apps they cannot consent to. CISA requires it to be enabled with at least one reviewer who is notified of requests.",
+      "remediation": "Entra admin center > Enterprise apps > Consent and permissions > Admin consent settings > Users can request admin consent = Yes, select reviewers, and enable email notifications to reviewers.",
+      "links": [
+        {
+          "text": "CISA SCuBA M365 Entra ID baseline",
+          "url": "https://github.com/cisagov/ScubaGear/blob/main/PowerShell/ScubaGear/baselines/aad.md"
+        },
+        {
+          "text": "Admin consent workflow",
+          "url": "https://learn.microsoft.com/entra/identity/enterprise-apps/configure-admin-consent-workflow"
+        }
+      ],
+      "origin": "Maester Test-MtCisaAppAdminConsent"
+    },
+    {
+      "id": "ENTRA.CIS.5.1.5.1",
+      "reference": "CIS.M365.5.1.5.1",
+      "framework": "CIS Microsoft 365",
+      "area": "Entra ID",
+      "title": "User consent to apps accessing company data is not allowed for low-impact or legacy consent policies",
+      "severity": "High",
+      "licence": "",
+      "nist": "PR.AA-05",
+      "source": "AuthorizationPolicy",
+      "mode": "first",
+      "conditions": [
+        {
+          "path": "defaultUserRolePermissions.permissionGrantPoliciesAssigned",
+          "op": "notcontains",
+          "value": "ManagePermissionGrantsForSelf.microsoft-user-default-low"
+        },
+        {
+          "path": "defaultUserRolePermissions.permissionGrantPoliciesAssigned",
+          "op": "notcontains",
+          "value": "ManagePermissionGrantsForSelf.microsoft-user-default-legacy"
+        }
+      ],
+      "name": "id",
+      "fail_if_empty": true,
+      "empty_message": "Authorization policy was not collected",
+      "description": "Allowing users to consent to apps lets attackers phish consent grants. The default user role must not be assigned the built-in 'microsoft-user-default-low' or 'microsoft-user-default-legacy' app consent policies.",
+      "remediation": "Entra admin center > Enterprise apps > Consent and permissions > User consent settings > Do not allow user consent (or restrict to a custom policy for verified publishers and selected permissions as your organisation requires).",
+      "links": [
+        {
+          "text": "CIS Microsoft 365 Foundations Benchmark",
+          "url": "https://www.cisecurity.org/benchmark/microsoft_365"
+        },
+        {
+          "text": "Configure user consent",
+          "url": "https://learn.microsoft.com/entra/identity/enterprise-apps/configure-user-consent"
+        }
+      ],
+      "origin": "Maester Test-MtCisEnsureUserConsentToAppsDisallowed"
+    },
+    {
+      "id": "ENTRA.CIS.1.3.7",
+      "reference": "CIS.M365.1.3.7",
+      "framework": "CIS Microsoft 365",
+      "area": "Entra ID",
+      "title": "Third-party storage services are restricted in Microsoft 365 on the web",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "PR.AA-05",
+      "source": "ServicePrincipals",
+      "mode": "all",
+      "filter": [
+        {
+          "path": "appId",
+          "op": "eq",
+          "value": "c1f33bc0-bdb4-4248-ba9b-096807ddb43e"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "accountEnabled",
+          "op": "false"
+        }
+      ],
+      "name": "displayName",
+      "fail_if_empty": true,
+      "empty_message": "The Microsoft 365 on the web service principal does not exist (treated as a failure, as in the source test)",
+      "description": "The 'Microsoft 365 on the web' service principal (appId c1f33bc0-bdb4-4248-ba9b-096807ddb43e) controls third-party storage in Office on the web. It must exist and be disabled so users cannot open or save files in third-party storage services.",
+      "remediation": "Entra admin center > Enterprise apps > Microsoft 365 on the web (c1f33bc0-bdb4-4248-ba9b-096807ddb43e) > Properties > Enabled for users to sign-in = No. Create the service principal first if it does not exist.",
+      "links": [
+        {
+          "text": "CIS Microsoft 365 Foundations Benchmark",
+          "url": "https://www.cisecurity.org/benchmark/microsoft_365"
+        }
+      ],
+      "origin": "Maester Test-MtCisThirdPartyStorageServicesRestricted"
+    }
+  ],
+  "not_ported": [
+    {
+      "origin": "MS.AAD.2.2v1",
+      "reason": "Needs identityProtection/settings/notifications (single object) and 'any recipient in notificationRecipients or additionalRecipients has isRiskyUsersAlertsRecipient'; the evaluator cannot express 'any element of a nested list' across two lists"
+    },
+    {
+      "origin": "MS.AAD.5.4v1",
+      "reason": "Deprecated by CISA (March 2025); the Maester test is skipped"
+    },
+    {
+      "origin": "CIS.M365.1.1.3",
+      "reason": "Needs a count of Global Administrator users (active plus eligible) between 2 and 4; counting across datasets is not expressible (the existing CISA.MS.AAD.7.1 rule uses a 2-8 threshold, so it is not the same condition)"
+    },
+    {
+      "origin": "CIS.M365.1.3.4",
+      "reason": "Microsoft 365 admin center setting (beta admin/appsAndServices/settings, OrgSettings-AppsAndServices.Read.All); not an Entra ID control, left to the M365 workload owner"
+    },
+    {
+      "origin": "CIS.M365.1.2.2",
+      "reason": "Shared mailbox sign-in; needs per-mailbox Exchange data joined to Entra users (not Entra ID workload)"
+    },
+    {
+      "origin": "CIS.M365.4.1",
+      "reason": "Intune setting (deviceManagement/settings secureByDefault), not Entra ID; left to the Intune workload"
+    },
+    {
+      "origin": "CIS.M365.8.4.1 / CIS.M365.8.1.1",
+      "reason": "Teams controls, not Entra ID; left to the Teams workload"
+    }
+  ],
+  "covered_notes": {
+    "MS.AAD.5.1v1": "APP-09",
+    "MS.AAD.5.2v1": "APP-10 (any ManagePermissionGrantsForSelf.* policy assigned, same as the CISA test)",
+    "MS.AAD.7.1v1": "CISA.MS.AAD.7.1 (caveat: existing rule counts direct active assignments only; the Maester test also counts eligible assignments)",
+    "MS.AAD.3.5v1": "ID-01",
+    "MS.AAD.3.3v2": "ID-02",
+    "MS.AAD.3.4v1": "ID-03",
+    "MS.AAD.8.1v1": "ID-04",
+    "MS.AAD.8.2v1": "ID-05",
+    "MS.AAD.8.3v1": "ID-06",
+    "MS.AAD.6.1v1": "ID-11",
+    "MS.AAD.4.1v1": "LG-01 (same 12 log categories)",
+    "MS.AAD.7.2v1": "PA-09",
+    "MS.AAD.7.3v1": "PA-10",
+    "MS.AAD.7.4v1": "PA-11",
+    "MS.AAD.7.5v1": "PA-12",
+    "MS.AAD.7.6v1": "PA-13",
+    "MS.AAD.7.7v1": "PA-14",
+    "MS.AAD.7.8v1": "PA-15",
+    "MS.AAD.7.9v1": "PA-16",
+    "CIS.M365.1.2.1": "ID-10",
+    "CIS.M365.1.1.1": "PA-10",
+    "CIS.M365.1.3.1": "ID-11 (caveat: ID-11 skips legacy SharePoint-only domains, the CIS test does not)",
+    "CIS.M365.5.2.3.5": "ID-01",
+    "CIS.M365.5.1.2.2": "APP-09",
+    "CIS.M365.5.1.2.3": "ID-08",
+    "CIS.M365.5.1.4.6": "ZTA.21954",
+    "CIS.M365.5.1.5.2": "APP-11 (isEnabled true, same as the CIS test; the stricter CISA 5.3 is the new rule ENTRA.CISA.5.3)",
+    "CIS.M365.5.1.6.2": "ID-04"
+  }
+}

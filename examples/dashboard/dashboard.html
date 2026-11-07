@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SecureIT Identity</title>
+<link rel="icon" href="data:image/png;base64,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">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f6fa; --card: #ffffff; --text: #1b2433; --muted: #64708a; --line: #e4e8f0; --soft: #f0f3f9;
+    --brand: #076bf2; --brand-dark: #0a4fb8; --brand-soft: #e6f0fe;
+    --pass: #168a4f; --pass-bg: #dff3e8; --fail: #c62b2b; --fail-bg: #fde8e8; --skip: #5d6675; --skip-bg: #eceff4;
+    --high: #e5484d; --medium: #f5a524; --low: #3b82f6; --ok: #16b36a; --grey: #a5aebf; --violet: #6d5bd0;
+    --shadow: 0 1px 2px rgba(20, 30, 55, .06), 0 4px 14px rgba(20, 30, 55, .04);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.5 Ubuntu, "Segoe UI", system-ui, -apple-system, sans-serif; }
+  h1 { font-size: 22px; margin: 0; font-weight: 500; }
+  h2 { font-size: 15px; margin: 0; font-weight: 500; }
+  h3 { font-size: 13px; margin: 0 0 8px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+  .muted { color: var(--muted); }
+  .hidden { display: none !important; }
+  a { color: var(--brand); }
+  code { background: var(--soft); padding: 1px 5px; border-radius: 4px; font-size: 12.5px; }
+
+  /* navbar */
+  .nav { position: sticky; top: 0; z-index: 20; background: var(--card); border-bottom: 1px solid var(--line); box-shadow: var(--shadow); display: flex; align-items: center; gap: 18px; padding: 8px 22px; flex-wrap: wrap; }
+  .brand { display: flex; align-items: center; gap: 11px; margin-right: 6px; }
+  .brand img { height: 38px; width: auto; }
+  .brand b { font-size: 18px; font-weight: 700; letter-spacing: .01em; display: block; line-height: 1.1; } .brand b span { color: var(--brand); }
+  .brand small { color: var(--muted); font-size: 11.5px; }
+  .nav .sp { flex: 1; }
+  .nfield { display: flex; align-items: center; gap: 8px; }
+  .nfield label { font-size: 12px; color: var(--muted); }
+  select { background: var(--card); color: var(--text); border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px; font: inherit; min-width: 150px; }
+  input[type=search] { background: var(--card); color: var(--text); border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px; font: inherit; }
+  .tenantsel select { font-weight: 500; border-color: var(--brand); min-width: 200px; }
+  .btn { display: inline-flex; gap: 7px; align-items: center; background: var(--brand); color: #fff; padding: 8px 14px; border-radius: 8px; cursor: pointer; font: inherit; font-weight: 500; border: 1px solid var(--brand); }
+  .btn:hover { background: var(--brand-dark); }
+  .btn.alt { background: var(--card); color: var(--text); border-color: var(--line); } .btn.alt:hover { background: var(--soft); }
+  .btn.on { background: var(--brand-soft); color: var(--brand-dark); border-color: var(--brand); }
+  .updated { display: flex; gap: 8px; align-items: center; font-size: 12.5px; color: var(--muted); line-height: 1.25; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 4px rgba(22, 179, 106, .18); flex: none; }
+  /* layout */
+  .shell { display: flex; align-items: flex-start; }
+  .side { width: 210px; flex: none; padding: 18px 12px; position: sticky; top: 59px; }
+  .side button { display: flex; width: 100%; gap: 10px; align-items: center; background: none; border: 0; color: var(--text); font: inherit; padding: 10px 12px; border-radius: 9px; cursor: pointer; text-align: left; margin-bottom: 4px; }
+  .side button:hover { background: var(--soft); }
+  .side button.on { background: var(--brand-soft); color: var(--brand-dark); font-weight: 500; }
+  .side svg { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .content { flex: 1; min-width: 0; padding: 22px 26px 30px; }
+  .pagehead { margin-bottom: 16px; display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; flex-wrap: wrap; }
+  #pageTools { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 12.5px; }
+  .btn.sm { padding: 4px 10px; font-size: 12.5px; }
+  .pagehead p { margin: 2px 0 0; color: var(--muted); }
+
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; box-shadow: var(--shadow); }
+  .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; margin-bottom: 14px; }
+  .s2 { grid-column: span 2; } .s3 { grid-column: span 3; } .s4 { grid-column: span 4; } .s5 { grid-column: span 5; } .s6 { grid-column: span 6; } .s7 { grid-column: span 7; } .s8 { grid-column: span 8; } .s12 { grid-column: span 12; }
+  @media (max-width: 1450px) { .s2 { grid-column: span 4; } }
+  @media (max-width: 1200px) { .s3, .s4, .s5, .s7, .s8 { grid-column: span 6; } }
+  @media (max-width: 860px) { .s2, .s3, .s4, .s5, .s6, .s7, .s8 { grid-column: span 12; } .shell { flex-direction: column; } .side { width: 100%; position: static; display: flex; gap: 6px; padding: 8px 14px 0; } .side button { width: auto; margin: 0; } .content { padding: 16px 14px; } }
+  .panelhead { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 8px; }
+  .link { background: none; border: 0; color: var(--brand); cursor: pointer; font: inherit; font-size: 12.5px; padding: 0; }
+  .na { color: var(--muted); font-size: 13px; padding: 10px 12px; background: var(--soft); border-radius: 8px; }
+
+  .tenantbar { display: flex; flex-wrap: wrap; gap: 8px 22px; align-items: center; margin-bottom: 14px; }
+  .chip { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 500; background: var(--brand-soft); color: var(--brand-dark); }
+  .chip.g { background: var(--pass-bg); color: var(--pass); } .chip.r { background: var(--fail-bg); color: var(--fail); } .chip.n { background: var(--skip-bg); color: var(--skip); } .chip.o { background: #fdf0d6; color: #9a6200; }
+
+  .kpi .head { display: flex; gap: 12px; align-items: center; }
+  .ico { width: 42px; height: 42px; border-radius: 11px; display: grid; place-items: center; flex: none; }
+  .ico svg { width: 22px; height: 22px; fill: #fff; }
+  .kpi .t { font-size: 12.5px; color: var(--muted); }
+  .kpi .n { font-size: 28px; font-weight: 500; line-height: 1.15; }
+  .kpi .sub { margin-top: 8px; font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 2px 12px; }
+  .kpi .sub b { color: var(--text); font-weight: 500; }
+
+  .donutwrap { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .donut { width: 138px; height: 138px; flex: none; }
+  .donut .c1 { font-size: 23px; font-weight: 500; fill: var(--text); } .donut .c2 { font-size: 11px; fill: var(--muted); }
+  .legend { flex: 1; min-width: 140px; }
+  .legend div { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
+  .legend .sw { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+  .legend .v { margin-left: auto; font-weight: 500; white-space: nowrap; } .legend .p { color: var(--muted); font-weight: 400; margin-left: 6px; }
+  .bars .row { display: grid; grid-template-columns: minmax(90px, 40%) 1fr auto; gap: 10px; align-items: center; padding: 5px 0; font-size: 13px; }
+  .bars .lab { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .bars .track { height: 9px; background: var(--soft); border-radius: 5px; overflow: hidden; display: flex; }
+  .bars .track span { display: block; height: 100%; }
+  .bars .val { color: var(--muted); font-size: 12.5px; white-space: nowrap; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; }
+  .stats div { background: var(--soft); border-radius: 9px; padding: 9px 11px; } .stats b { display: block; font-size: 19px; font-weight: 500; } .stats span { font-size: 12px; color: var(--muted); }
+  .stats div.warn b { color: var(--fail); } .stats div.good b { color: var(--pass); }
+
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); font-weight: 500; }
+  .tbl td { font-size: 13px; padding: 8px 8px; } .tbl th { padding: 6px 8px; } .tbl td:first-child { white-space: nowrap; }
+  .lvl { white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; font-weight: 500; font-size: 12.5px; }
+  .lvl:before { content: ""; width: 9px; height: 9px; border-radius: 2px; background: var(--c); }
+  .scroll { overflow-x: auto; }
+  .plist { max-height: 150px; overflow: auto; margin-top: 10px; font-size: 12.5px; } .plist div { display: flex; justify-content: space-between; gap: 8px; padding: 3px 0; border-bottom: 1px dashed var(--line); }
+
+  /* event hub block */
+  .hubhead { display: flex; justify-content: space-between; gap: 12px; align-items: center; flex-wrap: wrap; margin: 6px 0 12px; }
+  .banner { background: #fff7e0; border: 1px solid #f2d98a; color: #6b4a00; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; font-size: 13px; }
+  .sample { position: relative; }
+  .sample:after { content: "SAMPLE"; position: absolute; top: 10px; right: 12px; font-size: 10px; letter-spacing: .1em; color: #9a6200; background: #fdf0d6; border-radius: 4px; padding: 1px 6px; }
+  .line svg { width: 100%; height: 170px; display: block; }
+
+  /* assessment */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 14px; }
+  .stat .n { font-size: 26px; font-weight: 500; }
+  .stat.pass .n { color: var(--pass); } .stat.fail .n { color: var(--fail); } .stat.skip .n { color: var(--skip); }
+  .bar { display: flex; height: 10px; border-radius: 5px; overflow: hidden; background: var(--skip-bg); min-width: 160px; }
+  .bar span { display: block; height: 100%; } .b-pass { background: var(--pass); } .b-fail { background: var(--fail); } .b-skip { background: var(--grey); opacity: .6; }
+  .badge { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 500; white-space: nowrap; }
+  .badge.Passed { background: var(--pass-bg); color: var(--pass); } .badge.Failed { background: var(--fail-bg); color: var(--fail); } .badge.Skipped { background: var(--skip-bg); color: var(--skip); }
+  .badge.Pass { background: var(--pass-bg); color: var(--pass); } .badge.Fail { background: var(--fail-bg); color: var(--fail); }
+  .badge.NotAssessable { background: #fdf0d6; color: #9a6200; } .badge.NotApplicable { background: var(--skip-bg); color: var(--skip); }
+  .sev-Critical { color: var(--fail); } .sev-Critical, .sev-High { font-weight: 700; } .sev-Info, .sev-Low { color: var(--muted); }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 12px 0 10px; }
+  .filters button { background: var(--card); color: var(--text); border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; cursor: pointer; font: inherit; }
+  .filters button.on { background: var(--brand); border-color: var(--brand); color: #fff; }
+  tr.row { cursor: pointer; } tr.row:hover { background: var(--brand-soft); }
+  tr.detail td { background: var(--soft); }
+  .kv { display: grid; grid-template-columns: 130px 1fr; gap: 6px 14px; } .kv > div:nth-child(odd) { color: var(--muted); } .kv > div { overflow-wrap: anywhere; }
+  .md p { margin: 0 0 8px; } .md ul, .md ol { margin: 0 0 8px; padding-left: 22px; } .md pre { background: var(--card); border: 1px solid var(--line); padding: 8px 10px; border-radius: 6px; overflow-x: auto; margin: 0 0 8px; } .md > :last-child { margin-bottom: 0; }
+  .resulttext { font-weight: 500; }
+  details.affected { margin-top: 4px; } details.affected summary { cursor: pointer; font-weight: 500; } details.affected ul { margin: 6px 0 0; padding-left: 20px; max-height: 260px; overflow: auto; }
+  .empty { padding: 40px; text-align: center; max-width: 720px; margin: 40px auto; }
+  details.coll summary { cursor: pointer; font-size: 13px; color: var(--muted); } details.coll ul { margin: 6px 0 0; padding-left: 20px; font-size: 13px; }
+
+  .refcard { margin-top: 14px; color: var(--muted); font-size: 12.5px; } .refcard p { margin: 0 0 6px; } .refcard ul { margin: 4px 0 8px; padding-left: 20px; }
+  .blank { min-height: 150px; border-radius: 9px; border: 1px dashed var(--line); display: grid; place-items: center; text-align: center; padding: 14px; color: var(--muted); font-size: 13px; background: var(--soft); }
+  .blank b { display: block; color: var(--text); font-weight: 500; margin-bottom: 2px; }
+  .card.attn { border-color: #f1b3b3; background: #fff8f8; }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 14px; }
+  @media (max-width: 1000px) { .kpis { grid-template-columns: repeat(2, 1fr); } } @media (max-width: 560px) { .kpis { grid-template-columns: 1fr; } }
+  .banner.row { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+  .attnbox { border-radius: 10px; padding: 12px 14px; margin-top: 10px; font-size: 13px; } .attnbox.r { background: var(--fail-bg); color: #8f1f1f; } .attnbox.g { background: var(--pass-bg); color: #0f5f37; }
+  .bigline { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; } .bigline b { font-size: 34px; font-weight: 500; line-height: 1.1; }
+  @media print { .nav, .side { display: none; } }
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="brand"><img src="data:image/png;base64,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" alt="Jolera"><div><b>SecureIT <span>Identity</span></b><small>Jolera · Microsoft Entra ID assessment</small></div></div>
+  <div class="nfield tenantsel" id="tenantBox"><label for="tenant">Tenant</label><select id="tenant"></select></div>
+  <div class="nfield hidden" id="runBox"><label for="run">Run</label><select id="run"></select></div>
+  <div class="sp"></div>
+  <div class="updated hidden" id="updated"><span class="dot"></span><div>Data collected<br><b id="updatedAt"></b></div></div>
+</header>
+
+<div class="shell">
+  <aside class="side hidden" id="side">
+    <button data-page="overview" class="on"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Overview</button>
+    <button data-page="assessment"><svg viewBox="0 0 24 24"><path d="M12 3 20 6v5.5c0 4.6-3.2 8.2-8 9.5-4.8-1.3-8-4.9-8-9.5V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>Security configuration assessment (SCA)</button>
+    <button data-page="users"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 19c0-3.300 2.700-5.500 6-5.500s6 2.200 6 5.500"/><path d="M16 5.500a3 3 0 0 1 0 5.500M18.500 19c0-2.300-1-4-2.500-5"/></svg>Users and licences</button>
+    <button data-page="devices"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="11" rx="1.5"/><path d="M8 20h8M12 16v4"/></svg>Devices</button>
+    <button data-page="apps"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg>Applications</button>
+  </aside>
+  <main class="content">
+    <div id="empty" class="card empty hidden">
+      <h2>No data found</h2>
+      <p class="muted">The dashboard reads <code id="dataPath">runs/dashboard_data.js</code>, which <code>entra_checks.py</code> writes after every run.<br>
+        Run <code>entra_collect.py</code> and <code>entra_checks.py</code>, or refresh the file with <code>python dashboard_data.py</code>, and keep <code>dashboard.html</code> where it is.</p>
+    </div>
+    <div id="app" class="hidden">
+      <div class="pagehead"><div><h1 id="pageTitle"></h1><p id="pageSub"></p></div><div id="pageTools"></div></div>
+      <section id="pageOverview"></section>
+      <section id="pageUsers" class="hidden"></section>
+      <section id="pageDevices" class="hidden"></section>
+      <section id="pageApps" class="hidden"></section>
+      <section id="pageAssessment" class="hidden">
+        <div id="assessEmpty" class="card muted hidden">This run has no check results. Run <code>entra_checks.py</code> on it first.</div>
+        <div id="assessView">
+          <div class="cards" id="cards"></div>
+          <div class="card scroll" style="margin-bottom:14px"><div class="panelhead"><h2>Posture score by area</h2><span class="muted" style="font-size:12.5px">Pass / (Pass + Fail). Not assessable and not applicable controls are listed, not scored.</span></div><table id="areas"></table></div>
+          <div class="card scroll" style="margin-bottom:14px"><div class="panelhead"><h2>By framework</h2></div><table id="frameworks"></table></div>
+          <div class="card">
+            <div class="panelhead"><h2>Checks</h2></div>
+            <div class="filters"><span id="statusButtons"></span><select id="area" aria-label="Area"></select><select id="framework" aria-label="Framework"></select><select id="severity" aria-label="Severity"></select>
+              <input id="search" type="search" placeholder="Search rule, title, evidence" size="30"><span id="count" class="muted"></span></div>
+            <div class="scroll"><table id="results"></table></div>
+          </div>
+        </div>
+        <div id="scaColl"></div>
+        <div class="card refcard">
+<p><b>About this assessment.</b> SecureIT Identity checks a Microsoft Entra ID tenant using read-only Microsoft Graph data. The checks are automated configuration tests adapted from open source projects, plus SecureIT's own checks. Results are a starting point and should be reviewed by an engineer before any change is made.</p>
+    <ul>
+      <li><a href="https://github.com/maester365/maester" target="_blank" rel="noopener noreferrer">Maester</a> (MIT licence, © Maester Team): test logic, descriptions and remediation text, including the EIDSCA configuration tests (<a href="https://maester.dev" target="_blank" rel="noopener noreferrer">maester.dev</a>).</li>
+      <li><a href="https://github.com/microsoft/zerotrustassessment" target="_blank" rel="noopener noreferrer">Microsoft Zero Trust Assessment</a> (MIT licence): identity tests, descriptions and remediation text.</li>
+      <li><a href="https://github.com/cisagov/ScubaGear" target="_blank" rel="noopener noreferrer">CISA SCuBA / ScubaGear</a> (CC0 1.0, public domain): Entra ID baseline controls.</li>
+      <li>Remediation links point to <a href="https://learn.microsoft.com/entra/" target="_blank" rel="noopener noreferrer">Microsoft Learn</a>.</li>
+    </ul>
+    <p>The projects above are not affiliated with SecureIT or Jolera and do not endorse these results. Sign-in, audit and provisioning charts use logs from the Event Hub integrations, not this tool. Data stays in your browser.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var companies = [], comp = null, run = null, page = 'overview';
+  var state = { status: 'All', area: 'All', framework: 'All', severity: 'All', search: '' };
+  var SEV_ORDER = { Critical: 0, High: 1, Medium: 2, Low: 3, Info: 4 }, OUT_ORDER = { 'Fail': 0, 'Not Assessable': 1, 'Not Applicable': 2, 'Pass': 3 };
+  var DNS_AREA = 'DNS (SPF, DKIM, DMARC)';
+  function isDns(r) { return String(r.dataset || '').indexOf('DNS_MailAuth') >= 0; }   // a view over existing rules, their own area is unchanged
+  var AREA_ORDER = ['Entra ID', 'Intune', 'Exchange Online', 'Teams', 'SharePoint and OneDrive', 'Security and compliance', 'Azure (identity)'];
+
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function lc(s) { return String(s == null ? '' : s).toLowerCase(); }
+  function fmt(n) { return Number(n).toLocaleString(); }
+  function pct(v, t) { return t ? Math.round(v * 100 / t) : 0; }
+  function when(s) { var d = new Date(s); return isNaN(d) ? '' : d.toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }); }
+  function day(s) { var d = new Date(s); return isNaN(d) ? '' : d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }); }
+
+  /* ---------- markdown-lite (input is escaped first) ---------- */
+  function inline(text) {
+    return esc(text).replace(/`([^`]+)`/g, '<code>$1</code>').replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+  }
+  function md(text) {
+    if (!text) return '';
+    var out = [], list = null, para = [], fence = null;
+    function fp() { if (para.length) { out.push('<p>' + para.join('<br>') + '</p>'); para = []; } }
+    function fl() { if (list) { out.push('</' + list + '>'); list = null; } }
+    String(text).replace(/\r/g, '').split('\n').forEach(function (line) {
+      if (/^\s*```/.test(line)) { if (fence === null) { fp(); fl(); fence = []; } else { out.push('<pre>' + esc(fence.join('\n')) + '</pre>'); fence = null; } return; }
+      if (fence !== null) { fence.push(line); return; }
+      var ul = line.match(/^\s*[-*]\s+(.*)$/), ol = line.match(/^\s*\d+\.\s+(.*)$/);
+      if (ul || ol) { fp(); var k = ul ? 'ul' : 'ol'; if (list !== k) { fl(); out.push('<' + k + '>'); list = k; } out.push('<li>' + inline((ul || ol)[1]) + '</li>'); }
+      else if (!line.trim()) { fp(); fl(); } else { fl(); para.push(inline(line)); }
+    });
+    if (fence !== null) out.push('<pre>' + esc(fence.join('\n')) + '</pre>');
+    fp(); fl();
+    return '<div class="md">' + out.join('') + '</div>';
+  }
+
+  /* ---------- load the data file written by entra_checks.py / dashboard_data.py ---------- */
+  var src = new URLSearchParams(location.search).get('data') || '../../runs/dashboard_data.js';
+  $('dataPath').textContent = src;
+  var s = document.createElement('script');
+  s.src = src + (src.indexOf('?') < 0 ? '?' : '&') + 'v=' + Date.now();   // never serve an old cached data file
+  s.onload = function () { companies = (window.SECUREIT_DATA && window.SECUREIT_DATA.companies || []).filter(function (c) { return c.runs && c.runs.length; }); companies.length ? init() : noData(); };
+  s.onerror = noData;
+  document.head.appendChild(s);
+  function noData() { $('empty').classList.remove('hidden'); }
+
+  function init() {
+    $('tenant').innerHTML = companies.map(function (c, i) { return '<option value="' + i + '">' + esc(c.name) + '</option>'; }).join('');
+    ['app', 'side'].forEach(function (id) { $(id).classList.remove('hidden'); });
+    pickCompany(0);
+  }
+  $('tenant').addEventListener('change', function (e) { pickCompany(+e.target.value); });
+  $('run').addEventListener('change', function (e) { pickRun(comp.runs[+e.target.value]); });
+  function pickCompany(i) {
+    comp = companies[i];
+    $('run').innerHTML = comp.runs.map(function (r, j) { return '<option value="' + j + '">' + esc(r.collected ? new Date(r.collected).toLocaleString() : r.run_id) + '</option>'; }).join('');
+    $('runBox').classList.toggle('hidden', comp.runs.length < 2);
+    pickRun(comp.runs[0]);
+  }
+  function pickRun(r) {
+    run = r; state = { status: 'All', area: 'All', framework: 'All', severity: 'All', search: '' }; $('search').value = '';
+    $('updatedAt').textContent = r.collected ? new Date(r.collected).toLocaleString() : '';
+    $('updated').classList.toggle('hidden', !r.collected);
+    render();
+  }
+  $('side').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) setPage(b.dataset.page); });
+  function setPage(p) { page = p; Array.prototype.forEach.call($('side').children, function (b) { b.classList.toggle('on', b.dataset.page === p); }); window.scrollTo(0, 0); render(); }
+  $('pageOverview').addEventListener('click', function (e) { if (e.target.closest('[data-go]')) setPage('assessment'); });
+  $('pageTools').addEventListener('click', function (e) { if (e.target.closest('[data-hub]')) { sample = !sample; renderOverview(); } });
+
+  var PAGES = {
+    overview: ['pageOverview', null, ''],
+    assessment: ['pageAssessment', 'Security configuration assessment (SCA)', 'Baseline checks against the collected tenant configuration: test overview and details.'],
+    users: ['pageUsers', 'Users and licences', 'Users, groups, MFA registration and licences.'],
+    devices: ['pageDevices', 'Devices', 'Registered devices, compliance and join type.'],
+    apps: ['pageApps', 'Applications', 'App registrations and enterprise applications.']
+  };
+  var RENDER = { overview: renderOverview, assessment: renderAssessment, users: renderUsers, devices: renderDevices, apps: renderApps };
+  function render() {
+    Object.keys(PAGES).forEach(function (k) { $(PAGES[k][0]).classList.toggle('hidden', k !== page); });
+    $('pageTitle').textContent = PAGES[page][1] || comp.name;
+    $('pageSub').classList.toggle('hidden', page === 'overview');
+    $('pageSub').textContent = page === 'overview' ? '' : comp.name + ': ' + PAGES[page][2].charAt(0).toLowerCase() + PAGES[page][2].slice(1);
+    if (page !== 'overview') $('pageTools').innerHTML = '';
+    RENDER[page]();
+  }
+
+  /* ---------- building blocks ---------- */
+  var ICON = {
+    users: '<svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><circle cx="17" cy="9" r="2.6"/><path d="M3 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5z"/><path d="M15.5 14c3 0 5.5 1.8 5.5 4.5h-4.2c0-1.8-.5-3.2-1.3-4.5z"/></svg>',
+    warn: '<svg viewBox="0 0 24 24"><path d="M12 3 22 20H2z"/><path d="M12 9v5M12 16.5v1.5" stroke="#e5484d" stroke-width="2" stroke-linecap="round"/></svg>',
+    shield: '<svg viewBox="0 0 24 24"><path d="M12 2 20 5v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V5z"/></svg>',
+    signin: '<svg viewBox="0 0 24 24"><path d="M10 4h9v16h-9v-2.5h6.5v-11H10z"/><path d="M3 12h9l-3-3m3 3-3 3" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    priv: '<svg viewBox="0 0 24 24"><circle cx="12" cy="7.5" r="3.5"/><path d="M5 20c0-4 3-6.500 7-6.500s7 2.500 7 6.500z"/></svg>',
+    device: '<svg viewBox="0 0 24 24"><path d="M4 5h16a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zM8 19h8v-1.500H8z"/></svg>',
+    key: '<svg viewBox="0 0 24 24"><path d="M14 4a6 6 0 0 0-5.700 7.900L3 17.200V21h3.800v-2.200H9V16.600h2.200l1.900-1.900A6 6 0 1 0 14 4zm2 3.500a1.500 1.500 0 1 1 0 3 1.500 1.500 0 0 1 0-3z"/></svg>',
+    app: '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg>'
+  };
+  function kpi(span, color, icon, title, main, sub) {
+    return '<div class="card kpi ' + span + '"><div class="head"><div class="ico" style="background:' + color + '">' + ICON[icon] + '</div><div><div class="t">' + esc(title) + '</div><div class="n">' + main + '</div></div></div><div class="sub">' + sub + '</div></div>';
+  }
+  function subs(items) { return items.map(function (i) { return '<span><b>' + esc(fmt(i[0])) + '</b> ' + esc(i[1]) + '</span>'; }).join(''); }
+  function panel(cls, title, body, right, extra) { return '<div class="card ' + cls + (extra ? ' ' + extra : '') + '"><div class="panelhead"><h2>' + esc(title) + '</h2>' + (right || '') + '</div>' + body + '</div>'; }
+  function na(msg) { return '<div class="na">' + esc(msg) + '</div>'; }
+  function sec(o, fn) { return !o ? na('No data') : o.unavailable ? na(o.unavailable) : fn(o.data); }
+  function donut(segs, c1, c2) {
+    var total = segs.reduce(function (a, x) { return a + x.v; }, 0), R = 52, C = 2 * Math.PI * R, off = 0, arcs = '';
+    if (!total) arcs = '<circle cx="69" cy="69" r="' + R + '" fill="none" stroke="var(--line)" stroke-width="18"/>';
+    segs.forEach(function (x) { if (!x.v) return; var len = C * x.v / total;
+      arcs += '<circle cx="69" cy="69" r="' + R + '" fill="none" stroke="' + x.color + '" stroke-width="18" stroke-dasharray="' + len + ' ' + (C - len) + '" stroke-dashoffset="' + (-off) + '" transform="rotate(-90 69 69)"/>'; off += len; });
+    return '<svg class="donut" viewBox="0 0 138 138" role="img">' + arcs + '<text class="c1" x="69" y="70" text-anchor="middle">' + esc(c1) + '</text><text class="c2" x="69" y="87" text-anchor="middle">' + esc(c2) + '</text></svg>';
+  }
+  function legend(segs) {
+    var total = segs.reduce(function (a, x) { return a + x.v; }, 0);
+    return '<div class="legend">' + segs.map(function (x) { return '<div><span class="sw" style="background:' + x.color + '"></span>' + esc(x.label) + '<span class="v">' + esc(fmt(x.v)) + '<span class="p">' + pct(x.v, total) + '%</span></span></div>'; }).join('') + '</div>';
+  }
+  function donutBlock(segs, c1, c2) { return '<div class="donutwrap">' + donut(segs, c1, c2) + legend(segs) + '</div>'; }
+  function bars(rows) {  // rows: [{label, parts:[{v,color}], right}], bar scaled to the largest total
+    var max = Math.max.apply(null, rows.map(function (r) { return r.parts.reduce(function (a, p) { return a + p.v; }, 0); }).concat([1]));
+    return '<div class="bars">' + rows.map(function (r) {
+      return '<div class="row"><span class="lab" title="' + esc(r.label) + '">' + esc(r.label) + '</span><span class="track">' + r.parts.map(function (p) { return '<span style="width:' + (p.v * 100 / max) + '%;background:' + p.color + '"></span>'; }).join('') + '</span><span class="val">' + esc(r.right) + '</span></div>';
+    }).join('') + '</div>';
+  }
+  function stats(items) { return '<div class="stats">' + items.map(function (i) { return '<div class="' + (i[2] || '') + '"><b>' + esc(i[0]) + '</b><span>' + esc(i[1]) + '</span></div>'; }).join('') + '</div>'; }
+  var LVL = { high: ['High', 'var(--high)'], medium: ['Medium', 'var(--medium)'], low: ['Low', 'var(--low)'], hidden: ['Hidden', 'var(--grey)'], none: ['None', 'var(--ok)'] };
+  function lvlHtml(l) { var x = LVL[lc(l)] || [l || 'Unknown', 'var(--grey)']; return '<span class="lvl" style="--c:' + x[1] + '">' + esc(x[0]) + '</span>'; }
+
+  /* ---------- shared bits ---------- */
+  function tenantBar(t) {
+    if (!t || !t.data) return t && t.unavailable ? '<div class="card tenantbar muted">' + esc(t.unavailable) + '</div>' : '';
+    var d = t.data;
+    return '<div class="card tenantbar"><div><div class="muted" style="font-size:12px">Tenant</div><b>' + esc(d.name || comp.name) + '</b></div>' +
+      '<div><div class="muted" style="font-size:12px">Primary domain</div>' + esc(d.default_domain || '—') + '</div>' +
+      '<div><div class="muted" style="font-size:12px">Tenant ID</div><code>' + esc(d.id || '') + '</code></div>' +
+      '<div><span class="chip">' + esc(d.plan) + '</span> <span class="chip ' + (d.synced ? 'o' : 'g') + '">' + (d.synced ? 'Hybrid (AD synced)' : 'Cloud-only') + '</span> ' +
+      '<span class="chip ' + (d.federated_domains ? 'o' : 'n') + '">' + d.domains + ' domains' + (d.federated_domains ? ', ' + d.federated_domains + ' federated' : '') + '</span></div></div>';
+  }
+  function oc(r) { return r.outcome || (r.status === 'Passed' ? 'Pass' : r.status === 'Failed' ? 'Fail' : 'Not Assessable'); }
+  function counts(rows) {
+    var c = { 'Pass': 0, 'Fail': 0, 'Not Assessable': 0, 'Not Applicable': 0, total: rows.length };
+    rows.forEach(function (r) { c[oc(r)]++; });
+    c.Passed = c.Pass; c.Failed = c.Fail; c.NotAssessable = c['Not Assessable']; c.NotApplicable = c['Not Applicable']; c.Skipped = c.NotAssessable + c.NotApplicable;
+    c.score = (c.Pass + c.Fail) ? Math.round(c.Pass * 100 / (c.Pass + c.Fail)) : null;
+    return c;
+  }
+  function areaStats(res) {
+    var by = {}; res.forEach(function (r) { var a = r.area || 'Entra ID'; (by[a] = by[a] || []).push(r); });
+    return Object.keys(by).sort(function (a, b) { var i = AREA_ORDER.indexOf(a), j = AREA_ORDER.indexOf(b); return (i < 0 ? 99 : i) - (j < 0 ? 99 : j); }).map(function (a) { var c = counts(by[a]); c.area = a; return c; });
+  }
+  function ocBadge(r) { var o = oc(r); return '<span class="badge ' + esc(o.replace(' ', '')) + '">' + esc(o) + '</span>'; }
+  function sevCounts(res) { var c = { Critical: 0, High: 0, Medium: 0, Low: 0, Info: 0 }; res.forEach(function (r) { if (r.status === 'Failed') c[r.severity] = (c[r.severity] || 0) + 1; }); return c; }
+  function collection(c) {
+    if (!c) return '';
+    return '<details class="coll card" style="margin-top:14px"><summary>Data collection: ' + c.ok + ' data sets collected' + (c.failed.length ? ', ' + c.failed.length + ' not collected (checks that need them are skipped)' : '') + '</summary>' +
+      (c.failed.length ? '<ul>' + c.failed.map(function (d) { return '<li><b>' + esc(d.dataset) + '</b>: ' + esc(d.error) + '</li>'; }).join('') + '</ul>' : '') + '</details>';
+  }
+  var METHOD = { microsoftAuthenticatorPush: 'Authenticator (push)', microsoftAuthenticatorPasswordless: 'Authenticator (passwordless)', mobilePhone: 'Mobile phone (SMS/voice)', alternateMobilePhone: 'Alternate phone', officePhone: 'Office phone',
+    softwareOneTimePasscode: 'Authenticator app (code)', hardwareOneTimePasscode: 'Hardware token', temporaryAccessPass: 'Temporary Access Pass', fido2SecurityKey: 'FIDO2 security key', passKeyDeviceBound: 'Passkey', passKeyDeviceBoundAuthenticator: 'Passkey (Authenticator)',
+    windowsHelloForBusiness: 'Windows Hello for Business', email: 'Email', securityQuestion: 'Security questions' };
+
+  /* ---------- overview ---------- */
+  var sample = false;   // Event Hub widgets: empty state first, sample data on request
+  function emptyBox() { return '<div class="blank"><div><b>No data</b>Covered by the Event Hub integration.</div></div>'; }
+  function kpiOr(o, fn, color, icon, title) {
+    if (o && o.data) return fn(o.data);
+    return kpi('', color, icon, title, '—', esc((o && o.unavailable) || 'No data'));
+  }
+  function lineChart() {
+    var a = [5200, 5800, 6900, 6100, 7400, 7000, 7900], b = [820, 900, 1100, 760, 1250, 980, 1300], days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], W = 520, H = 170, pad = 28, max = 9000;
+    function path(v) { return v.map(function (y, i) { return (i ? 'L' : 'M') + (pad + i * (W - pad * 2) / (v.length - 1)) + ' ' + (H - 24 - y * (H - 44) / max); }).join(' '); }
+    var grid = [0, 3000, 6000, 9000].map(function (g) { var y = H - 24 - g * (H - 44) / max; return '<line x1="' + pad + '" x2="' + (W - pad) + '" y1="' + y + '" y2="' + y + '" stroke="var(--line)"/><text x="2" y="' + (y + 4) + '" font-size="10" fill="var(--muted)">' + (g / 1000) + 'k</text>'; }).join('');
+    var lab = days.map(function (d, i) { return '<text x="' + (pad + i * (W - pad * 2) / 6) + '" y="' + (H - 6) + '" font-size="10" text-anchor="middle" fill="var(--muted)">' + d + '</text>'; }).join('');
+    return '<div class="line"><svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none">' + grid + lab + '<path d="' + path(a) + '" fill="none" stroke="var(--ok)" stroke-width="2.5"/><path d="' + path(b) + '" fill="none" stroke="var(--high)" stroke-width="2.5"/></svg></div>' +
+      '<div class="legend" style="display:flex;gap:18px"><div><span class="sw" style="background:var(--ok)"></span>Successful</div><div><span class="sw" style="background:var(--high)"></span>Failed</div></div>';
+  }
+  // Event Hub widgets. Without data each shows an empty box; with sample data they show illustrative numbers.
+  function hubWidgets() {
+    function hp(span, title, fn) { return panel(span + (sample ? ' sample' : ''), title, sample ? fn() : emptyBox()); }
+    function hk(color, icon, title, main, sub) { return sample ? kpi('sample', color, icon, title, main, sub) : kpi('', color, icon, title, '—', 'No data'); }
+    var bar = function (rows, color) { return bars(rows.map(function (x) { return { label: x[0], parts: [{ v: x[1], color: color }], right: fmt(x[1]) }; })); };
+    return {
+      kpiSignins: hk('#3b82f6', 'signin', 'Sign-ins (last 7 days)', '51,820', subs([[46200, 'successful'], [5620, 'failed']])),
+      kpiFail: hk('#e5484d', 'warn', 'Failed sign-in rate', '10.8%', subs([[12, 'accounts with 50+ failures']])),
+      activity: hp('s6', 'Sign-in activity', lineChart),
+      country: hp('s6', 'Sign-ins by country', function () { return bar([['United Kingdom', 21400], ['Canada', 18900], ['United States', 7300], ['Ireland', 2100], ['Netherlands', 900]], 'var(--brand)'); }),
+      caOutcomes: hp('s4', 'Conditional Access outcomes', function () { return donutBlock([{ label: 'Success', v: 38400, color: 'var(--ok)' }, { label: 'Blocked', v: 8900, color: 'var(--high)' }, { label: 'Not applied', v: 3100, color: 'var(--medium)' }, { label: 'Report only', v: 1420, color: 'var(--low)' }], '51.8k', 'sign-ins'); }),
+      topTargeted: hp('s4', 'Top targeted accounts (failed sign-ins)', function () { return '<table class="tbl"><tr><th>Account</th><th>Failed</th><th>IPs</th></tr>' + [['j.smith@contoso.com', 1243, 28], ['admin@contoso.com', 842, 15], ['m.roberts@contoso.com', 521, 19], ['a.lee@contoso.com', 389, 12]].map(function (r) { return '<tr><td>' + r[0] + '</td><td>' + fmt(r[1]) + '</td><td>' + r[2] + '</td></tr>'; }).join('') + '</table>'; }),
+      byApp: hp('s6', 'Sign-ins by application', function () { return bar([['Microsoft 365', 22100], ['Azure portal', 8900], ['Teams', 6400], ['SharePoint', 4200], ['OneDrive', 3100]], 'var(--violet)'); }),
+      changes: hp('s6', 'Identity changes (directory audit)', function () { return bar([['User created', 24], ['User deleted', 8], ['User disabled', 12], ['Role assigned', 9], ['Role removed', 6], ['Password reset', 41]], 'var(--low)'); }),
+      provisioning: hp('s6', 'Provisioning activity', function () { return donutBlock([{ label: 'Successful', v: 318, color: 'var(--ok)' }, { label: 'Failed', v: 24, color: 'var(--high)' }], '342', 'events'); })
+    };
+  }
+  function hubNotice() {
+    var stale = !(window.SECUREIT_DATA && window.SECUREIT_DATA.schema >= 2);
+    return (stale ? '<span class="chip r" title="Run: python dashboard_data.py">Data file is outdated, refresh it</span>' : '') +
+      '<span class="chip o" title="Sign-in, audit and provisioning data is covered by the Event Hub integration, so this tool does not collect it.">' + (sample ? 'Sample data' : 'Sign-in data: Event Hub') + '</span>' +
+      '<button class="btn sm ' + (sample ? 'alt' : '') + '" data-hub="1">' + (sample ? 'Clear sample data' : 'Populate sample data') + '</button>';
+  }
+
+  // older data files have no global_admins section: fall back to the Global Administrator row of the privileged roles
+  function gaSection(o) {
+    if (o.global_admins) return o.global_admins;
+    var roles = o.privileged && o.privileged.data && o.privileged.data.roles || [];
+    var r = roles.filter(function (x) { return x.role === 'Global Administrator'; })[0];
+    if (r) return { data: { count: r.permanent + r.eligible, permanent: r.permanent, eligible: r.eligible, recommended_min: 2, recommended_max: 8 } };
+    return { unavailable: 'Not in this data file. Run python dashboard_data.py to refresh it.' };
+  }
+  function gaState(g) { return g.count > g.recommended_max ? 'high' : g.count < g.recommended_min ? 'low' : 'ok'; }
+  function scaPanel() {
+    var res = run.results, body;
+    if (res) {
+      var c = counts(res);
+      body = donutBlock([{ label: 'Pass', v: c.Pass, color: 'var(--ok)' }, { label: 'Fail', v: c.Fail, color: 'var(--high)' }, { label: 'Not assessable', v: c.NotAssessable, color: 'var(--medium)' }, { label: 'Not applicable', v: c.NotApplicable, color: 'var(--grey)' }],
+        c.score == null ? 'n/a' : c.score + '%', 'posture score') +
+        '<h3 style="margin-top:12px">Score by area</h3>' + bars(areaStats(res).map(function (a) { return { label: a.area, parts: [{ v: a.score || 0, color: 'var(--ok)' }, { v: 100 - (a.score || 0), color: 'var(--line)' }], right: a.score == null ? 'n/a' : a.score + '%' }; })) +
+        '<div class="muted" style="font-size:12.5px;margin-top:8px">' + c.total + ' controls. Score = pass / (pass + fail).</div>';
+    } else body = na('No check results for this run. Run entra_checks.py on it.');
+    return panel('s4', 'Security configuration assessment (SCA)', body, '<button class="link" data-go="1">Open SCA →</button>');
+  }
+
+  function renderOverview() {
+    var o = run.overview || {}, W = hubWidgets(), h = '';
+    h += tenantBar(o.tenant);
+    $('pageTools').innerHTML = hubNotice();
+    h += '<div class="kpis">';
+    h += kpiOr(o.users, function (u) { return kpi('', '#3b82f6', 'users', 'Users', esc(fmt(u.total)), subs([[u.members, 'members'], [u.guests, 'guests']])); }, '#3b82f6', 'users', 'Users');
+    h += kpiOr(o.risk, function (r) { return kpi('', '#e5484d', 'warn', 'Risky users', esc(fmt(r.users_at_risk)), subs([[r.levels.high, 'high'], [r.levels.medium, 'medium'], [r.levels.low, 'low'], [r.detections_open, 'open detections']])); }, '#e5484d', 'warn', 'Risky users');
+    h += kpiOr(o.privileged, function (p) { return kpi('', '#6d5bd0', 'priv', 'Privileged accounts', esc(fmt(p.accounts)), subs([[p.permanent, 'permanent'], [p.eligible, 'eligible']])); }, '#6d5bd0', 'priv', 'Privileged accounts');
+    h += kpiOr(gaSection(o), function (g) { var bad = gaState(g) !== 'ok';
+      return kpi(bad ? 'attn' : '', bad ? '#e5484d' : '#16b36a', 'shield', 'Global Administrators', esc(fmt(g.count)), '<span class="chip ' + (bad ? 'r' : 'g') + '">' + (bad ? 'Requires attention' : 'Within recommended range') + '</span>' + subs([[g.permanent, 'permanent'], [g.eligible, 'eligible']]) + '<span>recommended ' + g.recommended_min + '–' + g.recommended_max + '</span>'); }, '#6d5bd0', 'shield', 'Global Administrators');
+    h += kpiOr(o.mfa, function (m) { return kpi('', '#16b36a', 'key', 'MFA registered', esc(pct(m.registered + m.not_capable, m.total) + '%'), subs([[m.phishing_resistant, 'phishing-resistant'], [m.passwordless, 'passwordless']])); }, '#16b36a', 'key', 'MFA registered');
+    h += kpiOr(o.devices, function (d) { return kpi('', '#0891b2', 'device', 'Devices', esc(fmt(d.total)), subs([[d.compliant, 'compliant'], [d.non_compliant, 'non-compliant']])); }, '#0891b2', 'device', 'Devices');
+    h += W.kpiSignins + W.kpiFail + '</div>';
+
+    h += '<div class="grid">' + scaPanel();
+    h += panel('s4', 'Risky users by level', sec(o.risk, function (r) {
+      var l = r.levels, segs = [{ label: 'High', v: l.high, color: 'var(--high)' }, { label: 'Medium', v: l.medium, color: 'var(--medium)' }, { label: 'Low', v: l.low, color: 'var(--low)' }];
+      if (l.hidden) segs.push({ label: 'Hidden (licence)', v: l.hidden, color: 'var(--grey)' });
+      return donutBlock(segs, fmt(r.users_at_risk), 'at risk') + (l.hidden ? '<div class="muted" style="font-size:12px;margin-top:8px">Hidden: the tenant licence does not show the risk level.</div>' : '');
+    }));
+    h += panel('s4', 'Risk detections', sec(o.risk, function (r) {
+      return '<div style="margin-bottom:10px">' + stats([[fmt(r.detections_open), 'unresolved', r.detections_open ? 'warn' : 'good'], [fmt(r.detections_total), 'total'], [fmt(r.workload_identities_at_risk), 'workload identities at risk']]) + '</div>' +
+        (r.recent.length ? '<table class="tbl"><tr><th>Time</th><th>Type</th><th>Target</th><th>Level</th></tr>' + r.recent.slice(0, 5).map(function (d) {
+          return '<tr><td>' + esc(when(d.time)) + '</td><td>' + esc(d.type || '') + '</td><td>' + esc(d.target || '') + '</td><td>' + lvlHtml(d.level) + '</td></tr>'; }).join('') + '</table>' : na('No risk detections.'));
+    }));
+    h += '</div><div class="grid">' + W.activity + W.country + '</div>';
+    h += '<div class="grid">';
+    h += panel('s4', 'Conditional Access policies', sec(o.conditional_access, function (c) {
+      return donutBlock([{ label: 'Enabled', v: c.enabled, color: 'var(--ok)' }, { label: 'Report-only', v: c.report_only, color: 'var(--medium)' }, { label: 'Disabled', v: c.disabled, color: 'var(--grey)' }], fmt(c.total), 'policies') +
+        '<div style="margin-top:10px">' + stats([[c.require_mfa, 'require MFA / strength'], [c.block, 'block access']]) + '</div>' +
+        '<div class="plist">' + c.policies.map(function (p) { return '<div><span>' + esc(p.name) + '</span><span class="chip ' + (p.state === 'enabled' ? 'g' : p.state === 'disabled' ? 'n' : 'o') + '">' + esc(p.state === 'enabledForReportingButNotEnforced' ? 'report-only' : p.state) + '</span></div>'; }).join('') + '</div>';
+    }));
+    h += W.caOutcomes + W.topTargeted + '</div>';
+
+    h += '<div class="grid">';
+    h += panel('s6', 'Privileged roles', sec(o.privileged, function (p) {
+      return p.roles.length ? bars(p.roles.map(function (r) { return { label: r.role, parts: [{ v: r.permanent, color: 'var(--high)' }, { v: r.eligible, color: 'var(--low)' }], right: r.permanent + ' perm · ' + r.eligible + ' elig' }; })) +
+        '<div class="muted" style="font-size:12px;margin-top:8px"><span class="lvl" style="--c:var(--high)">Permanent</span> &nbsp; <span class="lvl" style="--c:var(--low)">Eligible</span> · users only</div>' : na('No privileged role assignments.');
+    }));
+    h += W.byApp + '</div><div class="grid">' + W.changes + W.provisioning + '</div>';
+    $('pageOverview').innerHTML = h;
+  }
+
+  /* ---------- users and licences ---------- */
+  function renderUsers() {
+    var o = run.overview || {}, h = '<div class="grid">';
+    h += panel('s4', 'Users by type', sec(o.users, function (u) { return donutBlock([{ label: 'Members', v: u.members, color: 'var(--brand)' }, { label: 'Guests', v: u.guests, color: 'var(--violet)' }], fmt(u.total), 'users'); }));
+    h += panel('s4', 'Account status', sec(o.users, function (u) { return donutBlock([{ label: 'Enabled', v: u.enabled, color: 'var(--ok)' }, { label: 'Disabled', v: u.disabled, color: 'var(--grey)' }], fmt(u.enabled), 'enabled'); }));
+    h += panel('s4', 'Identity source (members)', sec(o.users, function (u) { return donutBlock([{ label: 'Cloud-only', v: u.cloud_only, color: 'var(--ok)' }, { label: 'Synced from AD', v: u.synced, color: 'var(--medium)' }], fmt(u.members), 'members'); }));
+    h += '</div><div class="grid">';
+    h += panel('s6', 'MFA registration', sec(o.mfa, function (m) {
+      var segs = [{ label: 'Registered', v: m.registered, color: 'var(--ok)' }, { label: 'Not registered', v: m.not_registered, color: 'var(--high)' }, { label: 'Not capable', v: m.not_capable, color: 'var(--grey)' }];
+      var meth = Object.keys(m.methods || {});
+      return donutBlock(segs, pct(m.registered, m.total) + '%', 'registered') + '<div style="margin-top:10px">' + stats([[pct(m.phishing_resistant, m.total) + '%', 'phishing-resistant', m.phishing_resistant ? 'good' : ''], [pct(m.passwordless, m.total) + '%', 'passwordless'], [pct(m.sspr_registered, m.total) + '%', 'SSPR registered']]) + '</div>' +
+        (meth.length ? '<h3 style="margin-top:14px">Registered methods</h3>' + bars(meth.map(function (k) { return { label: METHOD[k] || k, parts: [{ v: m.methods[k], color: 'var(--brand)' }], right: fmt(m.methods[k]) }; })) : '') +
+        '<div class="muted" style="font-size:12px;margin-top:8px">Not capable: registered, but not with a method the policy allows.</div>';
+    }));
+    h += panel('s6', 'Licences', sec(o.licences, function (l) {
+      return l.length ? bars(l.map(function (x) { return { label: x.sku, parts: [{ v: x.used, color: 'var(--brand)' }, { v: Math.max(x.total - x.used, 0), color: 'var(--line)' }], right: x.used + ' / ' + x.total + ' used' }; })) : na('No licence data.');
+    }));
+    h += '</div><div class="grid">';
+    h += panel('s12', 'Users and groups', sec2b(o.users, o.groups, function (u, g) {
+      return stats([[fmt(u.total), 'users'], [fmt(u.members), 'members'], [fmt(u.guests), 'guests'], [fmt(u.licensed), 'licensed users'], [u.with_signin_data ? fmt(u.stale_90d) : 'n/a', 'members inactive 90+ days', u.stale_90d ? 'warn' : ''],
+        [g ? fmt(g.total) : 'n/a', 'groups'], [g ? fmt(g.security) : 'n/a', 'security groups'], [g ? fmt(g.microsoft365) : 'n/a', 'Microsoft 365 groups'], [g ? fmt(g.dynamic) : 'n/a', 'dynamic groups'], [g ? fmt(g.role_assignable) : 'n/a', 'role-assignable groups']]);
+    }));
+    $('pageUsers').innerHTML = h + '</div>';
+  }
+  function sec2b(a, b, fn) { return !a ? na('No data') : a.unavailable ? na(a.unavailable) : fn(a.data, b && b.data); }
+
+  /* ---------- devices ---------- */
+  function renderDevices() {
+    var o = run.overview || {}, h = '<div class="grid">';
+    h += panel('s4', 'Compliance', sec(o.devices, function (d) { return donutBlock([{ label: 'Compliant', v: d.compliant, color: 'var(--ok)' }, { label: 'Non-compliant', v: d.non_compliant, color: 'var(--high)' }, { label: 'Unknown', v: d.unknown, color: 'var(--grey)' }], fmt(d.total), 'devices'); }));
+    h += panel('s4', 'By join type', sec(o.devices, function (d) { return bars(Object.keys(d.by_join).map(function (k) { return { label: k, parts: [{ v: d.by_join[k], color: 'var(--brand)' }], right: fmt(d.by_join[k]) }; })); }));
+    h += panel('s4', 'By operating system', sec(o.devices, function (d) { return bars(Object.keys(d.by_os).map(function (k) { return { label: k, parts: [{ v: d.by_os[k], color: 'var(--violet)' }], right: fmt(d.by_os[k]) }; })); }));
+    h += '</div><div class="grid">' + panel('s12', 'Summary', sec(o.devices, function (d) {
+      return stats([[fmt(d.total), 'registered devices'], [fmt(d.managed), 'managed (MDM)'], [fmt(d.compliant), 'compliant', 'good'], [fmt(d.non_compliant), 'non-compliant', d.non_compliant ? 'warn' : ''], [fmt(d.unknown), 'compliance unknown']]);
+    })) + '</div>';
+    $('pageDevices').innerHTML = h;
+  }
+
+  /* ---------- applications ---------- */
+  var APP_ZTA = ['21772', '21773', '21774', '21775', '21777', '21844', '21867', '21868', '21884', '21885', '21896', '21992', '23183', '24518', '25401'];
+  function isAppCheck(r) { return r.framework === 'Applications & permissions' || (r.rule_id.indexOf('ZTA.') === 0 && APP_ZTA.indexOf(r.rule_id.slice(4)) >= 0); }
+  function appNotes() {
+    var res = run.results;
+    if (!res) return na('No check results for this run. Run entra_checks.py on it.');
+    var rows = res.filter(isAppCheck).sort(function (a, b) { return (OUT_ORDER[oc(a)] - OUT_ORDER[oc(b)]) || ((SEV_ORDER[a.severity] ?? 9) - (SEV_ORDER[b.severity] ?? 9)) || a.rule_id.localeCompare(b.rule_id); });
+    if (!rows.length) return na('No application checks in this run.');
+    var c = counts(rows);
+    return '<div style="margin-bottom:10px"><span class="badge Pass">' + c.Pass + ' pass</span> <span class="badge Fail">' + c.Fail + ' fail</span> <span class="badge NotAssessable">' + c.NotAssessable + ' not assessable</span> <span class="badge NotApplicable">' + c.NotApplicable + ' not applicable</span></div>' +
+      '<div class="scroll"><table id="appChecks"><tr><th>Status</th><th>Rule</th><th>Check</th><th>Severity</th><th>Result</th></tr>' + rows.map(function (r, i) {
+        return '<tr class="row" data-i="' + i + '"><td>' + ocBadge(r) + '</td><td>' + esc(r.rule_id) + '</td><td>' + esc(r.title) + '</td><td class="sev-' + esc(r.severity) + '">' + esc(r.severity) +
+          '</td><td class="muted">' + esc((r.status === 'Skipped' ? r.reason : r.actual) || '') + '</td></tr><tr class="detail hidden"><td colspan="5">' + detailHtml(r) + '</td></tr>'; }).join('') + '</table></div>';
+  }
+  function renderApps() {
+    var o = run.overview || {};
+    $('pageApps').innerHTML = '<div class="grid"><div class="card s12"><div class="panelhead"><h2>App registrations and enterprise applications</h2></div>' + sec(o.applications, function (x) {
+      var warn = function (v) { return v ? 'warn' : ''; };
+      var top = stats([[fmt(x.registrations), 'app registrations'], [fmt(x.enterprise_apps), 'enterprise apps (non-Microsoft)'], [fmt(x.microsoft_apps), 'Microsoft apps'], [fmt(x.managed_identities), 'managed identities'],
+        [fmt(x.with_secrets), 'registrations with secrets', warn(x.with_secrets)], [fmt(x.credentials_expired), 'expired credentials', warn(x.credentials_expired)], [fmt(x.credentials_expiring_30d), 'expiring in 30 days', warn(x.credentials_expiring_30d)],
+        [fmt(x.no_owner), 'registrations without owner', warn(x.no_owner)], [fmt(x.multitenant), 'multitenant apps'], [fmt(x.enterprise_no_assignment_required), 'enterprise apps open to all users', warn(x.enterprise_no_assignment_required)], [fmt(x.enterprise_disabled), 'disabled enterprise apps']]);
+      var tbl = x.expiring.length ? '<h3 style="margin-top:14px">Credentials expired or expiring within 30 days</h3><div class="scroll"><table class="tbl"><tr><th>Application</th><th>Type</th><th>Ends</th><th>Status</th></tr>' + x.expiring.map(function (e) {
+        return '<tr><td>' + esc(e.app) + '</td><td>' + esc(e.type) + '</td><td>' + esc(day(e.ends)) + '</td><td>' + (e.days < 0 ? '<span class="chip r">expired ' + (-e.days) + ' days ago</span>' : '<span class="chip o">' + e.days + ' days left</span>') + '</td></tr>'; }).join('') + '</table></div>' : '';
+      return top + tbl;
+    }) + '</div></div>' +
+      '<div class="grid"><div class="card s12"><div class="panelhead"><h2>Assessment notes</h2><span class="muted" style="font-size:12.5px">Application checks from the security configuration assessment</span></div>' + appNotes() + '</div></div>';
+  }
+  $('pageApps').addEventListener('click', function (e) {
+    var tr = e.target.closest('#appChecks tr.row'); if (!tr || e.target.closest('a')) return;
+    var d = tr.nextElementSibling; if (d && d.classList.contains('detail')) d.classList.toggle('hidden');
+  });
+
+  /* ---------- security assessment page ---------- */
+  function stat(cls, n, label) { return '<div class="card stat ' + cls + '"><div class="n">' + esc(n) + '</div><div class="muted">' + esc(label) + '</div></div>'; }
+  function renderAssessment() {
+    $('scaColl').innerHTML = collection((run.overview || {}).collection);
+    var res = run.results;
+    $('assessEmpty').classList.toggle('hidden', !!res); $('assessView').classList.toggle('hidden', !res);
+    if (!res) return;
+    var c = counts(res);
+    $('cards').innerHTML = stat('', c.total, 'Controls') + stat('pass', c.Pass, 'Pass') + stat('fail', c.Fail, 'Fail') + stat('', c.NotAssessable, 'Not assessable') + stat('skip', c.NotApplicable, 'Not applicable') + stat('', c.score == null ? 'n/a' : c.score + '%', 'Posture score');
+    function row(label, k) {
+      return '<tr><td>' + esc(label) + '</td><td>' + k.total + '</td><td>' + k.Pass + '</td><td>' + k.Fail + '</td><td>' + k.NotAssessable + '</td><td>' + k.NotApplicable + '</td><td>' + (k.score == null ? 'n/a' : k.score + '%') +
+        '</td><td><div class="bar"><span class="b-pass" style="width:' + (k.Pass * 100 / k.total) + '%"></span><span class="b-fail" style="width:' + (k.Fail * 100 / k.total) + '%"></span><span class="b-skip" style="width:' + ((k.NotAssessable + k.NotApplicable) * 100 / k.total) + '%"></span></div></td></tr>';
+    }
+    var head = '<th>Total</th><th>Pass</th><th>Fail</th><th>Not assessable</th><th>Not applicable</th><th>Score</th><th></th>';
+    $('areas').innerHTML = '<tr><th>Area</th>' + head + '</tr>' + areaStats(res).map(function (a) { return row(a.area, a); }).join('') + (res.some(isDns) ? row(DNS_AREA + ' (also counted in the areas above)', counts(res.filter(isDns))) : '');
+    var fws = {}; res.forEach(function (r) { (fws[r.framework] = fws[r.framework] || []).push(r); });
+    $('frameworks').innerHTML = '<tr><th>Framework</th>' + head + '</tr>' + Object.keys(fws).sort().map(function (f) { return row(f, counts(fws[f])); }).join('');
+    renderFilters(res); renderResults();
+  }
+  function renderFilters(res) {
+    $('statusButtons').innerHTML = ['All', 'Fail', 'Not Assessable', 'Not Applicable', 'Pass'].map(function (x) { return '<button data-status="' + x + '" class="' + (state.status === x ? 'on' : '') + '">' + x + '</button>'; }).join(' ');
+    var ar = Array.from(new Set(res.map(function (r) { return r.area || 'Entra ID'; }))).sort(function (a, b) { var i = AREA_ORDER.indexOf(a), j = AREA_ORDER.indexOf(b); return (i < 0 ? 99 : i) - (j < 0 ? 99 : j); });
+    if (res.some(isDns)) ar.push(DNS_AREA);
+    $('area').innerHTML = '<option>All</option>' + ar.map(function (f) { return '<option>' + esc(f) + '</option>'; }).join(''); $('area').value = state.area;
+    var fw = Array.from(new Set(res.map(function (r) { return r.framework; }))).sort();
+    $('framework').innerHTML = '<option>All</option>' + fw.map(function (f) { return '<option>' + esc(f) + '</option>'; }).join('');
+    var sev = Array.from(new Set(res.map(function (r) { return r.severity; }))).sort(function (a, b) { return (SEV_ORDER[a] ?? 9) - (SEV_ORDER[b] ?? 9); });
+    $('severity').innerHTML = '<option>All</option>' + sev.map(function (x) { return '<option>' + esc(x) + '</option>'; }).join('');
+    $('framework').value = state.framework; $('severity').value = state.severity;
+  }
+  $('statusButtons').addEventListener('click', function (e) { if (e.target.dataset.status) { state.status = e.target.dataset.status; renderFilters(run.results); renderResults(); } });
+  $('area').addEventListener('change', function (e) { state.area = e.target.value; renderResults(); });
+  $('framework').addEventListener('change', function (e) { state.framework = e.target.value; renderResults(); });
+  $('severity').addEventListener('change', function (e) { state.severity = e.target.value; renderResults(); });
+  $('search').addEventListener('input', function (e) { state.search = e.target.value.toLowerCase(); renderResults(); });
+  function detailHtml(r) {
+    var d = r.details || {}, rows = [];
+    rows.push(['Test result', '<span class="resulttext">' + esc(r.status === 'Skipped' ? (r.reason || oc(r)) : (r.actual || (r.status === 'Passed' ? 'Pass' : ''))) + '</span>']);
+    if (r.affected && r.affected.length) { var shown = r.affected.slice(0, 100);
+      rows.push(['Affected (' + (r.affected_count || r.affected.length) + ')', '<details class="affected"><summary>Show objects</summary><ul>' + shown.map(function (a) { return '<li>' + esc(a) + '</li>'; }).join('') + '</ul>' +
+        ((r.affected_count || 0) > shown.length ? '<div class="muted">Showing ' + shown.length + ' of ' + r.affected_count + '.</div>' : '') + '</details>']); }
+    if (d.description) rows.push(['Test details', md(d.description)]);
+    if (d.remediation) rows.push(['Remediation action', md(d.remediation)]);
+    if (d.impact) rows.push(['Impact', md(d.impact)]);
+    if (d.links && d.links.length) rows.push(['Related links', '<ul class="md" style="margin:0;padding-left:20px">' + d.links.filter(function (l) { return /^https?:\/\//.test(l.url); }).map(function (l) { return '<li><a href="' + esc(l.url) + '" target="_blank" rel="noopener noreferrer">' + esc(l.text || l.url) + '</a></li>'; }).join('') + '</ul>']);
+    rows.push(['Expected', esc(r.expected)]); rows.push(['Data set', esc(r.dataset || '—')]);
+    rows.push(['Area', esc(r.area || 'Entra ID')]);
+    if (r.nist) rows.push(['NIST CSF 2.0', esc(r.nist)]);
+    if (r.references && r.references.length) rows.push(['Benchmark references', esc(r.references.join(', '))]);
+    if (r.required_licence) rows.push(['Licence needed', esc(r.required_licence)]);
+    return '<div class="kv">' + rows.map(function (x) { return '<div>' + esc(x[0]) + '</div><div>' + x[1] + '</div>'; }).join('') + '</div>';
+  }
+  function renderResults() {
+    var all = run.results;
+    var rows = all.filter(function (r) {
+      if (state.status !== 'All' && oc(r) !== state.status) return false;
+      if (state.area !== 'All' && (state.area === DNS_AREA ? !isDns(r) : (r.area || 'Entra ID') !== state.area)) return false;
+      if (state.framework !== 'All' && r.framework !== state.framework) return false;
+      if (state.severity !== 'All' && r.severity !== state.severity) return false;
+      if (state.search && [r.rule_id, r.reference_id, r.title, r.actual, r.reason, r.expected].join(' ').toLowerCase().indexOf(state.search) < 0) return false;
+      return true;
+    }).sort(function (a, b) { return (OUT_ORDER[oc(a)] - OUT_ORDER[oc(b)]) || ((SEV_ORDER[a.severity] ?? 9) - (SEV_ORDER[b.severity] ?? 9)) || a.rule_id.localeCompare(b.rule_id); });
+    $('count').textContent = rows.length + ' of ' + all.length;
+    if (!rows.length) { $('results').innerHTML = '<tr><td class="muted" style="padding:24px;text-align:center">No checks match the filters.</td></tr>'; return; }
+    $('results').innerHTML = '<tr><th>Outcome</th><th>Rule</th><th>Reference</th><th>Check</th><th>Severity</th><th>Area</th><th>Framework</th></tr>' + rows.map(function (r, i) {
+      return '<tr class="row" data-i="' + i + '"><td>' + ocBadge(r) + '</td><td>' + esc(r.rule_id) + '</td><td class="muted">' + esc(r.reference_id) + '</td><td>' + esc(r.title) + '</td><td class="sev-' + esc(r.severity) + '">' + esc(r.severity) + '</td><td>' + esc(r.area || 'Entra ID') + '</td><td>' + esc(r.framework) + '</td></tr>' +
+        '<tr class="detail hidden" data-d="' + i + '"><td colspan="7">' + detailHtml(r) + '</td></tr>';
+    }).join('');
+  }
+  $('results').addEventListener('click', function (e) {
+    var tr = e.target.closest('tr.row'); if (!tr || e.target.closest('a')) return;
+    var d = $('results').querySelector('tr[data-d="' + tr.dataset.i + '"]'); if (d) d.classList.toggle('hidden');
+  });
+
+})();
+</script>
+</body>
+</html>

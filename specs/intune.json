@@ -1,0 +1,620 @@
+{
+  "workload": "intune",
+  "sources": {
+    "INTUNE_ConfigurationPolicies": {
+      "type": "graph",
+      "api": "beta",
+      "uri": "deviceManagement/configurationPolicies?$expand=settings",
+      "permission": "DeviceManagementConfiguration.Read.All"
+    },
+    "INTUNE_CompliancePolicies": {
+      "type": "graph",
+      "api": "beta",
+      "uri": "deviceManagement/deviceCompliancePolicies?$expand=assignments",
+      "permission": "DeviceManagementConfiguration.Read.All"
+    },
+    "INTUNE_ManagedDeviceCleanupRules": {
+      "type": "graph",
+      "api": "beta",
+      "uri": "deviceManagement/managedDeviceCleanupRules",
+      "permission": "DeviceManagementConfiguration.Read.All"
+    },
+    "INTUNE_Settings": {
+      "type": "graph",
+      "api": "beta",
+      "uri": "deviceManagement/settings",
+      "permission": "DeviceManagementConfiguration.Read.All"
+    },
+    "INTUNE_OperationApprovalPolicies": {
+      "type": "graph",
+      "api": "beta",
+      "uri": "deviceManagement/operationApprovalPolicies",
+      "permission": "DeviceManagementRBAC.Read.All"
+    },
+    "INTUNE_WindowsDataProcessor": {
+      "type": "graph",
+      "api": "beta",
+      "uri": "deviceManagement/dataProcessorServiceForWindowsFeaturesOnboarding",
+      "permission": "DeviceManagementServiceConfig.Read.All"
+    },
+    "INTUNE_BrandingProfiles": {
+      "type": "graph",
+      "api": "beta",
+      "uri": "deviceManagement/intuneBrandingProfiles",
+      "permission": "DeviceManagementApps.Read.All"
+    },
+    "INTUNE_OrganizationMdm": {
+      "type": "graph",
+      "api": "beta",
+      "uri": "organization/{tenantId}?$select=id,displayName,mobileDeviceManagementAuthority",
+      "permission": "Organization.Read.All"
+    }
+  },
+  "rules": [
+    {
+      "id": "INTUNE.MT.1053",
+      "reference": "MT.1053",
+      "title": "An Intune device clean-up rule is configured",
+      "severity": "Medium",
+      "nist": "ID.AM-08",
+      "source": "INTUNE_ManagedDeviceCleanupRules",
+      "mode": "any",
+      "conditions": [
+        {
+          "path": "deviceInactivityBeforeRetirementInDays",
+          "op": "gt",
+          "value": 0
+        }
+      ],
+      "fail_if_empty": true,
+      "empty_message": "No Intune device clean-up rule is configured",
+      "name": "id",
+      "description": "Stale device records weaken inventory accuracy and can leave lost or unmanaged devices registered with access to corporate data. The clean-up rule automatically retires devices that have not checked in for a set number of days.",
+      "remediation": "Intune admin center > Devices > Organize devices > Device clean-up rules. Enable the rule and set the inactivity period (for example 90 days).",
+      "links": [
+        {
+          "text": "Device clean-up rules",
+          "url": "https://learn.microsoft.com/en-us/mem/intune/remote-actions/devices-wipe#automatically-delete-devices-with-cleanup-rules"
+        }
+      ],
+      "origin": "Maester Test-MtManagedDeviceCleanupSettings",
+      "framework": "Jolera Extended Controls",
+      "area": "Intune",
+      "licence": "Intune"
+    },
+    {
+      "id": "INTUNE.MT.1054",
+      "reference": "MT.1054",
+      "title": "Devices with no compliance policy assigned are marked 'Not compliant'",
+      "severity": "Medium",
+      "nist": "PR.PS-01",
+      "source": "INTUNE_Settings",
+      "mode": "first",
+      "conditions": [
+        {
+          "path": "secureByDefault",
+          "op": "true"
+        }
+      ],
+      "name": "id",
+      "description": "Devices that have no compliance policy assigned are treated as compliant by default, which lets unmanaged or misconfigured devices pass Conditional Access device compliance checks. The tenant-wide setting 'Mark devices with no compliance policy assigned as' should be 'Not compliant'.",
+      "remediation": "Intune admin center > Devices > Compliance > Compliance policy settings. Set 'Mark devices with no compliance policy assigned as' to 'Not compliant'.",
+      "links": [
+        {
+          "text": "Compliance policy settings",
+          "url": "https://learn.microsoft.com/en-us/mem/intune/protect/device-compliance-get-started#compliance-policy-settings"
+        }
+      ],
+      "impact": "Devices without an assigned compliance policy become non-compliant and are blocked wherever Conditional Access requires a compliant device.",
+      "origin": "Maester Test-MtDeviceComplianceSettings",
+      "framework": "Jolera Extended Controls",
+      "area": "Intune",
+      "licence": "Intune",
+      "fail_if_empty": false
+    },
+    {
+      "id": "INTUNE.CIS.4.1",
+      "reference": "CIS.M365.4.1",
+      "framework": "CIS Microsoft 365",
+      "title": "Devices without a compliance policy are marked 'not compliant'",
+      "severity": "Medium",
+      "nist": "PR.PS-01",
+      "source": "INTUNE_Settings",
+      "mode": "first",
+      "conditions": [
+        {
+          "path": "secureByDefault",
+          "op": "true"
+        }
+      ],
+      "name": "id",
+      "description": "Devices that have no compliance policy assigned are treated as compliant by default, which lets unmanaged or misconfigured devices pass Conditional Access device compliance checks. The tenant-wide setting 'Mark devices with no compliance policy assigned as' should be 'Not compliant'.",
+      "remediation": "Intune admin center > Devices > Compliance > Compliance policy settings. Set 'Mark devices with no compliance policy assigned as' to 'Not compliant'.",
+      "links": [
+        {
+          "text": "Compliance policy settings",
+          "url": "https://learn.microsoft.com/en-us/mem/intune/protect/device-compliance-get-started#compliance-policy-settings"
+        }
+      ],
+      "impact": "Devices without an assigned compliance policy become non-compliant and are blocked wherever Conditional Access requires a compliant device.",
+      "origin": "Maester Test-MtCisDevicesWithoutCompliancePolicyMarked",
+      "area": "Intune",
+      "licence": "Intune",
+      "fail_if_empty": false
+    },
+    {
+      "id": "INTUNE.CIS.5.1.4.6",
+      "reference": "CIS.M365.5.1.4.6",
+      "framework": "CIS Microsoft 365",
+      "title": "Users are restricted from recovering BitLocker keys for their owned devices",
+      "severity": "Medium",
+      "nist": "PR.DS-01",
+      "source": "AuthorizationPolicy",
+      "mode": "first",
+      "conditions": [
+        {
+          "path": "defaultUserRolePermissions.allowedToReadBitlockerKeysForOwnedDevice",
+          "op": "eq",
+          "value": false
+        }
+      ],
+      "name": "id",
+      "description": "By default any user can read the BitLocker recovery key of devices they own. Restricting this to administrators prevents a user (or an attacker holding a user session) from reading recovery keys and defeating disk encryption.",
+      "remediation": "Entra admin center > Entra ID > Users > User settings > 'Restrict non-admin users from recovering the BitLocker key(s) for their owned devices' = Yes.",
+      "links": [
+        {
+          "text": "Default user permissions",
+          "url": "https://learn.microsoft.com/en-us/entra/fundamentals/users-default-permissions"
+        }
+      ],
+      "impact": "Standard users must contact the help desk (or an authorised admin) to obtain a recovery key.",
+      "origin": "Maester Test-MtCisEnsureBitLockerKeyRecoveryRestricted",
+      "area": "Intune",
+      "licence": "Intune",
+      "fail_if_empty": false
+    },
+    {
+      "id": "INTUNE.MT.1096",
+      "reference": "MT.1096",
+      "title": "At least one Intune Multi Admin Approval policy is configured",
+      "severity": "Medium",
+      "nist": "PR.AA-05",
+      "source": "INTUNE_OperationApprovalPolicies",
+      "mode": "any",
+      "conditions": [
+        {
+          "path": "id",
+          "op": "notempty"
+        }
+      ],
+      "fail_if_empty": true,
+      "empty_message": "No Multi Admin Approval policy exists",
+      "description": "Multi Admin Approval requires a second administrator to approve sensitive Intune actions (such as app or script deployments and device wipes), limiting the damage from a compromised admin account.",
+      "remediation": "Intune admin center > Tenant administration > Multi Admin Approval > Access policies > Create, and select the protected resource types.",
+      "links": [
+        {
+          "text": "Multi Admin Approval",
+          "url": "https://learn.microsoft.com/en-us/mem/intune/fundamentals/multi-admin-approval"
+        }
+      ],
+      "origin": "Maester Test-MtOperationApprovalPolicies",
+      "framework": "Jolera Extended Controls",
+      "area": "Intune",
+      "licence": "Intune"
+    },
+    {
+      "id": "INTUNE.MT.1099",
+      "reference": "MT.1099",
+      "title": "Windows diagnostic data processing is enabled",
+      "severity": "Low",
+      "nist": "PR.PS-04",
+      "source": "INTUNE_WindowsDataProcessor",
+      "mode": "first",
+      "conditions": [
+        {
+          "path": "hasValidWindowsLicense",
+          "op": "true"
+        },
+        {
+          "path": "areDataProcessorServiceForWindowsFeaturesEnabled",
+          "op": "true"
+        }
+      ],
+      "name": "id",
+      "description": "Features that rely on Windows diagnostic data (for example Windows Autopatch reporting and Update compliance) require the Windows data processor service to be enabled and a valid Windows licence to be verified.",
+      "remediation": "Intune admin center > Tenant administration > Connectors and tokens > Windows data. Enable the Windows data features.",
+      "links": [
+        {
+          "text": "Windows data connector",
+          "url": "https://learn.microsoft.com/en-us/mem/intune/protect/data-enable-windows-data"
+        }
+      ],
+      "origin": "Maester Test-MtWindowsDataProcessor",
+      "framework": "Jolera Extended Controls",
+      "area": "Intune",
+      "licence": "Intune",
+      "fail_if_empty": false
+    },
+    {
+      "id": "INTUNE.MT.1101",
+      "reference": "MT.1101",
+      "title": "The Intune default branding profile is customized",
+      "severity": "Low",
+      "nist": "PR.AT-01",
+      "source": "INTUNE_BrandingProfiles",
+      "mode": "any",
+      "conditions": [
+        {
+          "any": [
+            {
+              "path": "displayName",
+              "op": "notempty"
+            },
+            {
+              "path": "privacyUrl",
+              "op": "notempty"
+            }
+          ]
+        }
+      ],
+      "fail_if_empty": true,
+      "empty_message": "No Intune branding profile found",
+      "description": "A customized Company Portal branding profile (name, privacy URL, support details) helps users recognise the legitimate enrolment experience and know where to get help. Passes when the default profile or any custom profile has a name or privacy URL set.",
+      "remediation": "Intune admin center > Tenant administration > Customization. Edit the default branding profile and set the organisation name, privacy URL and IT support contact.",
+      "links": [
+        {
+          "text": "Company Portal customization",
+          "url": "https://learn.microsoft.com/en-us/mem/intune/apps/company-portal-app"
+        }
+      ],
+      "origin": "Maester Test-MtTenantCustomization",
+      "framework": "Jolera Extended Controls",
+      "area": "Intune",
+      "licence": "Intune"
+    },
+    {
+      "id": "INTUNE.MT.1105",
+      "reference": "MT.1105",
+      "title": "MDM authority is set to Microsoft Intune",
+      "severity": "Low",
+      "nist": "ID.AM-01",
+      "source": "INTUNE_OrganizationMdm",
+      "mode": "first",
+      "conditions": [
+        {
+          "path": "mobileDeviceManagementAuthority",
+          "op": "eq",
+          "value": "intune"
+        }
+      ],
+      "name": "displayName",
+      "description": "The MDM authority determines which service manages enrolled devices. It must be set to Intune before devices can be managed with Intune policies.",
+      "remediation": "Intune admin center > Tenant administration > Tenant status. Choose Intune as the MDM authority if it is not already set.",
+      "links": [
+        {
+          "text": "Set the MDM authority",
+          "url": "https://learn.microsoft.com/en-us/mem/intune/enrollment/mdm-authority-set"
+        }
+      ],
+      "origin": "Maester Test-MtMdmAuthority",
+      "framework": "Jolera Extended Controls",
+      "area": "Intune",
+      "licence": "Intune",
+      "fail_if_empty": false
+    },
+    {
+      "id": "INTUNE.MT.1123",
+      "reference": "MT.1123",
+      "title": "BitLocker policy enforces full disk encryption on the OS drive",
+      "severity": "High",
+      "nist": "PR.DS-01",
+      "source": "INTUNE_ConfigurationPolicies",
+      "filter": [
+        {
+          "path": "platforms",
+          "op": "contains",
+          "value": "windows10"
+        }
+      ],
+      "mode": "any",
+      "conditions": [
+        {
+          "path": "settings.settingInstance.choiceSettingValue.value",
+          "op": "contains",
+          "value": "device_vendor_msft_bitlocker_systemdrivesencryptiontype_1"
+        },
+        {
+          "path": "settings.settingInstance.choiceSettingValue.children.choiceSettingValue.value",
+          "op": "contains",
+          "value": "device_vendor_msft_bitlocker_systemdrivesencryptiontype_osencryptiontypedropdown_1"
+        }
+      ],
+      "fail_if_empty": true,
+      "empty_message": "No Windows configuration policies found",
+      "name": "name",
+      "description": "'Used space only' BitLocker encryption leaves previously deleted data readable in free space. At least one Windows disk encryption or settings catalog policy should set the OS drive encryption type to Full encryption.",
+      "remediation": "Intune admin center > Endpoint security > Disk encryption > Create policy (Windows, BitLocker). Set 'Enforce drive encryption type on operating system drives' to Enabled with 'Full encryption', and assign it to all Windows devices.",
+      "links": [
+        {
+          "text": "Encrypt devices with BitLocker in Intune",
+          "url": "https://learn.microsoft.com/en-us/mem/intune/protect/encrypt-devices"
+        }
+      ],
+      "origin": "Maester Test-MtBitLockerFullDiskEncryption",
+      "framework": "Jolera Extended Controls",
+      "area": "Intune",
+      "licence": "Intune"
+    },
+    {
+      "id": "INTUNE.MT.1178.1",
+      "reference": "MT.1178",
+      "title": "ASR rule 'Block abuse of exploited vulnerable signed drivers' is set to Block or Audit",
+      "severity": "High",
+      "nist": "PR.PS-05",
+      "source": "INTUNE_ConfigurationPolicies",
+      "filter": [
+        {
+          "path": "platforms",
+          "op": "contains",
+          "value": "windows10"
+        }
+      ],
+      "mode": "any",
+      "conditions": [
+        {
+          "any": [
+            {
+              "path": "settings.settingInstance.groupSettingCollectionValue.children.choiceSettingValue.value",
+              "op": "contains",
+              "value": "device_vendor_msft_policy_config_defender_attacksurfacereductionrules_blockabuseofexploitedvulnerablesigneddrivers_block"
+            },
+            {
+              "path": "settings.settingInstance.groupSettingCollectionValue.children.choiceSettingValue.value",
+              "op": "contains",
+              "value": "device_vendor_msft_policy_config_defender_attacksurfacereductionrules_blockabuseofexploitedvulnerablesigneddrivers_audit"
+            }
+          ]
+        }
+      ],
+      "fail_if_empty": true,
+      "empty_message": "No Windows configuration policies found",
+      "name": "name",
+      "description": "Part of the Microsoft Defender for Endpoint ASR Standard Protection baseline: the rule 'Block abuse of exploited vulnerable signed drivers' should be in Block (or at least Audit) mode in at least one Intune Attack Surface Reduction or settings catalog policy.",
+      "remediation": "Intune admin center > Endpoint security > Attack surface reduction > Create policy (Windows, Attack Surface Reduction Rules). Set the rule to Block (use Audit first to test) and assign the policy to Windows devices.",
+      "links": [
+        {
+          "text": "Attack surface reduction rules reference",
+          "url": "https://learn.microsoft.com/en-us/defender-endpoint/attack-surface-reduction-rules-reference"
+        }
+      ],
+      "origin": "Maester Test-MtIntuneASRRules (Standard Protection baseline, one rule per ASR rule)",
+      "framework": "Jolera Extended Controls",
+      "area": "Intune",
+      "licence": "Intune"
+    },
+    {
+      "id": "INTUNE.MT.1178.2",
+      "reference": "MT.1178",
+      "title": "ASR rule 'Block credential stealing from LSASS' is set to Block or Audit",
+      "severity": "High",
+      "nist": "PR.PS-05",
+      "source": "INTUNE_ConfigurationPolicies",
+      "filter": [
+        {
+          "path": "platforms",
+          "op": "contains",
+          "value": "windows10"
+        }
+      ],
+      "mode": "any",
+      "conditions": [
+        {
+          "any": [
+            {
+              "path": "settings.settingInstance.groupSettingCollectionValue.children.choiceSettingValue.value",
+              "op": "contains",
+              "value": "device_vendor_msft_policy_config_defender_attacksurfacereductionrules_blockcredentialstealingfromwindowslocalsecurityauthoritysubsystem_block"
+            },
+            {
+              "path": "settings.settingInstance.groupSettingCollectionValue.children.choiceSettingValue.value",
+              "op": "contains",
+              "value": "device_vendor_msft_policy_config_defender_attacksurfacereductionrules_blockcredentialstealingfromwindowslocalsecurityauthoritysubsystem_audit"
+            }
+          ]
+        }
+      ],
+      "fail_if_empty": true,
+      "empty_message": "No Windows configuration policies found",
+      "name": "name",
+      "description": "Part of the Microsoft Defender for Endpoint ASR Standard Protection baseline: the rule 'Block credential stealing from LSASS' should be in Block (or at least Audit) mode in at least one Intune Attack Surface Reduction or settings catalog policy.",
+      "remediation": "Intune admin center > Endpoint security > Attack surface reduction > Create policy (Windows, Attack Surface Reduction Rules). Set the rule to Block (use Audit first to test) and assign the policy to Windows devices.",
+      "links": [
+        {
+          "text": "Attack surface reduction rules reference",
+          "url": "https://learn.microsoft.com/en-us/defender-endpoint/attack-surface-reduction-rules-reference"
+        }
+      ],
+      "origin": "Maester Test-MtIntuneASRRules (Standard Protection baseline, one rule per ASR rule)",
+      "framework": "Jolera Extended Controls",
+      "area": "Intune",
+      "licence": "Intune"
+    },
+    {
+      "id": "INTUNE.MT.1178.3",
+      "reference": "MT.1178",
+      "title": "ASR rule 'Block persistence through WMI event subscription' is set to Block or Audit",
+      "severity": "High",
+      "nist": "PR.PS-05",
+      "source": "INTUNE_ConfigurationPolicies",
+      "filter": [
+        {
+          "path": "platforms",
+          "op": "contains",
+          "value": "windows10"
+        }
+      ],
+      "mode": "any",
+      "conditions": [
+        {
+          "any": [
+            {
+              "path": "settings.settingInstance.groupSettingCollectionValue.children.choiceSettingValue.value",
+              "op": "contains",
+              "value": "device_vendor_msft_policy_config_defender_attacksurfacereductionrules_blockpersistencethroughwmieventsubscription_block"
+            },
+            {
+              "path": "settings.settingInstance.groupSettingCollectionValue.children.choiceSettingValue.value",
+              "op": "contains",
+              "value": "device_vendor_msft_policy_config_defender_attacksurfacereductionrules_blockpersistencethroughwmieventsubscription_audit"
+            }
+          ]
+        }
+      ],
+      "fail_if_empty": true,
+      "empty_message": "No Windows configuration policies found",
+      "name": "name",
+      "description": "Part of the Microsoft Defender for Endpoint ASR Standard Protection baseline: the rule 'Block persistence through WMI event subscription' should be in Block (or at least Audit) mode in at least one Intune Attack Surface Reduction or settings catalog policy.",
+      "remediation": "Intune admin center > Endpoint security > Attack surface reduction > Create policy (Windows, Attack Surface Reduction Rules). Set the rule to Block (use Audit first to test) and assign the policy to Windows devices.",
+      "links": [
+        {
+          "text": "Attack surface reduction rules reference",
+          "url": "https://learn.microsoft.com/en-us/defender-endpoint/attack-surface-reduction-rules-reference"
+        }
+      ],
+      "origin": "Maester Test-MtIntuneASRRules (Standard Protection baseline, one rule per ASR rule)",
+      "framework": "Jolera Extended Controls",
+      "area": "Intune",
+      "licence": "Intune"
+    },
+    {
+      "id": "INTUNE.MT.1214",
+      "reference": "MT.1214",
+      "title": "An assigned macOS compliance policy requires System Integrity Protection",
+      "severity": "Medium",
+      "nist": "PR.PS-01",
+      "source": "INTUNE_CompliancePolicies",
+      "mode": "any",
+      "conditions": [
+        {
+          "path": "systemIntegrityProtectionEnabled",
+          "op": "true"
+        },
+        {
+          "path": "assignments",
+          "op": "notempty"
+        }
+      ],
+      "fail_if_empty": true,
+      "empty_message": "No compliance policies found",
+      "description": "SIP prevents even root from tampering with protected macOS system files and security agents. It can only be required as a compliance condition, so a Mac with SIP disabled is reported as non-compliant. Unassigned policies are never evaluated and do not count.",
+      "remediation": "Intune admin center > Devices > Compliance > Create policy (macOS). Under System Security set 'Require System Integrity Protection' to Require, and assign the policy to macOS devices or users.",
+      "links": [
+        {
+          "text": "macOS compliance settings",
+          "url": "https://learn.microsoft.com/en-us/mem/intune/protect/compliance-policy-create-mac-os"
+        }
+      ],
+      "origin": "Maester Test-MtMacOSSystemIntegrityProtection",
+      "framework": "Jolera Extended Controls",
+      "area": "Intune",
+      "licence": "Intune"
+    },
+    {
+      "id": "INTUNE.MT.1216",
+      "reference": "MT.1216",
+      "title": "An assigned macOS compliance policy requires a Defender machine risk score",
+      "severity": "Medium",
+      "nist": "DE.CM-09",
+      "licence": "Intune, Defender for Endpoint",
+      "source": "INTUNE_CompliancePolicies",
+      "mode": "any",
+      "conditions": [
+        {
+          "path": "advancedThreatProtectionRequiredSecurityLevel",
+          "op": "in",
+          "value": [
+            "secured",
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        {
+          "path": "assignments",
+          "op": "notempty"
+        }
+      ],
+      "fail_if_empty": true,
+      "empty_message": "No compliance policies found",
+      "description": "A macOS compliance policy that sets a Defender for Endpoint machine risk score threshold lets high-risk Macs be marked non-compliant and blocked by Conditional Access. The values 'unavailable' and 'notSet' mean the score is not evaluated.",
+      "remediation": "Intune admin center > Devices > Compliance > macOS policy > Microsoft Defender for Endpoint > 'Require the device to be at or under the machine risk score'. Pick a level and assign the policy. Macs must be onboarded to Defender for Endpoint.",
+      "links": [
+        {
+          "text": "macOS compliance settings",
+          "url": "https://learn.microsoft.com/en-us/mem/intune/protect/compliance-policy-create-mac-os"
+        }
+      ],
+      "origin": "Maester Test-MtMacOSDefenderRiskScore",
+      "framework": "Jolera Extended Controls",
+      "area": "Intune"
+    }
+  ],
+  "not_ported": [
+    {
+      "origin": "MT.1093 Test-MtAppleAutomatedDeviceEnrollmentToken",
+      "reason": "needs date arithmetic (token expiry more than 30 days away, synced today)"
+    },
+    {
+      "origin": "MT.1092 Test-MtApplePushNotificationCertificate",
+      "reason": "needs date arithmetic (APNS certificate expiry more than 30 days away)"
+    },
+    {
+      "origin": "MT.1094 Test-MtAppleVolumePurchaseProgramToken",
+      "reason": "needs date arithmetic (VPP token expiry more than 30 days away, synced within 1 day)"
+    },
+    {
+      "origin": "MT.1095 Test-MtAndroidEnterpriseConnection",
+      "reason": "needs date arithmetic (last app sync within 1 day) in addition to bindStatus"
+    },
+    {
+      "origin": "MT.1097 Test-MtCertificateConnectors",
+      "reason": "needs date arithmetic (connected within the last hour) and a version comparison (>= 6.2406.0.1001)"
+    },
+    {
+      "origin": "MT.1098 Test-MtMobileThreatDefenseConnectors",
+      "reason": "needs date arithmetic (heartbeat within 1 day)"
+    },
+    {
+      "origin": "MT.1102 Test-MtFeatureUpdatePolicy",
+      "reason": "needs date comparison (endOfSupportDate earlier than now)"
+    },
+    {
+      "origin": "MT.1100 Test-MtIntuneDiagnosticSettings",
+      "reason": "needs one logs element with category AuditLogs AND enabled true (same element) from the Intune ARM diagnosticSettings endpoint; element-level correlation not expressible"
+    },
+    {
+      "origin": "MT.1103 Test-MtIntuneRbacGroupsProtected",
+      "reason": "loops over roleDefinitions, roleAssignments and groups with follow-up calls per object"
+    },
+    {
+      "origin": "MT.1177 Test-MtIntuneLAPSConfiguration",
+      "reason": "requires password length >= 14 (numeric value of one specific setting) on the same policy as the other criteria; that setting cannot be isolated by path"
+    },
+    {
+      "origin": "MT.1179 Test-MtIntuneAppControl",
+      "reason": "enforcing state depends on an audit-mode child setting (absence counts as not enforcing) combined with built-in vs uploaded-XML active-control logic; not expressible exactly"
+    },
+    {
+      "origin": "MT.1180 Test-MtIntuneManagedInstallerRules",
+      "reason": "same enforce-mode and active-control gating as MT.1179 combined with the managed installer child setting"
+    },
+    {
+      "origin": "MT.1215 Test-MtMacOSGatekeeper",
+      "reason": "passes via either a macOS compliance policy OR a settings catalog Gatekeeper (com.apple.systempolicy.control) policy parsed by a helper; needs combining two logics"
+    },
+    {
+      "origin": "MT.1217 Test-MtMacOSLAPSConfiguration",
+      "reason": "needs macOS ADE enrollment profiles (depOnboardingSettings/enrollmentProfiles) via per-token follow-up calls"
+    }
+  ]
+}

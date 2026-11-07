@@ -1,0 +1,11 @@
+{
+ "_note": "Reviewed severities. Rules listed here override the benchmark rating. Critical = attackers can easily take over accounts or gain tenant-wide control. Edit freely.",
+ "CA-03": "Critical",
+ "CA-04": "Critical",
+ "APP-07": "Critical",
+ "PA-01": "Critical",
+ "PA-03": "Critical",
+ "ZTA.21861": "Critical",
+ "ZTA.21863": "Critical",
+ "ZTA.21862": "Critical"
+}

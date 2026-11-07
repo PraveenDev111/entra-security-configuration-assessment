@@ -1,0 +1,246 @@
+{
+  "workload": "sharepoint",
+  "sources": {
+    "SPO_TenantSettings": {
+      "type": "graph",
+      "api": "beta",
+      "uri": "admin/sharepoint/settings",
+      "permission": "SharePointTenantSettings.Read.All"
+    },
+    "SPO_FormsSettings": {
+      "type": "graph",
+      "api": "beta",
+      "uri": "admin/forms/settings",
+      "permission": "OrgSettings-Forms.Read.All"
+    },
+    "SPO_ThirdPartyStorageSP": {
+      "type": "graph",
+      "api": "v1.0",
+      "uri": "servicePrincipals?$filter=appId eq 'c1f33bc0-bdb4-4248-ba9b-096807ddb43e'&$select=id,displayName,appId,accountEnabled",
+      "permission": "Application.Read.All"
+    }
+  },
+  "rules": [
+    {
+      "id": "SPO.CISA.1.1",
+      "reference": "MS.SHAREPOINT.1.1v1",
+      "framework": "CISA SCuBA",
+      "area": "SharePoint and OneDrive",
+      "title": "SharePoint external sharing is limited to existing guests or people in the organization",
+      "severity": "High",
+      "licence": "",
+      "nist": "PR.DS-01",
+      "source": "SPO_TenantSettings",
+      "mode": "first",
+      "conditions": [
+        {
+          "path": "sharingCapability",
+          "op": "in",
+          "value": [
+            "disabled",
+            "existingExternalUserSharingOnly"
+          ]
+        }
+      ],
+      "fail_if_empty": false,
+      "empty_message": "SharePoint tenant settings could not be read",
+      "description": "External sharing for SharePoint must be limited to existing guests or only people in your organization (not 'Anyone' or 'New and existing guests').",
+      "remediation": "SharePoint admin center > Policies > Sharing: set external sharing for SharePoint to 'Existing guests' or 'Only people in your organization'.",
+      "impact": "Users cannot invite new external users or create Anyone links.",
+      "links": [
+        {
+          "text": "SharePoint tenant settings (Graph)",
+          "url": "https://learn.microsoft.com/graph/api/sharepointsettings-get"
+        },
+        {
+          "text": "External sharing overview",
+          "url": "https://learn.microsoft.com/sharepoint/external-sharing-overview"
+        }
+      ],
+      "origin": "Maester Test-MtCisaSpoSharing"
+    },
+    {
+      "id": "SPO.CISA.1.3",
+      "reference": "MS.SHAREPOINT.1.3v1",
+      "framework": "CISA SCuBA",
+      "area": "SharePoint and OneDrive",
+      "title": "External sharing is restricted to approved external domains",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "PR.DS-01",
+      "source": "SPO_TenantSettings",
+      "mode": "first",
+      "filter": [
+        {
+          "path": "sharingCapability",
+          "op": "ne",
+          "value": "disabled"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "sharingDomainRestrictionMode",
+          "op": "eq",
+          "value": "allowList"
+        }
+      ],
+      "fail_if_empty": false,
+      "empty_message": "SharePoint tenant settings could not be read",
+      "description": "When external sharing is enabled it should be limited to an allow list of approved external domains.",
+      "remediation": "SharePoint admin center > Policies > Sharing > More external sharing settings: select 'Limit external sharing by domain' and 'Allow only specific domains', then add the approved domains. Not applicable when external sharing is disabled.",
+      "impact": "Sharing is only possible with the listed domains.",
+      "links": [
+        {
+          "text": "SharePoint tenant settings (Graph)",
+          "url": "https://learn.microsoft.com/graph/api/sharepointsettings-get"
+        },
+        {
+          "text": "External sharing overview",
+          "url": "https://learn.microsoft.com/sharepoint/external-sharing-overview"
+        }
+      ],
+      "origin": "Maester Test-MtCisaSpoSharingAllowedDomain"
+    },
+    {
+      "id": "SPO.CIS.7.2.5",
+      "reference": "CIS.M365.7.2.5",
+      "framework": "CIS Microsoft 365",
+      "area": "SharePoint and OneDrive",
+      "title": "SharePoint guest users cannot share items they do not own",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "PR.DS-01",
+      "source": "SPO_TenantSettings",
+      "mode": "first",
+      "conditions": [
+        {
+          "path": "isResharingByExternalUsersEnabled",
+          "op": "false"
+        }
+      ],
+      "fail_if_empty": false,
+      "empty_message": "SharePoint tenant settings could not be read",
+      "description": "External users should not be able to reshare files, folders and sites they do not own (PreventExternalUsersFromResharing in Get-SPOTenant; isResharingByExternalUsersEnabled in Graph).",
+      "remediation": "SharePoint admin center > Policies > Sharing > More external sharing settings: turn off 'Allow guests to share items they don't own'.",
+      "impact": "",
+      "links": [
+        {
+          "text": "SharePoint tenant settings (Graph)",
+          "url": "https://learn.microsoft.com/graph/api/sharepointsettings-get"
+        },
+        {
+          "text": "External sharing overview",
+          "url": "https://learn.microsoft.com/sharepoint/external-sharing-overview"
+        }
+      ],
+      "origin": "Maester Test-MtCisSpoGuestCannotShareUnownedItem"
+    },
+    {
+      "id": "SPO.CIS.1.3.5",
+      "reference": "CIS.M365.1.3.5",
+      "framework": "CIS Microsoft 365",
+      "area": "SharePoint and OneDrive",
+      "title": "Internal phishing protection for Microsoft Forms is enabled",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "DE.CM-09",
+      "source": "SPO_FormsSettings",
+      "mode": "any",
+      "conditions": [
+        {
+          "path": "isInOrgFormsPhishingScanEnabled",
+          "op": "true"
+        }
+      ],
+      "fail_if_empty": true,
+      "empty_message": "Microsoft Forms tenant settings could not be read",
+      "description": "Microsoft Forms should scan forms and responses for phishing and block those that ask for sensitive information such as passwords.",
+      "remediation": "Microsoft 365 admin center > Settings > Org settings > Microsoft Forms: tick 'Add internal phishing protection'.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Microsoft Forms admin settings",
+          "url": "https://learn.microsoft.com/microsoft-forms/administrator-settings-microsoft-forms"
+        }
+      ],
+      "origin": "Maester Test-MtCisFormsPhishingProtectionEnabled"
+    },
+    {
+      "id": "SPO.CIS.1.3.7",
+      "reference": "CIS.M365.1.3.7",
+      "framework": "CIS Microsoft 365",
+      "area": "SharePoint and OneDrive",
+      "title": "Third-party storage services are restricted in Microsoft 365 on the web",
+      "severity": "Medium",
+      "licence": "",
+      "nist": "PR.DS-01",
+      "source": "SPO_ThirdPartyStorageSP",
+      "mode": "any",
+      "conditions": [
+        {
+          "path": "accountEnabled",
+          "op": "false"
+        }
+      ],
+      "name": "displayName",
+      "fail_if_empty": true,
+      "empty_message": "The 'Microsoft 365 on the web third-party storage' service principal was not found (the check fails when it is absent)",
+      "description": "The Microsoft 365 on the web third-party storage service principal (appId c1f33bc0-bdb4-4248-ba9b-096807ddb43e) must be disabled so users cannot open files stored in third-party storage in Microsoft 365 on the web.",
+      "remediation": "Microsoft 365 admin center > Settings > Org settings > Microsoft 365 on the web: untick 'Let users open files stored in third-party storage services in Microsoft 365 on the web'.",
+      "impact": "Users cannot open files from third-party storage in Office on the web.",
+      "links": [
+        {
+          "text": "Microsoft 365 on the web org settings",
+          "url": "https://learn.microsoft.com/microsoft-365/admin/manage/manage-office-on-the-web"
+        }
+      ],
+      "origin": "Maester Test-MtCisThirdPartyStorageServicesRestricted"
+    }
+  ],
+  "not_ported": [
+    {
+      "origin": "MS.SHAREPOINT.1.2v1 Test-MtCisaSpoOneDriveSharing",
+      "reason": "Get-SPOTenant property OneDriveSharingCapability has no equivalent in the Graph sharepointSettings resource"
+    },
+    {
+      "origin": "MS.SHAREPOINT.1.4v1 Test-MtCisaSpoVerificationCodeReauth",
+      "reason": "Get-SPOTenant property EmailAttestationRequired/EmailAttestationReAuthDays has no equivalent in the Graph sharepointSettings resource"
+    },
+    {
+      "origin": "MS.SHAREPOINT.2.1v1 Test-MtCisaSpoDefaultSharingScope",
+      "reason": "Get-SPOTenant property DefaultSharingLinkType has no equivalent in the Graph sharepointSettings resource"
+    },
+    {
+      "origin": "MS.SHAREPOINT.2.2v1 Test-MtCisaSpoDefaultSharingPermission",
+      "reason": "Get-SPOTenant property DefaultLinkPermission has no equivalent in the Graph sharepointSettings resource"
+    },
+    {
+      "origin": "MS.SHAREPOINT.3.1v1 Test-MtCisaSpoAnyoneLinkExpiration",
+      "reason": "Get-SPOTenant property RequireAnonymousLinksExpireInDays has no equivalent in the Graph sharepointSettings resource"
+    },
+    {
+      "origin": "MS.SHAREPOINT.3.2v1 Test-MtCisaSpoAnyoneLinkPermission",
+      "reason": "Get-SPOTenant property FileAnonymousLinkType/FolderAnonymousLinkType has no equivalent in the Graph sharepointSettings resource"
+    },
+    {
+      "origin": "CIS.M365.7.2.2 Test-MtCisSpoB2BIntegration",
+      "reason": "Get-SPOTenant property EnableAzureADB2BIntegration has no equivalent in the Graph sharepointSettings resource"
+    },
+    {
+      "origin": "CIS.M365.7.2.7 Test-MtCisSpoDefaultSharingLink",
+      "reason": "Get-SPOTenant property DefaultSharingLinkType has no equivalent in the Graph sharepointSettings resource"
+    },
+    {
+      "origin": "CIS.M365.7.2.9 Test-MtCisSpoGuestAccessExpiry",
+      "reason": "Get-SPOTenant property ExternalUserExpirationRequired/ExternalUserExpireInDays has no equivalent in the Graph sharepointSettings resource"
+    },
+    {
+      "origin": "CIS.M365.7.2.11 Test-MtCisSpoDefaultSharingLinkPermission",
+      "reason": "Get-SPOTenant property DefaultLinkPermission has no equivalent in the Graph sharepointSettings resource"
+    },
+    {
+      "origin": "CIS.M365.7.3.1 Test-MtCisSpoPreventDownloadMaliciousFile",
+      "reason": "Get-SPOTenant property DisallowInfectedFileDownload has no equivalent in the Graph sharepointSettings resource"
+    }
+  ]
+}

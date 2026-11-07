@@ -1,0 +1,5 @@
+requests>=2.31
+msal>=1.28
+dnspython>=2.6
+elasticsearch>=8.13
+openpyxl>=3.1

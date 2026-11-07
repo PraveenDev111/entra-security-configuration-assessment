@@ -1,0 +1,141 @@
+{
+  "workload": "azure",
+  "sources": {
+    "AZ_RootRoleAssignments": {
+      "type": "arm",
+      "uri": "providers/Microsoft.Authorization/roleAssignments?$filter=atScope()&api-version=2022-04-01"
+    },
+    "AZ_EntraDiagSettings": {
+      "type": "arm",
+      "uri": "providers/microsoft.aadiam/diagnosticSettings?api-version=2017-04-01-preview"
+    }
+  },
+  "rules": [
+    {
+      "id": "AZ.MT.1056",
+      "reference": "MT.1056",
+      "framework": "Jolera Extended Controls",
+      "area": "Azure (identity)",
+      "title": "No permanent role assignments at the Azure root scope",
+      "severity": "High",
+      "licence": "",
+      "nist": "PR.AA-05",
+      "source": "AZ_RootRoleAssignments",
+      "mode": "none",
+      "conditions": [
+        {
+          "path": "id",
+          "op": "notempty"
+        }
+      ],
+      "name": "properties.principalId",
+      "fail_if_empty": false,
+      "empty_message": "",
+      "description": "User Access Administrator at the root scope ('/') lets an administrator manage access to every Azure subscription and management group in the tenant. Global Administrators can elevate to this role through Entra ID properties, but the permission should only be used in an emergency. Any role assignment found at the root scope is reported.",
+      "remediation": "As a Global Administrator open the Azure portal > Microsoft Entra ID > Properties > Access management for Azure resources > Manage elevated access users, select all User Access Administrators and remove them. Also remove any other role assignments at the root scope. CLI: `az role assignment delete --role \"User Access Administrator\" --assignee <user> --scope \"/\"`.",
+      "impact": "Administrators lose standing access to all subscriptions and must elevate temporarily when needed.",
+      "links": [
+        {
+          "text": "Elevate access to manage all Azure subscriptions and management groups",
+          "url": "https://learn.microsoft.com/azure/role-based-access-control/elevate-access-global-admin"
+        }
+      ],
+      "origin": "Maester Test-MtUserAccessAdmin"
+    },
+    {
+      "id": "AZ.ZTA.21788",
+      "reference": "21788",
+      "framework": "Zero Trust Assessment",
+      "area": "Azure (identity)",
+      "title": "Global Administrators don't have standing access to Azure subscriptions",
+      "severity": "High",
+      "licence": "",
+      "nist": "PR.AA-05",
+      "source": "AZ_RootRoleAssignments",
+      "mode": "none",
+      "filter": [
+        {
+          "path": "properties.roleDefinitionId",
+          "op": "regex",
+          "value": "18d7d88d-d35e-4fb5-a5c3-7773c20a72d9$"
+        }
+      ],
+      "conditions": [
+        {
+          "path": "id",
+          "op": "notempty"
+        }
+      ],
+      "name": "properties.principalId",
+      "fail_if_empty": false,
+      "empty_message": "",
+      "description": "Standing User Access Administrator access at the Azure root scope gives a compromised Global Administrator immediate ability to enumerate resources, change configuration, assign roles and exfiltrate data across all subscriptions. Requiring just-in-time elevation adds detectable signals and slows attackers.",
+      "remediation": "Remove User Access Administrator assignments at the root scope (Entra ID > Properties > Access management for Azure resources > Manage elevated access users) and require phishing-resistant authentication for privileged accounts, using Conditional Access authentication strengths. Elevate only when needed.",
+      "impact": "",
+      "links": [
+        {
+          "text": "Elevate access to manage all Azure subscriptions and management groups",
+          "url": "https://learn.microsoft.com/azure/role-based-access-control/elevate-access-global-admin"
+        },
+        {
+          "text": "Conditional Access policy for phishing-resistant MFA for admins",
+          "url": "https://learn.microsoft.com/entra/identity/conditional-access/policy-admin-phish-resistant-mfa"
+        }
+      ],
+      "origin": "Zero Trust Assessment Test-Assessment.21788"
+    },
+    {
+      "id": "AZ.ZTA.21860",
+      "reference": "21860",
+      "framework": "Zero Trust Assessment",
+      "area": "Azure (identity)",
+      "title": "At least one Microsoft Entra diagnostic setting exports log categories",
+      "severity": "High",
+      "licence": "",
+      "nist": "DE.CM-09",
+      "source": "AZ_EntraDiagSettings",
+      "mode": "any",
+      "conditions": [
+        {
+          "path": "properties.logs",
+          "op": "notempty"
+        }
+      ],
+      "name": "name",
+      "fail_if_empty": true,
+      "empty_message": "No Microsoft Entra diagnostic settings are configured",
+      "description": "Archiving Entra logs to Log Analytics, a storage account or an event hub (or SIEM) lets security teams detect unauthorised access, investigate sign-in issues and prove compliance. This rule is a reduced form of the Zero Trust Assessment test: it only confirms that at least one diagnostic setting with log categories exists; it does not verify that all 15 required categories are enabled.",
+      "remediation": "In the Entra admin center go to Monitoring and health > Diagnostic settings, add a diagnostic setting and enable all log categories (AuditLogs, SignInLogs, NonInteractiveUserSignInLogs, ServicePrincipalSignInLogs, ManagedIdentitySignInLogs, ProvisioningLogs, ADFSSignInLogs, RiskyUsers, UserRiskEvents, RiskyServicePrincipals, ServicePrincipalRiskEvents, NetworkAccessTrafficLogs, EnrichedOffice365AuditLogs, MicrosoftGraphActivityLogs, RemoteNetworkHealthLogs), sending them to Log Analytics, storage or an event hub.",
+      "impact": "Log storage in the chosen destination incurs Azure costs.",
+      "links": [
+        {
+          "text": "Configure Microsoft Entra diagnostic settings",
+          "url": "https://learn.microsoft.com/entra/identity/monitoring-health/howto-configure-diagnostic-settings"
+        },
+        {
+          "text": "Integrate Entra logs with Azure Monitor logs",
+          "url": "https://learn.microsoft.com/entra/identity/monitoring-health/howto-integrate-activity-logs-with-azure-monitor-logs"
+        }
+      ],
+      "origin": "Zero Trust Assessment Test-Assessment.21860 (reduced)"
+    }
+  ],
+  "not_ported": [
+    {
+      "origin": "Zero Trust Assessment Test-Assessment.21860 (full check)",
+      "reason": "Full test requires every one of 15 log categories to be enabled in at least one diagnostic setting, i.e. a union across rows and a paired category+enabled match inside a list; not expressible. Only the reduced rule AZ.ZTA.21860 is provided"
+    },
+    {
+      "origin": "Maester Test-MtManagementGroupWriteRequirement (MT.1064)",
+      "reason": "Needs the root management group id, which equals the tenant id and must be discovered first (Get-MtAzureManagementGroup) before calling .../managementGroups/<tenantId>/settings/default; no URI templating or chained calls in the spec"
+    },
+    {
+      "origin": "Maester Test-MtVaultSoftDelete (MT.1065)",
+      "reason": "Recovery Services Vault soft delete is a resource-security (backup) setting, not identity related; also requires per-subscription vault enumeration"
+    },
+    {
+      "origin": "Maester Get-MtAzureManagementGroup",
+      "reason": "Helper function, not a test"
+    }
+  ]
+}
