@@ -576,16 +576,6 @@ def main(argv: Iterable[str] | None = None) -> int:
     out.mkdir(parents=True, exist_ok=True)
     (out / "last_run.json").write_text(json.dumps({"batch_id": batch_id, "started_at": started.isoformat(), "runs": runs}, indent=2), encoding="utf-8")
 
-    try:  # refresh the summary file for the newest collection
-        import dashboard_data
-        try:
-            from entra_checks import CONTROL_PLANE_ROLES as control_plane
-        except Exception:  # noqa: BLE001
-            control_plane = set()
-        print(f"\nSummary file updated: {dashboard_data.build(out, control_plane=set(control_plane))}")
-    except Exception as exc:  # noqa: BLE001 - a convenience, never fail the collection over it
-        print(f"\nSummary file not updated: {exc}", file=sys.stderr)
-
     print("\nSummary")
     for r in runs:
         if r["status"] == "ok":

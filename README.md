@@ -19,7 +19,7 @@ src/        the tool (run these scripts)
   workloads.py        workload selection, Exchange / Teams / Azure / DNS collection
   spec_engine.py      evaluator for the JSON rule specs
   zta_checks.py       Zero Trust Assessment checks for Entra
-  dashboard_data.py   summary file written after each run (optional)
+  dashboard_data.py   builds the data file for the example dashboard (run separately, optional)
   validate_specs.py   checks the spec files
   paths.py            where config, data, specs and runs live
 config/     companies.example.json (copy to companies.json), severity_overrides.json

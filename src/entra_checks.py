@@ -1516,13 +1516,6 @@ def check_run(run_dir: Path, emergency_ids: list[str], excel: bool) -> None:
     for a in summarize_areas(results):
         print(f"  {a['area']:<30}{a['pass']:>6}{a['fail']:>6}{a['not_assessable']:>16}{a['not_applicable']:>16}{(str(a['score']) + '%') if a['score'] is not None else 'n/a':>7}")
     print(f"  Results written to {out}")
-    out_root = run_dir.parent.parent  # <output-dir>/<company_id>/<run-id>
-    if (out_root / "last_run.json").exists():  # refresh the summary file
-        try:
-            import dashboard_data
-            print(f"  Summary file updated: {dashboard_data.build(out_root, control_plane=set(CONTROL_PLANE_ROLES)).name}")
-        except Exception as exc:  # noqa: BLE001 - the dashboard file is a convenience, never fail the checks over it
-            print(f"  Summary file not updated: {exc}", file=sys.stderr)
 
 
 def run_dirs_from_args(args: argparse.Namespace) -> list[Path]:
