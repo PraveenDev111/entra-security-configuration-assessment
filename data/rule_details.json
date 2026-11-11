@@ -698,7 +698,8 @@
     "text": "microsoftAuthenticatorAuthenticationMethodConfiguration resource type - Microsoft Graph v1.0 | Microsoft Learn",
     "url": "https://learn.microsoft.com/graph/api/resources/microsoftauthenticatorauthenticationmethodconfiguration"
    }
-  ]
+  ],
+  "remediation": "In the Entra admin center go to Entra ID > Authentication methods > Policies > Microsoft Authenticator > Configure. Set 'Require number matching for push notifications' to Enabled."
  },
  "EIDSCA.AM04": {
   "description": "Object Id or scope of users which will be showing number matching in the Authenticator App.",
@@ -711,7 +712,8 @@
     "text": "microsoftAuthenticatorAuthenticationMethodConfiguration resource type - Microsoft Graph v1.0 | Microsoft Learn",
     "url": "https://learn.microsoft.com/graph/api/resources/microsoftauthenticatorauthenticationmethodconfiguration"
    }
-  ]
+  ],
+  "remediation": "In the Entra admin center go to Entra ID > Authentication methods > Policies > Microsoft Authenticator > Configure. Under 'Require number matching for push notifications' set the target to All users."
  },
  "EIDSCA.AM06": {
   "description": "Determines whether the user's Authenticator app will show them the client app they are signing into.",
@@ -724,7 +726,8 @@
     "text": "microsoftAuthenticatorAuthenticationMethodConfiguration resource type - Microsoft Graph v1.0 | Microsoft Learn",
     "url": "https://learn.microsoft.com/graph/api/resources/microsoftauthenticatorauthenticationmethodconfiguration"
    }
-  ]
+  ],
+  "remediation": "In the Entra admin center go to Entra ID > Authentication methods > Policies > Microsoft Authenticator > Configure. Set 'Show application name in push and passwordless notifications' to Enabled."
  },
  "EIDSCA.AM07": {
   "description": "Object Id or scope of users which will be showing app information in the Authenticator App.",
@@ -737,7 +740,8 @@
     "text": "microsoftAuthenticatorAuthenticationMethodConfiguration resource type - Microsoft Graph v1.0 | Microsoft Learn",
     "url": "https://learn.microsoft.com/graph/api/resources/microsoftauthenticatorauthenticationmethodconfiguration"
    }
-  ]
+  ],
+  "remediation": "In the Entra admin center go to Entra ID > Authentication methods > Policies > Microsoft Authenticator > Configure. Under 'Show application name in push and passwordless notifications' set the target to All users."
  },
  "EIDSCA.AM09": {
   "description": "Determines whether the user's Authenticator app will show them the geographic location of where the authentication request originated from.",
@@ -750,7 +754,8 @@
     "text": "microsoftAuthenticatorAuthenticationMethodConfiguration resource type - Microsoft Graph v1.0 | Microsoft Learn",
     "url": "https://learn.microsoft.com/graph/api/resources/microsoftauthenticatorauthenticationmethodconfiguration"
    }
-  ]
+  ],
+  "remediation": "In the Entra admin center go to Entra ID > Authentication methods > Policies > Microsoft Authenticator > Configure. Set 'Show geographic location in push and passwordless notifications' to Enabled."
  },
  "EIDSCA.AM10": {
   "description": "Object Id or scope of users which will be showing geographic location in the Authenticator App.",
@@ -763,7 +768,8 @@
     "text": "microsoftAuthenticatorAuthenticationMethodConfiguration resource type - Microsoft Graph v1.0 | Microsoft Learn",
     "url": "https://learn.microsoft.com/graph/api/resources/microsoftauthenticatorauthenticationmethodconfiguration"
    }
-  ]
+  ],
+  "remediation": "In the Entra admin center go to Entra ID > Authentication methods > Policies > Microsoft Authenticator > Configure. Under 'Show geographic location in push and passwordless notifications' set the target to All users."
  },
  "EIDSCA.AP01": {
   "description": "Indicates whether administrators of the tenant can use the Self-Service Password Reset (SSPR). The policy applies to some critical critical roles in Microsoft Entra ID.\n\nAdministrators with sensitive roles should use phishing-resistant authentication methods only and therefore not able to reset their password using SSPR.",
@@ -798,7 +804,8 @@
     "text": "View in Microsoft Entra admin center",
     "url": "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AllowlistPolicyBlade"
    }
-  ]
+  ],
+  "remediation": "In the Entra admin center go to Entra ID > External Identities > External collaboration settings > Guest invite settings and select 'Only users assigned to specific admin roles can invite guest users' (CISA SCuBA 2.18)."
  },
  "EIDSCA.AP05": {
   "description": "Indicates whether users can sign up for email based subscriptions.",
@@ -825,7 +832,8 @@
     "text": "authorizationPolicy resource type - Microsoft Graph v1.0 | Microsoft Learn",
     "url": "https://learn.microsoft.com/graph/api/resources/authorizationpolicy"
    }
-  ]
+  ],
+  "remediation": "Turn off email-verified self-service sign-up so users cannot join the tenant by email validation. With Graph: PATCH /policies/authorizationPolicy with allowEmailVerifiedUsersToJoinOrganization set to false."
  },
  "EIDSCA.AP07": {
   "description": "Represents role templateId for the role that should be granted to guest user.\n\nCISA SCuBA 2.18: Guest users SHOULD have limited access to Entra ID (Azure AD) directory objects.",
@@ -842,7 +850,8 @@
     "text": "View in Microsoft Entra admin center",
     "url": "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AllowlistPolicyBlade"
    }
-  ]
+  ],
+  "remediation": "In the Entra admin center go to Entra ID > External Identities > External collaboration settings > Guest user access and select 'Guest user access is restricted to properties and memberships of their own directory objects'."
  },
  "EIDSCA.AP08": {
   "description": "Defines if user consent to apps is allowed, and if it is, which app consent policy (permissionGrantPolicy) governs the permissions.\n\nMicrosoft recommends to allow to user consent for apps from verified publisher for selected permissions. CISA SCuBA 2.7 defines that all Non-Admin Users SHALL Be Prevented From Providing Consent To Third-Party Applications.",
@@ -859,7 +868,8 @@
     "text": "View in Microsoft Entra admin center",
     "url": "https://entra.microsoft.com/#view/Microsoft_AAD_UsersAndTenants/UserManagementMenuBlade/~/UserSettings"
    }
-  ]
+  ],
+  "remediation": "In the Entra admin center go to Entra ID > Enterprise apps > Consent and permissions > User consent settings and select 'Do not allow user consent', or at most 'Allow user consent for apps from verified publishers, for selected permissions'."
  },
  "EIDSCA.AP09": {
   "description": "Indicates whether user consent for risky apps is allowed. For example, consent requests for newly registered multi-tenant apps that are not publisher verified and require non-basic permissions are considered risky.\n\n[Configure risk-based step-up consent - Microsoft Entra ID - Microsoft Learn](https://learn.microsoft.com/azure/active-directory/manage-apps/configure-risk-based-step-up-consent)",
@@ -876,7 +886,8 @@
     "text": "View in Microsoft Entra admin center",
     "url": "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/ConsentPoliciesMenuBlade/~/UserSettings"
    }
-  ]
+  ],
+  "remediation": "Do not allow user consent for risky apps. With Graph (beta): PATCH /policies/authorizationPolicy with allowUserConsentForRiskyApps set to false."
  },
  "EIDSCA.AP10": {
   "description": "Controls if non-admin users may register custom-developed applications for use within this directory.\n\nCISA SCuBA 2.6: Only Administrators SHALL Be Allowed To Register Third-Party Applications",
@@ -959,7 +970,8 @@
     "text": "Open in Graph Explorer",
     "url": "https://developer.microsoft.com/graph/graph-explorer?request=policies/authenticationMethodsPolicy/authenticationMethodConfigurations('Voice'"
    }
-  ]
+  ],
+  "remediation": "In the Entra admin center go to Entra ID > Authentication methods > Policies > Voice call and set it to Disabled. Move users to Microsoft Authenticator (number matching), FIDO2 or Windows Hello for Business."
  },
  "EIDSCA.CP01": {
   "description": "Group and team owners can authorize applications, such as applications published by third-party vendors, to access your organization's data associated with a group. For example, a team owner in Microsoft Teams can allow an app to read all Teams messages in the team, or list the basic profile of a group's members.\n\nCISA SCuBA 2.7: Non-Admin Users SHALL Be Prevented From Providing Consent To Third-Party Applications.",
@@ -976,7 +988,8 @@
     "text": "View in Microsoft Entra admin center",
     "url": "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/ConsentPoliciesMenuBlade/~/UserSettings"
    }
-  ]
+  ],
+  "remediation": "In the Entra admin center go to Entra ID > Enterprise apps > Consent and permissions > User consent settings (Group owner consent) and select 'Do not allow group owner consent'."
  },
  "EIDSCA.CP03": {
   "description": "Defines whether user consent will be blocked when a risky request is detected\n\n[Configure risk-based step-up consent - Microsoft Entra ID - Microsoft Learn](https://learn.microsoft.com/azure/active-directory/manage-apps/configure-risk-based-step-up-consent)",
@@ -989,7 +1002,8 @@
     "text": "directorySetting resource type - Microsoft Graph beta | Microsoft Learn",
     "url": "https://learn.microsoft.com/graph/api/resources/directorysetting"
    }
-  ]
+  ],
+  "remediation": "Keep Microsoft's risk-based step-up consent enabled (the default) so user consent is blocked when a request is detected as risky. Do not set the authorization policy to allow consent for risky apps."
  },
  "EIDSCA.CP04": {
   "description": "If this option is set to enabled, then users request admin consent to any app that requires access to data they do not have the permission to grant. If this option is set to disabled, then users must contact their admin to request to consent in order to use the apps they need.\n\nCISA SCuBA 2.7: Non-Admin Users SHALL Be Prevented From Providing Consent To Third-Party Applications.",
@@ -1006,7 +1020,8 @@
     "text": "View in Microsoft Entra admin center",
     "url": "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/ConsentPoliciesMenuBlade/~/AdminConsentSettings"
    }
-  ]
+  ],
+  "remediation": "In the Entra admin center go to Entra ID > Enterprise apps > Consent and permissions > Admin consent settings. Set 'Users can request admin consent to apps they are unable to consent to' to Yes and assign reviewers, so users ask an administrator instead of consenting themselves."
  },
  "EIDSCA.CR01": {
   "description": "Defines if admin consent request feature is enabled or disabled",
@@ -1023,7 +1038,8 @@
     "text": "View in Microsoft Entra admin center",
     "url": "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/ConsentPoliciesMenuBlade/~/AdminConsentSettings"
    }
-  ]
+  ],
+  "remediation": "In the Entra admin center go to Entra ID > Enterprise apps > Consent and permissions > Admin consent settings. Set 'Users can request admin consent to apps they are unable to consent to' to Yes."
  },
  "EIDSCA.CR02": {
   "description": "Specifies whether reviewers will receive notifications",
@@ -1040,7 +1056,8 @@
     "text": "View in Microsoft Entra admin center",
     "url": "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/ConsentPoliciesMenuBlade/~/AdminConsentSettings"
    }
-  ]
+  ],
+  "remediation": "In the Entra admin center go to Entra ID > Enterprise apps > Consent and permissions > Admin consent settings. Set 'Selected users will receive email notifications for requests' to Yes."
  },
  "EIDSCA.CR03": {
   "description": "Specifies whether reviewers will receive reminder emails",
@@ -1057,7 +1074,8 @@
     "text": "View in Microsoft Entra admin center",
     "url": "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/ConsentPoliciesMenuBlade/~/AdminConsentSettings"
    }
-  ]
+  ],
+  "remediation": "In the Entra admin center go to Entra ID > Enterprise apps > Consent and permissions > Admin consent settings. Set 'Selected users will receive request expiration reminders' to Yes."
  },
  "EIDSCA.CR04": {
   "description": "Specifies the duration the request is active before it automatically expires if no decision is applied",
@@ -1074,7 +1092,8 @@
     "text": "View in Microsoft Entra admin center",
     "url": "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/ConsentPoliciesMenuBlade/~/AdminConsentSettings"
    }
-  ]
+  ],
+  "remediation": "In the Entra admin center go to Entra ID > Enterprise apps > Consent and permissions > Admin consent settings. Set 'Consent request expires after (days)' to 30."
  },
  "EIDSCA.PR01": {
   "description": "If set to Enforce, users will be prevented from setting banned passwords and the attempt will be logged. If set to Audit, the attempt will only be logged.\n\n[Microsoft Entra Password Protection - Microsoft Entra ID - Microsoft Learn](https://learn.microsoft.com/azure/active-directory/authentication/concept-password-ban-bad-on-premises)",
@@ -1091,7 +1110,8 @@
     "text": "View in Microsoft Entra admin center",
     "url": "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AuthenticationMethodsMenuBlade/~/PasswordProtection"
    }
-  ]
+  ],
+  "remediation": "In the Entra admin center go to Entra ID > Authentication methods > Password protection and set Mode to Enforced."
  },
  "EIDSCA.PR02": {
   "description": "If set to Yes, password protection is turned on for Active Directory domain controllers when the appropriate agent is installed.\n\n[Azure identity management and access control best practices - Microsoft Learn](https://learn.microsoft.com/azure/security/fundamentals/identity-management-best-practices#enable-password-management)",
@@ -1108,7 +1128,8 @@
     "text": "View in Microsoft Entra admin center",
     "url": "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AuthenticationMethodsMenuBlade/~/PasswordProtection"
    }
-  ]
+  ],
+  "remediation": "In the Entra admin center go to Entra ID > Authentication methods > Password protection and set 'Enable password protection on Windows Server Active Directory' to Yes. The Entra Password Protection agent must be installed on the domain controllers."
  },
  "EIDSCA.PR03": {
   "description": "When enabled, the words in the list below are used in the banned password system to prevent easy-to-guess passwords.\n\n[Password protection in Microsoft Entra ID - Microsoft Entra ID - Microsoft Learn](https://learn.microsoft.com/azure/active-directory/authentication/concept-password-ban-bad#global-banned-password-list)",
@@ -1125,7 +1146,8 @@
     "text": "View in Microsoft Entra admin center",
     "url": "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AuthenticationMethodsMenuBlade/~/PasswordProtection"
    }
-  ]
+  ],
+  "remediation": "In the Entra admin center go to Entra ID > Authentication methods > Password protection, set 'Enforce custom list' to Yes and add organisation-specific terms (company, product and location names) to the list."
  },
  "EIDSCA.PR05": {
   "description": "The minimum length in seconds of each lockout. If an account locks repeatedly, this duration increases.\n\n[Prevent Attacks Using Smart Lockout - Microsoft Entra ID - Microsoft Learn](https://learn.microsoft.com/azure/active-directory/authentication/howto-password-smart-lockout)",
@@ -1142,7 +1164,8 @@
     "text": "View in Microsoft Entra admin center",
     "url": "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AuthenticationMethodsMenuBlade/~/PasswordProtection"
    }
-  ]
+  ],
+  "remediation": "In the Entra admin center go to Entra ID > Authentication methods > Password protection and set 'Lockout duration in seconds' to 60 or higher."
  },
  "EIDSCA.PR06": {
   "description": "How many failed sign-ins are allowed on an account before its first lockout. If the first sign-in after a lockout also fails, the account locks out again.\n\n[Prevent Attacks Using Smart Lockout - Microsoft Entra ID - Microsoft Learn](https://learn.microsoft.com/azure/active-directory/authentication/howto-password-smart-lockout)",
@@ -1159,7 +1182,8 @@
     "text": "View in Microsoft Entra admin center",
     "url": "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AuthenticationMethodsMenuBlade/~/PasswordProtection"
    }
-  ]
+  ],
+  "remediation": "In the Entra admin center go to Entra ID > Authentication methods > Password protection and set 'Lockout threshold' to 10 or lower."
  },
  "EIDSCA.ST08": {
   "description": "Indicating whether or not a guest user can be an owner of groups, manage\n\nCISA SCuBA 2.18: Guest users SHOULD have limited access to Entra ID (Azure AD) directory objects",
@@ -1190,79 +1214,286 @@
   ]
  },
  "MT.1001": {
-  "description": "Device compliance Conditional Access policy can be used to require devices to be compliant with the tenant's device compliance policy.\n\nLearn more:\nhttps://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-compliant-device"
+  "description": "Device compliance Conditional Access policy can be used to require devices to be compliant with the tenant's device compliance policy.\n\nLearn more:\nhttps://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-compliant-device",
+  "remediation": "In the Entra admin center go to Entra ID > Conditional Access > Policies and create (or edit) a policy. Select the users and apps, then under Grant select 'Require device to be marked as compliant'. Start in report-only mode and exclude emergency access accounts.",
+  "links": [
+   {
+    "text": "Microsoft Learn",
+    "url": "https://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-compliant-device"
+   }
+  ]
  },
  "MT.1005": {
-  "description": "It is recommended to have at least one emergency/break glass account or account group excluded from all Conditional Access policies.\nThis allows for emergency access to the tenant in case of a misconfiguration or other issues.\n\nSee [Manage emergency access accounts in Microsoft Entra ID - Microsoft Learn](https://learn.microsoft.com/entra/identity/role-based-access-control/security-emergency-access)"
+  "description": "It is recommended to have at least one emergency/break glass account or account group excluded from all Conditional Access policies.\nThis allows for emergency access to the tenant in case of a misconfiguration or other issues.\n\nSee [Manage emergency access accounts in Microsoft Entra ID - Microsoft Learn](https://learn.microsoft.com/entra/identity/role-based-access-control/security-emergency-access)",
+  "remediation": "Open every Conditional Access policy > Users > Exclude and add at least one emergency access (break glass) account or a group that holds them. Review all policies, including report-only ones.",
+  "links": [
+   {
+    "text": "Manage emergency access accounts in Microsoft Entra ID - Microsoft Learn",
+    "url": "https://learn.microsoft.com/entra/identity/role-based-access-control/security-emergency-access"
+   }
+  ]
  },
  "MT.1006": {
-  "description": "This test checks if the tenant has at least one Conditional Access policy requiring MFA for admins.\nThe following roles are considered as admin roles:\n\n- Global Administrator\n- Application Administrator\n- Authentication Administrator\n- Billing Administrator\n- Cloud Application Administrator\n- Conditional Access Administrator\n- Exchange Administrator\n- Helpdesk Administrator\n- Password Administrator\n- Privileged Authentication Administrator\n- Privileged Role Administrator\n- Security Administrator\n- SharePoint Administrator\n- User Administrator\n\nSee [Require MFA for administrators - Microsoft Learn](https://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-admin-mfa)\""
+  "description": "This test checks if the tenant has at least one Conditional Access policy requiring MFA for admins.\nThe following roles are considered as admin roles:\n\n- Global Administrator\n- Application Administrator\n- Authentication Administrator\n- Billing Administrator\n- Cloud Application Administrator\n- Conditional Access Administrator\n- Exchange Administrator\n- Helpdesk Administrator\n- Password Administrator\n- Privileged Authentication Administrator\n- Privileged Role Administrator\n- Security Administrator\n- SharePoint Administrator\n- User Administrator\n\nSee [Require MFA for administrators - Microsoft Learn](https://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-admin-mfa)\"",
+  "remediation": "In the Entra admin center go to Entra ID > Conditional Access > Policies and create (or edit) a policy. Assign it to the directory roles listed for administrators (Users > Directory roles), target All cloud apps, and under Grant select 'Require multifactor authentication' (or a phishing-resistant authentication strength).",
+  "links": [
+   {
+    "text": "Require MFA for administrators - Microsoft Learn",
+    "url": "https://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-admin-mfa"
+   }
+  ]
  },
  "MT.1007": {
-  "description": "This test checks if the tenant has at least one Conditional Access policy requiring MFA for all users.\n\nSee [Require MFA for all users - Microsoft Learn](https://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-all-users-mfa)"
+  "description": "This test checks if the tenant has at least one Conditional Access policy requiring MFA for all users.\n\nSee [Require MFA for all users - Microsoft Learn](https://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-all-users-mfa)",
+  "remediation": "In the Entra admin center go to Entra ID > Conditional Access > Policies and create (or edit) a policy. Target All users and All cloud apps, and under Grant select 'Require multifactor authentication'. Exclude only emergency access accounts.",
+  "links": [
+   {
+    "text": "Require MFA for all users - Microsoft Learn",
+    "url": "https://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-all-users-mfa"
+   }
+  ]
  },
  "MT.1009": {
-  "description": "Legacy authentication is an unsecure method to authenticate. This function checks if the tenant has at least one\nConditional Access policy that blocks legacy authentication.\n\nLearn more:\nhttps://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-block-legacy"
+  "description": "Legacy authentication is an unsecure method to authenticate. This function checks if the tenant has at least one\nConditional Access policy that blocks legacy authentication.\n\nLearn more:\nhttps://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-block-legacy",
+  "remediation": "In the Entra admin center go to Entra ID > Conditional Access > Policies and create (or edit) a policy. Under Conditions > Client apps select 'Exchange ActiveSync clients' and 'Other clients', target All users and All cloud apps, and under Grant select 'Block access'.",
+  "links": [
+   {
+    "text": "Microsoft Learn",
+    "url": "https://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-block-legacy"
+   }
+  ]
  },
  "MT.1010": {
-  "description": "Legacy authentication is an unsecure method to authenticate. This function checks if the tenant has at least one\nConditional Access policy that blocks legacy authentication.\n\nLearn more:\nhttps://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-block-legacy"
+  "description": "Legacy authentication is an unsecure method to authenticate. This function checks if the tenant has at least one\nConditional Access policy that blocks legacy authentication.\n\nLearn more:\nhttps://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-block-legacy",
+  "remediation": "In the Entra admin center go to Entra ID > Conditional Access > Policies and create (or edit) a policy. Target the Office 365 Exchange Online app, under Conditions > Client apps select 'Exchange ActiveSync clients', and under Grant select 'Block access'.",
+  "links": [
+   {
+    "text": "Microsoft Learn",
+    "url": "https://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-block-legacy"
+   }
+  ]
  },
  "MT.1011": {
-  "description": "Checks if the tenant has at least one Conditional Access policy securing security info registration.\n\nSee [Securing security info registration - Microsoft Learn](https://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-registration)"
+  "description": "Checks if the tenant has at least one Conditional Access policy securing security info registration.\n\nSee [Securing security info registration - Microsoft Learn](https://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-registration)",
+  "remediation": "In the Entra admin center go to Entra ID > Conditional Access > Policies and create (or edit) a policy. Under Target resources select 'User actions' > 'Register security information' and require MFA or a compliant device, or allow it only from trusted named locations.",
+  "links": [
+   {
+    "text": "Securing security info registration - Microsoft Learn",
+    "url": "https://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-registration"
+   }
+  ]
  },
  "MT.1012": {
-  "description": "Checks if the tenant has at least one Conditional Access policy requiring multifactor authentication for risky sign-ins.\n\nSee [Sign-in risk-based multifactor authentication - Microsoft Learn](https://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-risk)"
+  "description": "Checks if the tenant has at least one Conditional Access policy requiring multifactor authentication for risky sign-ins.\n\nSee [Sign-in risk-based multifactor authentication - Microsoft Learn](https://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-risk)",
+  "remediation": "In the Entra admin center go to Entra ID > Conditional Access > Policies and create (or edit) a policy. Under Conditions > Sign-in risk select High and Medium, target All users and All cloud apps, and under Grant select 'Require multifactor authentication'. Requires Entra ID P2.",
+  "links": [
+   {
+    "text": "Sign-in risk-based multifactor authentication - Microsoft Learn",
+    "url": "https://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-risk"
+   }
+  ]
  },
  "MT.1013": {
-  "description": "Checks if the tenant has at least one Conditional Access policy requiring password change for high user risk.\n\nSee [User risk-based password change - Microsoft Learn](https://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-risk-user)"
+  "description": "Checks if the tenant has at least one Conditional Access policy requiring password change for high user risk.\n\nSee [User risk-based password change - Microsoft Learn](https://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-risk-user)",
+  "remediation": "In the Entra admin center go to Entra ID > Conditional Access > Policies and create (or edit) a policy. Under Conditions > User risk select High, target All users and All cloud apps, and under Grant select 'Require password change' (with MFA). Requires Entra ID P2.",
+  "links": [
+   {
+    "text": "User risk-based password change - Microsoft Learn",
+    "url": "https://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-risk-user"
+   }
+  ]
  },
  "MT.1015": {
-  "description": "Microsoft recommends blocking access for unknown or unsupported device platforms.\n\nLearn more:\nhttps://learn.microsoft.com/entra/identity/conditional-access/howto-policy-unknown-unsupported-device"
+  "description": "Microsoft recommends blocking access for unknown or unsupported device platforms.\n\nLearn more:\nhttps://learn.microsoft.com/entra/identity/conditional-access/howto-policy-unknown-unsupported-device",
+  "remediation": "In the Entra admin center go to Entra ID > Conditional Access > Policies and create (or edit) a policy. Under Conditions > Device platforms include Any device and exclude the supported platforms (Android, iOS, Windows, macOS, Linux), then under Grant select 'Block access'.",
+  "links": [
+   {
+    "text": "Microsoft Learn",
+    "url": "https://learn.microsoft.com/entra/identity/conditional-access/howto-policy-unknown-unsupported-device"
+   }
+  ]
  },
  "MT.1016": {
-  "description": "This check verifies if there is at least one Conditional Access policy that requires multifactor authentication for all guest accounts.\n\nSee [Require multifactor authentication for guest access - Microsoft Learn](https://learn.microsoft.com/entra/identity/conditional-access/howto-policy-guest-mfa)"
+  "description": "This check verifies if there is at least one Conditional Access policy that requires multifactor authentication for all guest accounts.\n\nSee [Require multifactor authentication for guest access - Microsoft Learn](https://learn.microsoft.com/entra/identity/conditional-access/howto-policy-guest-mfa)",
+  "remediation": "In the Entra admin center go to Entra ID > Conditional Access > Policies and create (or edit) a policy. Under Users include 'Guest or external users', target All cloud apps, and under Grant select 'Require multifactor authentication'.",
+  "links": [
+   {
+    "text": "Require multifactor authentication for guest access - Microsoft Learn",
+    "url": "https://learn.microsoft.com/entra/identity/conditional-access/howto-policy-guest-mfa"
+   }
+  ]
  },
  "MT.1017": {
-  "description": "Non persistent browser session Conditional Access policy can be helpful to minimize the risk of data leakage from an unmanaged device.\n\nLearn more:\nhttps://aka.ms/CATemplatesBrowserSession"
+  "description": "Non persistent browser session Conditional Access policy can be helpful to minimize the risk of data leakage from an unmanaged device.\n\nLearn more:\nhttps://aka.ms/CATemplatesBrowserSession",
+  "remediation": "In the Entra admin center go to Entra ID > Conditional Access > Policies and create (or edit) a policy. Under Session select 'Persistent browser session' > 'Never persistent', and use a device filter or compliance condition to apply it to non-corporate devices.",
+  "links": [
+   {
+    "text": "Configure adaptive session lifetime policies",
+    "url": "https://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-session-lifetime"
+   }
+  ]
  },
  "MT.1018": {
-  "description": "Sign-in frequency Conditional Access policy can be helpful to minimize the risk of data leakage from a shared device.\n\nLearn more:\nhttps://aka.ms/CATemplatesBrowserSession"
+  "description": "Sign-in frequency Conditional Access policy can be helpful to minimize the risk of data leakage from a shared device.\n\nLearn more:\nhttps://aka.ms/CATemplatesBrowserSession",
+  "remediation": "In the Entra admin center go to Entra ID > Conditional Access > Policies and create (or edit) a policy. Under Session select 'Sign-in frequency' (for example 1 hour) and use a device filter or compliance condition to apply it to non-corporate devices.",
+  "links": [
+   {
+    "text": "Configure adaptive session lifetime policies",
+    "url": "https://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-session-lifetime"
+   }
+  ]
  },
  "MT.1021": {
-  "description": "Security Defaults are enabled."
+  "description": "Security Defaults are enabled.",
+  "remediation": "In the Entra admin center go to Entra ID > Overview > Properties > Manage security defaults and set it to Enabled. Use security defaults only if you do not use Conditional Access; otherwise replace them with equivalent Conditional Access policies.",
+  "links": [
+   {
+    "text": "Security defaults in Microsoft Entra ID",
+    "url": "https://learn.microsoft.com/entra/fundamentals/security-defaults"
+   }
+  ]
  },
  "MT.1025": {
-  "description": "GET /beta/roleManagement/directory/roleAssignments?$expand=principal"
+  "description": "GET /beta/roleManagement/directory/roleAssignments?$expand=principal",
+  "remediation": "Remove guest (external) accounts from permanent Control Plane role assignments. Give the role to a dedicated internal cloud-only admin account, and where access is needed use PIM eligible assignments.",
+  "links": [
+   {
+    "text": "What is Privileged Identity Management",
+    "url": "https://learn.microsoft.com/entra/id-governance/privileged-identity-management/pim-configure"
+   },
+   {
+    "text": "Best practices for Microsoft Entra roles",
+    "url": "https://learn.microsoft.com/entra/identity/role-based-access-control/best-practices"
+   }
+  ]
  },
  "MT.1026": {
-  "description": "GET /beta/roleManagement/directory/roleAssignments?$expand=principal"
+  "description": "GET /beta/roleManagement/directory/roleAssignments?$expand=principal",
+  "remediation": "Remove synced (hybrid) accounts from permanent Control Plane role assignments. Use dedicated cloud-only admin accounts so an on-premises compromise cannot reach tenant administration.",
+  "links": [
+   {
+    "text": "What is Privileged Identity Management",
+    "url": "https://learn.microsoft.com/entra/id-governance/privileged-identity-management/pim-configure"
+   },
+   {
+    "text": "Best practices for Microsoft Entra roles",
+    "url": "https://learn.microsoft.com/entra/identity/role-based-access-control/best-practices"
+   }
+  ]
  },
  "MT.1027": {
-  "description": "GET /beta/roleManagement/directory/roleAssignments?$expand=principal"
+  "description": "GET /beta/roleManagement/directory/roleAssignments?$expand=principal",
+  "remediation": "Replace the client secret of each affected service principal with a certificate, workload identity federation or a managed identity, or remove its Control Plane role assignment and give it only the least privilege it needs.",
+  "links": [
+   {
+    "text": "What is Privileged Identity Management",
+    "url": "https://learn.microsoft.com/entra/id-governance/privileged-identity-management/pim-configure"
+   },
+   {
+    "text": "Best practices for Microsoft Entra roles",
+    "url": "https://learn.microsoft.com/entra/identity/role-based-access-control/best-practices"
+   }
+  ]
  },
  "MT.1028": {
-  "description": "GET /beta/roleManagement/directory/roleAssignments?$expand=principal"
+  "description": "GET /beta/roleManagement/directory/roleAssignments?$expand=principal",
+  "remediation": "Control Plane roles should be held by dedicated admin accounts without a mailbox or licence. Move the role to a separate admin account and keep the user's daily-use account unprivileged.",
+  "links": [
+   {
+    "text": "What is Privileged Identity Management",
+    "url": "https://learn.microsoft.com/entra/id-governance/privileged-identity-management/pim-configure"
+   },
+   {
+    "text": "Best practices for Microsoft Entra roles",
+    "url": "https://learn.microsoft.com/entra/identity/role-based-access-control/best-practices"
+   }
+  ]
  },
  "MT.1029": {
-  "description": "GET `/beta/identityGovernance/roleManagementAlerts/alerts/{unifiedRoleManagementAlertId}`"
+  "description": "GET `/beta/identityGovernance/roleManagementAlerts/alerts/{unifiedRoleManagementAlertId}`",
+  "remediation": "Review the stale accounts, then remove their privileged role assignments or disable the accounts. Set up recurring PIM access reviews for privileged roles so unused accounts are removed automatically.",
+  "links": [
+   {
+    "text": "What is Privileged Identity Management",
+    "url": "https://learn.microsoft.com/entra/id-governance/privileged-identity-management/pim-configure"
+   },
+   {
+    "text": "Best practices for Microsoft Entra roles",
+    "url": "https://learn.microsoft.com/entra/identity/role-based-access-control/best-practices"
+   }
+  ]
  },
  "MT.1030": {
-  "description": "GET `/beta/identityGovernance/roleManagementAlerts/alerts/{unifiedRoleManagementAlertId}`"
+  "description": "GET `/beta/identityGovernance/roleManagementAlerts/alerts/{unifiedRoleManagementAlertId}`",
+  "remediation": "Remove eligible Control Plane role assignments that are never activated, or confirm them in a PIM access review. Only keep assignments that administrators actually use.",
+  "links": [
+   {
+    "text": "What is Privileged Identity Management",
+    "url": "https://learn.microsoft.com/entra/id-governance/privileged-identity-management/pim-configure"
+   },
+   {
+    "text": "Best practices for Microsoft Entra roles",
+    "url": "https://learn.microsoft.com/entra/identity/role-based-access-control/best-practices"
+   }
+  ]
  },
  "MT.1031": {
-  "description": "GET `/beta/identityGovernance/roleManagementAlerts/alerts/{unifiedRoleManagementAlertId}`"
+  "description": "GET `/beta/identityGovernance/roleManagementAlerts/alerts/{unifiedRoleManagementAlertId}`",
+  "remediation": "In the Entra admin center go to Entra ID > Identity Governance > Privileged Identity Management > Microsoft Entra roles > Assignments and change permanent active Control Plane assignments to eligible, so they need activation (with MFA).",
+  "links": [
+   {
+    "text": "What is Privileged Identity Management",
+    "url": "https://learn.microsoft.com/entra/id-governance/privileged-identity-management/pim-configure"
+   },
+   {
+    "text": "Best practices for Microsoft Entra roles",
+    "url": "https://learn.microsoft.com/entra/identity/role-based-access-control/best-practices"
+   }
+  ]
  },
  "MT.1032": {
-  "description": "GET `/beta/identityGovernance/roleManagementAlerts/alerts/{unifiedRoleManagementAlertId}`"
+  "description": "GET `/beta/identityGovernance/roleManagementAlerts/alerts/{unifiedRoleManagementAlertId}`",
+  "remediation": "Reduce the number of Global Administrators to the minimum needed (Microsoft recommends fewer than 5, and at least 2 including emergency access). Move other administrators to least-privileged roles and use PIM for the rest.",
+  "links": [
+   {
+    "text": "What is Privileged Identity Management",
+    "url": "https://learn.microsoft.com/entra/id-governance/privileged-identity-management/pim-configure"
+   },
+   {
+    "text": "Best practices for Microsoft Entra roles",
+    "url": "https://learn.microsoft.com/entra/identity/role-based-access-control/best-practices"
+   }
+  ]
  },
  "MT.1036": {
-  "description": "Provides the differences in objects between two arrays of objects."
+  "description": "Provides the differences in objects between two arrays of objects.",
+  "remediation": "For every user or group excluded from a Conditional Access policy, make sure another enabled policy includes them with a suitable control. Review each exclusion and remove it when it is not needed.",
+  "links": [
+   {
+    "text": "Conditional Access overview",
+    "url": "https://learn.microsoft.com/entra/identity/conditional-access/overview"
+   }
+  ]
  },
  "MT.1038": {
-  "description": "This test checks if there are any Conditional Access policies that target deleted security groups.\n\nThis usually happens when a group is deleted but is still referenced in a Conditional Access policy.\n\nDeleted groups in your policy can lead to unexpected gaps. This may result in Conditional Access policies not being applied to the users you intended or the policy not being applied at all.\n\nTo fix this issue:\n\n* Open the impacted Conditional Access policy.\n* If the group is no longer needed, click Save to remove the referenced group from the policy.\n* If the group is still needed, update the policy to target a valid group."
+  "description": "This test checks if there are any Conditional Access policies that target deleted security groups.\n\nThis usually happens when a group is deleted but is still referenced in a Conditional Access policy.\n\nDeleted groups in your policy can lead to unexpected gaps. This may result in Conditional Access policies not being applied to the users you intended or the policy not being applied at all.\n\nTo fix this issue:\n\n* Open the impacted Conditional Access policy.\n* If the group is no longer needed, click Save to remove the referenced group from the policy.\n* If the group is still needed, update the policy to target a valid group.",
+  "remediation": "Open the affected Conditional Access policies and remove the deleted groups from the include and exclude lists. Replace them with the current group if the intent still applies.",
+  "links": [
+   {
+    "text": "Conditional Access overview",
+    "url": "https://learn.microsoft.com/entra/identity/conditional-access/overview"
+   }
+  ]
  },
  "MT.1049": {
-  "description": "Checks if both user risk and sign-in risk are configured in one Conditional Access policy.\n\nCombining sign in risk and user risk in one policy will only block access if both types of risk are flagged for a given sign in.\n\nThis means if only one type of risk is present (eg Sign-in risk = High, User risk = None), the sign-in will be allowed to proceed. This could create a security gap since risky activities might slip through.\n\nSee [Sign-in risk-based multifactor authentication - Microsoft Learn](https://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-risk)"
+  "description": "Checks if both user risk and sign-in risk are configured in one Conditional Access policy.\n\nCombining sign in risk and user risk in one policy will only block access if both types of risk are flagged for a given sign in.\n\nThis means if only one type of risk is present (eg Sign-in risk = High, User risk = None), the sign-in will be allowed to proceed. This could create a security gap since risky activities might slip through.\n\nSee [Sign-in risk-based multifactor authentication - Microsoft Learn](https://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-risk)",
+  "remediation": "Create separate Conditional Access policies: one that requires a control for sign-in risk and one for user risk, instead of combining both conditions in one policy.",
+  "links": [
+   {
+    "text": "Sign-in risk-based multifactor authentication - Microsoft Learn",
+    "url": "https://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-risk"
+   }
+  ]
  },
  "MT.1050": {
   "description": "Ensure no Microsoft Entra ID applications or service principals have Graph permissions with a risk of having a direct or indirect path to a Global Administrator or a full tenant takeover.\n\nThe tested permissions are based on the research published at [Microsoft Application permissions tiering](https://github.com/emiliensocchi/azure-tiering/tree/main/Microsoft%20Graph%20application%20permissions) by [Emilien Socchi](https://github.com/emiliensocchi).\n\nThis test checks if any application has tier-0 graph permissions with a risk of having a direct or indirect path to a Global Administrator or a full tenant takeover.\n\nNote:\nThere are several use cases where Tier-0 permissions with an indirect attack path are required. For example, Maester itself requires the permission 'RoleEligibilitySchedule.ReadWrite.Directory' to properly validate the PIM assignments. Nevertheless, an administrator should question the use of these permissions and check whether less critical permissions are also sufficient. Applications provided by third-party vendors that do have Tier-0 permissions with direct or indirect attack paths should strictly be questioned and monitored.",
@@ -1309,7 +1540,22 @@
   ]
  },
  "MT.1052": {
-  "description": "Checks if at least one policy is targeting the Device Code condition.\n\nOrganizations should block or limit device code flow because it can be exploited in phishing attacks, such as those conducted by the Storm-2372 group.\nAttackers leverage this authentication method to trick users into entering device codes on malicious websites, granting unauthorized access to accounts.\nBlocking or limiting this flow helps prevent exploitation by minimizing attack vectors, improving overall security posture, and safeguarding against compromised credentials through phishing techniques."
+  "description": "Checks if at least one policy is targeting the Device Code condition.\n\nOrganizations should block or limit device code flow because it can be exploited in phishing attacks, such as those conducted by the Storm-2372 group.\nAttackers leverage this authentication method to trick users into entering device codes on malicious websites, granting unauthorized access to accounts.\nBlocking or limiting this flow helps prevent exploitation by minimizing attack vectors, improving overall security posture, and safeguarding against compromised credentials through phishing techniques.",
+  "remediation": "Configure a Conditional Access policy to block the Device Code authentication flow and limit access to only trusted users and devices or to specific named locations.",
+  "links": [
+   {
+    "text": "Block authentication flows with Conditional Access policy",
+    "url": "https://learn.microsoft.com/entra/identity/conditional-access/policy-block-authentication-flows"
+   },
+   {
+    "text": "Microsoft Threat Intelligence | Storm-2372 conducts device code phishing campaign",
+    "url": "https://www.microsoft.com/security/blog/2025/02/13/storm-2372-conducts-device-code-phishing-campaign/"
+   },
+   {
+    "text": "Jeffrey Appel | How to protect against Device Code Flow abuse (Storm-2372 attacks) and block the authentication flow",
+    "url": "https://jeffreyappel.nl/how-to-protect-against-device-code-flow-abuse-storm-2372-attacks-and-block-the-authentication-flow/"
+   }
+  ]
  },
  "MT.1055": {
   "description": "This test checks if Microsoft 365 Group creation is restricted to approved users.\n\nBy default, all users in the tenant can create Microsoft 365 Groups. This can lead to group sprawl, security risks and compliance issues.\n\nCreating groups should be restricted to users who have undergone training and understand the responsibilities of group ownership, governance and compliance requirements.",
@@ -1323,7 +1569,13 @@
  },
  "MT.1057": {
   "description": "This test checks if you have any app registrations that have secrets configured. Using secrets is discouraged! There are better ways available to authenticate your applications.",
-  "remediation": "Open all app registrations below and remove the secrets."
+  "remediation": "Open all app registrations below and remove the secrets.",
+  "links": [
+   {
+    "text": "Workload identity federation",
+    "url": "https://learn.microsoft.com/entra/workload-id/workload-identity-federation"
+   }
+  ]
  },
  "MT.1061": {
   "description": "When MFA is required during device registration in Conditional Access policies, it must be disabled in the Entra ID Device settings.\n\nWhen both are enabled, the Conditional Access policy with the \"Register or join devices\" user action will not work as expected.",
@@ -1340,10 +1592,28 @@
   ]
  },
  "MT.1063": {
-  "description": "This test checks if all owners of app registrations have Multi-Factor Authentication (MFA) registered. App registration owners without MFA pose a significant security risk as credential stuffing attacks can lead to privileged access and potential privilege escalation or data loss."
+  "description": "This test checks if all owners of app registrations have Multi-Factor Authentication (MFA) registered. App registration owners without MFA pose a significant security risk as credential stuffing attacks can lead to privileged access and potential privilege escalation or data loss.",
+  "remediation": "Register MFA for all app registration owners listed. Use Conditional Access policies to enforce MFA for all application owners.",
+  "links": [
+   {
+    "text": "Require MFA for all users",
+    "url": "https://learn.microsoft.com/entra/identity/conditional-access/howto-conditional-access-policy-all-users-mfa"
+   }
+  ]
  },
  "MT.1066": {
-  "description": "# Conditional Access policies should not reference non-existent users, groups, or roles\n\nThis test checks if there are any Conditional Access policies that reference non-existent users, groups, or roles.\n\nThis usually happens when a user, group, or role is deleted but is still referenced in a Conditional Access policy.\n\nNon-existent objects in your policy can lead to unexpected gaps or behavior. This may result in Conditional Access policies not being applied to the intended users or the policy not functioning as expected."
+  "description": "# Conditional Access policies should not reference non-existent users, groups, or roles\n\nThis test checks if there are any Conditional Access policies that reference non-existent users, groups, or roles.\n\nThis usually happens when a user, group, or role is deleted but is still referenced in a Conditional Access policy.\n\nNon-existent objects in your policy can lead to unexpected gaps or behavior. This may result in Conditional Access policies not being applied to the intended users or the policy not functioning as expected.",
+  "remediation": "To fix this issue:\n\n* Open the impacted Conditional Access policy.\n* Remove the non-existent user, group, or role from the policy.\n* If the object is still needed, recreate it or replace it with a valid alternative.\n* Click Save to apply the changes.",
+  "links": [
+   {
+    "text": "Conditional Access: Users and groups",
+    "url": "https://learn.microsoft.com/entra/identity/conditional-access/concept-conditional-access-users-groups"
+   },
+   {
+    "text": "Manage Conditional Access policies",
+    "url": "https://learn.microsoft.com/entra/identity/conditional-access/manage-conditional-access-policies"
+   }
+  ]
  },
  "MT.1068": {
   "description": "This test checks if tenant creation is restricted to admin users only.\n\n\"Yes\" restricts the creation of Microsoft Entra ID tenants to the Global Administrator or Tenant Creator roles. \"No\" allows non-admin users to create Microsoft Entra ID tenants. Anyone who creates a tenant will become the Global Administrator for that tenant.\n\nTenant creation should be restricted to admin users who have undergone proper training and understand the responsibilities of tenant management, security governance, and compliance requirements.",
@@ -1375,7 +1645,13 @@
  },
  "MT.1075": {
   "description": "This test checks if you have any third party service principals that are open to all users. It is recommended to set 'Assignment required?' to Yes for all Third Party apps.",
-  "remediation": "Open all app service principals below and set 'Assignment required?' to Yes. Assign users under 'Users and groups' to provide them with explicit access. If desired, use the audit logs per SPN to determine who was using the application before locking them down."
+  "remediation": "Open all app service principals below and set 'Assignment required?' to Yes. Assign users under 'Users and groups' to provide them with explicit access. If desired, use the audit logs per SPN to determine who was using the application before locking them down.",
+  "links": [
+   {
+    "text": "Assign users and groups to an application",
+    "url": "https://learn.microsoft.com/entra/identity/enterprise-apps/assign-user-or-group-access-portal"
+   }
+  ]
  },
  "MT.1090": {
   "description": "The 'Global Administrator role is added as local administrator on the device during Microsoft Entra join' setting determines if Microsoft Entra Global Administrator role is added to the local administrators group. This setting applies only once during the actual registration of the device as Microsoft Entra join.",
@@ -1406,19 +1682,122 @@
   ]
  },
  "MT.1106": {
-  "description": "This test identifies Microsoft Entra ID Governance access package catalog resources that reference stale or invalid roles, deleted service principals, or non-existent SharePoint sites. When applications or sites are reconfigured or deleted, catalogs often retain \"ghost roles\" that cause provisioning failures.\n\nThe test validates:\n- Service principals referenced by applications are active and accessible\n- Application roles assigned in access packages still exist in their service principals\n- SharePoint sites have valid URLs and are accessible via Microsoft Graph API\n- Resources are properly configured\n\n**Note:** Group validation is handled by MT.1107. Built-in roles are excluded as they are system-managed. \"Default Access\" roles are skipped as system defaults.\n\nStale resources detected:\n- **Deleted service principals** - Application removed from tenant (404 error)\n- **Stale app roles** - Roles removed from service principal but still assigned in packages\n- **Invalid SharePoint URLs** - Site URL format incorrect or site deleted/moved\n- **Inaccessible sites** - Site exists but cannot be accessed via Graph API"
+  "description": "This test identifies Microsoft Entra ID Governance access package catalog resources that reference stale or invalid roles, deleted service principals, or non-existent SharePoint sites. When applications or sites are reconfigured or deleted, catalogs often retain \"ghost roles\" that cause provisioning failures.\n\nThe test validates:\n- Service principals referenced by applications are active and accessible\n- Application roles assigned in access packages still exist in their service principals\n- SharePoint sites have valid URLs and are accessible via Microsoft Graph API\n- Resources are properly configured\n\n**Note:** Group validation is handled by MT.1107. Built-in roles are excluded as they are system-managed. \"Default Access\" roles are skipped as system defaults.\n\nStale resources detected:\n- **Deleted service principals** - Application removed from tenant (404 error)\n- **Stale app roles** - Roles removed from service principal but still assigned in packages\n- **Invalid SharePoint URLs** - Site URL format incorrect or site deleted/moved\n- **Inaccessible sites** - Site exists but cannot be accessed via Graph API",
+  "remediation": "**For Deleted Service Principals/Applications:**\n\n*Option 1: Remove from Catalog*\n1. Navigate to [Entra Admin Center → Identity Governance → Catalogs](https://entra.microsoft.com/#view/Microsoft_AAD_ELM/Dashboard.ReactView)\n2. Select the catalog → **Resources** section\n3. Select the stale application resource\n4. Click **Remove from catalog**\n5. Update any access packages that referenced this resource\n\n*Option 2: Restore Application*\n1. Check [Entra Admin Center → Enterprise applications → Deleted applications](https://entra.microsoft.com/#view/Microsoft_AAD_IAM/StartboardApplicationsMenuBlade/~/AppAppsPreview)\n2. Restore the application if within recovery window\n3. Verify catalog resource is now valid\n\n**For Stale App Roles:**\n1. Identify the app role from test results\n2. Find the service principal in Entra portal\n3. If role removed intentionally:\n   - Edit the access package\n   - Remove the stale resource role assignment\n   - Add a valid app role if needed\n4. If role should exist:\n   - Contact application owner to restore role in app manifest\n   - Update app registration to add role back\n\n**For SharePoint Sites:**\n\n*Option 1: Remove from Catalog*\n1. Navigate to catalog → **Resources**\n2. Select the site and click **Remove from catalog**\n3. Update access packages\n\n*Option 2: Fix Site URL* (if moved/renamed)\n1. Verify correct URL in [SharePoint Admin Center](https://admin.microsoft.com/sharepoint)\n2. Remove old site resource from catalog\n3. Add site with correct URL as new resource\n4. Update access packages\n\n*Option 3: Restore Site*\n1. Check [SharePoint Admin Center → Deleted sites](https://admin.microsoft.com/sharepoint?page=recycleBin)\n2. Restore site if within 93-day recovery window\n3. Verify accessibility",
+  "links": [
+   {
+    "text": "Microsoft Entra ID Governance Documentation",
+    "url": "https://learn.microsoft.com/entra/id-governance/"
+   },
+   {
+    "text": "Manage Catalog Resources",
+    "url": "https://learn.microsoft.com/entra/id-governance/entitlement-management-access-package-resources"
+   },
+   {
+    "text": "Service Principal App Roles",
+    "url": "https://learn.microsoft.com/graph/api/resources/approle"
+   },
+   {
+    "text": "SharePoint Site Resource Type",
+    "url": "https://learn.microsoft.com/graph/api/resources/site"
+   },
+   {
+    "text": "Microsoft Graph API - Entitlement Management",
+    "url": "https://learn.microsoft.com/graph/api/resources/entitlementmanagement-overview"
+   }
+  ]
  },
  "MT.1107": {
-  "description": "This test identifies Microsoft Entra ID Governance access packages and catalogs that contain references to deleted Entra ID groups. Deleted group references can cause access provisioning failures, broken approval workflows, and compliance violations.\n\nThe test validates:\n- Groups assigned as resources in access packages still exist\n- Groups configured as approvers in assignment policies are active\n- Groups registered in catalogs have not been deleted\n\nFor any deleted groups found, the test attempts to retrieve the group name from the recycle bin (`directory/deletedItems`) to help identify which groups need attention."
+  "description": "This test identifies Microsoft Entra ID Governance access packages and catalogs that contain references to deleted Entra ID groups. Deleted group references can cause access provisioning failures, broken approval workflows, and compliance violations.\n\nThe test validates:\n- Groups assigned as resources in access packages still exist\n- Groups configured as approvers in assignment policies are active\n- Groups registered in catalogs have not been deleted\n\nFor any deleted groups found, the test attempts to retrieve the group name from the recycle bin (`directory/deletedItems`) to help identify which groups need attention.",
+  "remediation": "**Option 1: Remove Deleted Group References**\n1. Navigate to [Entra Admin Center → Identity Governance → Access Packages](https://entra.microsoft.com/#view/Microsoft_AAD_ELM/Dashboard.ReactView)\n2. For each affected access package:\n   - Go to **Resources** and remove the deleted group\n   - Update assignment policies to remove deleted group approvers\n3. For affected catalogs:\n   - Select the catalog → **Resources**\n   - Remove the deleted group\n\n**Option 2: Restore Deleted Groups**\n1. Navigate to [Entra Admin Center → Identity → Groups → Deleted groups](https://entra.microsoft.com/#blade/Microsoft_AAD_IAM/GroupsManagementMenuBlade/DeletedGroups)\n2. Select the deleted group(s) and click **Restore group**\n3. Re-run the test to confirm resolution\n\n**Option 3: Replace with Active Groups**\n1. Create or identify replacement active groups\n2. Add new groups to access packages/catalogs\n3. Update assignment policies with new approver groups\n4. Remove deleted group references",
+  "links": [
+   {
+    "text": "Microsoft Entra ID Governance Documentation",
+    "url": "https://learn.microsoft.com/entra/id-governance/"
+   },
+   {
+    "text": "Access Packages Overview",
+    "url": "https://learn.microsoft.com/entra/id-governance/entitlement-management-access-package-create"
+   },
+   {
+    "text": "Manage Resources in Access Packages",
+    "url": "https://learn.microsoft.com/entra/id-governance/entitlement-management-access-package-resources"
+   },
+   {
+    "text": "Access Package Catalogs",
+    "url": "https://learn.microsoft.com/entra/id-governance/entitlement-management-catalog-create"
+   },
+   {
+    "text": "Microsoft Graph API - Entitlement Management",
+    "url": "https://learn.microsoft.com/graph/api/resources/entitlementmanagement-overview"
+   }
+  ]
  },
  "MT.1108": {
-  "description": "This test identifies Microsoft Entra ID Governance access packages that contain assignment policies which are disabled, misconfigured, or orphaned. Inactive or misconfigured policies prevent users from successfully requesting access and can break automated provisioning workflows.\n\nThe test validates:\n- Policies are in \"published\" state and active\n- Requestor scope type is properly configured (not \"NoSubjects\" or null)\n- Required approval settings are complete with designated approvers\n- Policies have not expired\n- Required questions have proper text configured"
+  "description": "This test identifies Microsoft Entra ID Governance access packages that contain assignment policies which are disabled, misconfigured, or orphaned. Inactive or misconfigured policies prevent users from successfully requesting access and can break automated provisioning workflows.\n\nThe test validates:\n- Policies are in \"published\" state and active\n- Requestor scope type is properly configured (not \"NoSubjects\" or null)\n- Required approval settings are complete with designated approvers\n- Policies have not expired\n- Required questions have proper text configured",
+  "remediation": "**For Unpublished Policies:**\n1. Navigate to [Entra Admin Center → Identity Governance → Access Packages](https://entra.microsoft.com/#view/Microsoft_AAD_ELM/Dashboard.ReactView)\n2. Select the affected access package → **Policies** tab\n3. Review the policy state:\n   - If should be active: Publish it\n   - If no longer needed: Delete it\n\n**For Missing Requestor Settings:**\n1. Edit the problematic policy → **Requestor** settings\n2. Configure **Who can request** with appropriate scope (All users, Specific users, etc.)\n3. Ensure scope type is valid and not deprecated\n\n**For Missing/Invalid Approval Settings:**\n1. Edit the policy → **Approval** settings\n2. If approval required:\n   - Add at least one approval stage\n   - Configure primary approvers for each stage\n   - Ensure approver groups exist\n3. If not required: Disable approval requirement\n\n**For Expired Policies:**\n1. Review if expiration was intentional\n2. If still needed: Edit policy and update expiration date or remove expiration\n3. If no longer needed: Delete the policy\n\n**For Question Configuration Issues:**\n1. Edit the policy → **Requestor information** section\n2. Ensure all required questions have proper text configured\n3. Validate question type and requirements",
+  "links": [
+   {
+    "text": "Microsoft Entra ID Governance Documentation",
+    "url": "https://learn.microsoft.com/entra/id-governance/"
+   },
+   {
+    "text": "Access Package Assignment Policies",
+    "url": "https://learn.microsoft.com/entra/id-governance/entitlement-management-access-package-request-policy"
+   },
+   {
+    "text": "Configure Access Package Request Settings",
+    "url": "https://learn.microsoft.com/entra/id-governance/entitlement-management-access-package-approval-policy"
+   },
+   {
+    "text": "Microsoft Graph API - Assignment Policies",
+    "url": "https://learn.microsoft.com/graph/api/resources/accesspackageassignmentpolicy"
+   }
+  ]
  },
  "MT.1109": {
-  "description": "This test identifies Microsoft Entra ID Governance access package assignment policies with approval workflows that reference invalid approvers. Invalid approvers cause approval workflow failures, access request timeouts, and create significant operational overhead.\n\nThe test validates:\n- User approvers exist in the directory and accounts are enabled\n- Group approvers exist and have at least one member\n- Policies requiring approval have approval stages with primary approvers configured\n- Approval workflows are complete and functional\n\n**Note:** Manager approvers are noted but not validated (resolved at request time)."
+  "description": "This test identifies Microsoft Entra ID Governance access package assignment policies with approval workflows that reference invalid approvers. Invalid approvers cause approval workflow failures, access request timeouts, and create significant operational overhead.\n\nThe test validates:\n- User approvers exist in the directory and accounts are enabled\n- Group approvers exist and have at least one member\n- Policies requiring approval have approval stages with primary approvers configured\n- Approval workflows are complete and functional\n\n**Note:** Manager approvers are noted but not validated (resolved at request time).",
+  "remediation": "**For Deleted User Approvers:**\n1. Navigate to [Entra Admin Center → Identity Governance → Access Packages](https://entra.microsoft.com/#view/Microsoft_AAD_ELM/Dashboard.ReactView)\n2. Select the affected access package → **Policies** tab\n3. Edit the affected policy → **Approval** settings\n4. Remove deleted users and add valid replacement approvers\n5. Consider using groups for resilience\n6. Test the approval workflow\n\n**For Disabled User Approvers:**\n1. Determine if user should be re-enabled or replaced\n2. If temporary: Re-enable the user account in Entra ID\n3. If permanent: Replace with active user or group\n4. Update policy **Approval** settings\n\n**For Deleted or Missing Groups:**\n1. Edit the policy → **Approval** settings\n2. Remove references to deleted groups\n3. Create or select a valid approval group with active members\n4. Update the policy and save\n\n**For Empty Approval Groups:**\n1. Navigate to [Entra ID → Groups](https://entra.microsoft.com/#view/Microsoft_AAD_IAM/GroupsManagementMenuBlade)\n2. Find the approval group and add appropriate members\n3. Ensure multiple members for redundancy\n4. Verify the access package policy\n\n**For Missing Approval Stages or Primary Approvers:**\n1. Edit the policy → **Approval** settings\n2. Add at least one approval stage\n3. Configure primary approvers (users, groups, or manager)\n4. Set timeout values and save",
+  "links": [
+   {
+    "text": "Microsoft Entra ID Governance Documentation",
+    "url": "https://learn.microsoft.com/entra/id-governance/"
+   },
+   {
+    "text": "Configure Access Package Approval",
+    "url": "https://learn.microsoft.com/entra/id-governance/entitlement-management-access-package-approval-policy"
+   },
+   {
+    "text": "Approval Workflow Settings",
+    "url": "https://learn.microsoft.com/entra/id-governance/entitlement-management-access-package-request-policy"
+   },
+   {
+    "text": "Microsoft Graph API - Approval Settings",
+    "url": "https://learn.microsoft.com/graph/api/resources/approval"
+   }
+  ]
  },
  "MT.1110": {
-  "description": "This test identifies Microsoft Entra ID Governance access package catalogs that contain resources (groups, applications, SharePoint sites) that are not used in any access package within that catalog. Orphaned resources indicate incomplete configuration or drift.\n\nThe test validates:\n- All catalog resources are referenced in at least one access package\n- No orphaned or unused resources exist in catalogs\n- Resources serve their intended governance purpose\n\nCommon scenarios detected:\n- Resources added to catalog but package not yet configured\n- Access package was deleted but resource remained in catalog\n- Resources removed from packages but not from catalog\n- Test resources added and never cleaned up"
+  "description": "This test identifies Microsoft Entra ID Governance access package catalogs that contain resources (groups, applications, SharePoint sites) that are not used in any access package within that catalog. Orphaned resources indicate incomplete configuration or drift.\n\nThe test validates:\n- All catalog resources are referenced in at least one access package\n- No orphaned or unused resources exist in catalogs\n- Resources serve their intended governance purpose\n\nCommon scenarios detected:\n- Resources added to catalog but package not yet configured\n- Access package was deleted but resource remained in catalog\n- Resources removed from packages but not from catalog\n- Test resources added and never cleaned up",
+  "remediation": "**Option 1: Add to Access Package** (if resource should be governed)\n1. Navigate to [Entra Admin Center → Identity Governance → Catalogs](https://entra.microsoft.com/#view/Microsoft_AAD_ELM/Dashboard.ReactView)\n2. Open an existing access package or create a new one\n3. Add the resource to the package's resource roles\n4. Configure appropriate roles and permissions\n5. Update package policies as needed\n\n**Option 2: Remove from Catalog** (if resource no longer needed)\n1. Navigate to [Entra Admin Center → Identity Governance → Catalogs](https://entra.microsoft.com/#view/Microsoft_AAD_ELM/Dashboard.ReactView)\n2. Select the catalog → **Resources** section\n3. Select the unused resource\n4. Click **Remove from catalog**\n5. Confirm removal\n\n**Bulk Remediation Process:**\n1. Review with stakeholders to identify which resources are still needed\n2. Create access packages for resources that should be governed\n3. Clean up catalog by removing resources no longer needed\n4. Document decisions and update procedures",
+  "links": [
+   {
+    "text": "Microsoft Entra ID Governance Documentation",
+    "url": "https://learn.microsoft.com/entra/id-governance/"
+   },
+   {
+    "text": "Access Package Catalogs",
+    "url": "https://learn.microsoft.com/entra/id-governance/entitlement-management-catalog-create"
+   },
+   {
+    "text": "Manage Catalog Resources",
+    "url": "https://learn.microsoft.com/entra/id-governance/entitlement-management-access-package-resources"
+   },
+   {
+    "text": "Microsoft Graph API - Entitlement Management",
+    "url": "https://learn.microsoft.com/graph/api/resources/entitlementmanagement-overview"
+   }
+  ]
  },
  "MT.1147": {
   "description": "Ensure krbtgt_AzureAD is not synchronized from on-premises Active Directory.\n\nThe krbtgt_AzureAD account is a sensitive identity used by Microsoft's cloud services for Microsoft Entra Kerberos scenarios. Microsoft recommends keeping a clear separation between cloud and on-premises environments and not synchronizing this account to Entra ID. Synchronizing an on-premises krbtgt_AzureAD account creates an unnecessary privilege escalation path between the environments.",
@@ -1476,15 +1855,57 @@
  },
  "MT.1186": {
   "description": "This test checks if any of the following high-privilege, first-party Microsoft service principals allow sign-in from any user instead of requiring explicit assignment:\n\n- Microsoft Azure PowerShell\n- Microsoft Azure CLI and Azure Developer CLI (`azd`) - both currently use the same application ID\n- Microsoft Graph Command Line Tools (used by the Microsoft Graph PowerShell SDK and Microsoft Graph CLI)\n- Graph Explorer\n- Azure Active Directory PowerShell (legacy)\n- Microsoft Teams PowerShell Cmdlets (used by the `MicrosoftTeams` module)\n- Microsoft Exchange Online PowerShell (used by the `ExchangeOnlineManagement` module)\n- Microsoft SharePoint Online Management Shell\n- Power Platform CLI (`pac`)\n\nThese apps are pre-consented in most tenants and carry broad delegated permissions to Microsoft Graph, Azure Resource Manager, or their respective workload (Exchange Online, SharePoint Online, Teams, Power Platform). Left open to all users, any compromised or malicious account can use them, without any further consent prompt, to enumerate directory data and resources, or to administer that workload directly - a common first step in privilege escalation and data exfiltration. It is recommended to set 'Assignment required?' to Yes for these applications and explicitly assign only the users or groups who need them.\n\nA first-party application can still be used even when its service principal is not visible in the tenant. A missing service principal is therefore reported as needing attention because the assignment requirement cannot be enforced until the service principal is created.",
-  "remediation": "1. Review the application's sign-in logs to identify the users who need access.\n2. If a flagged application is reported as **Service principal missing**, create it with Microsoft Graph PowerShell:\n\n   ```powershell\n   Connect-MgGraph -Scopes 'Application.ReadWrite.All'\n   $appId = ''\n   $sp = Get-MgServicePrincipal -Filter \"appId eq '$appId'\"\n   if (-not $sp) {\n       $sp = New-MgServicePrincipal -AppId $appId\n   }\n   ```\n\n3. Assign the approved users or groups under **Users and groups**.\n4. Set **Assignment required?** to **Yes** under **Properties**, or use Microsoft Graph PowerShell:\n\n   ```powershell\n   Update-MgServicePrincipal -ServicePrincipalId $sp.Id -AppRoleAssignmentRequired:$true\n   ```"
+  "remediation": "1. Review the application's sign-in logs to identify the users who need access.\n2. If a flagged application is reported as **Service principal missing**, create it with Microsoft Graph PowerShell:\n\n   ```powershell\n   Connect-MgGraph -Scopes 'Application.ReadWrite.All'\n   $appId = ''\n   $sp = Get-MgServicePrincipal -Filter \"appId eq '$appId'\"\n   if (-not $sp) {\n       $sp = New-MgServicePrincipal -AppId $appId\n   }\n   ```\n\n3. Assign the approved users or groups under **Users and groups**.\n4. Set **Assignment required?** to **Yes** under **Properties**, or use Microsoft Graph PowerShell:\n\n   ```powershell\n   Update-MgServicePrincipal -ServicePrincipalId $sp.Id -AppRoleAssignmentRequired:$true\n   ```",
+  "links": [
+   {
+    "text": "Assign users and groups to an application",
+    "url": "https://learn.microsoft.com/entra/identity/enterprise-apps/assign-user-or-group-access-portal"
+   }
+  ]
  },
  "MT.1198": {
   "description": "This test checks if any app registration uses a certificate that was issued with an excessive validity period.\n\nCertificates are the recommended alternative to client secrets, but a certificate that is valid for several years reintroduces the risk it was meant to remove: a stolen private key stays usable for the entire remaining validity period, and long-lived credentials are rarely rotated or reviewed.\n\nAn app management policy does not close this gap on its own. Credential restrictions carry a `restrictForAppsCreatedAfterDateTime` property and only apply to credentials added after the policy takes effect, so certificates that already exist are grandfathered in and are never re-evaluated. A tenant can therefore pass the app management policy test and still authenticate with multi-year certificates.\n\nCertificates that have already expired can no longer be used to authenticate and are not reported by this test.",
-  "remediation": "1. Open the app registration listed below in the [Microsoft Entra admin center](https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade) and select **Certificates & secrets**.\n2. Request or generate a replacement certificate with a shorter validity period and upload it under **Certificates**.\n3. Update the workload that authenticates with the app registration to use the new certificate.\n4. Once the workload has been confirmed to work, delete the long-lived certificate.\n5. Configure the [default app management policy](https://learn.microsoft.com/graph/api/resources/tenantappmanagementpolicy) with an `asymmetricKeyLifetime` restriction so that new certificates cannot be added with an excessive validity period.\n6. Where possible, replace certificate authentication with a [managed identity](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/overview) or [workload identity federation](https://learn.microsoft.com/entra/workload-id/workload-identity-federation), which removes the credential entirely."
+  "remediation": "1. Open the app registration listed below in the [Microsoft Entra admin center](https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade) and select **Certificates & secrets**.\n2. Request or generate a replacement certificate with a shorter validity period and upload it under **Certificates**.\n3. Update the workload that authenticates with the app registration to use the new certificate.\n4. Once the workload has been confirmed to work, delete the long-lived certificate.\n5. Configure the [default app management policy](https://learn.microsoft.com/graph/api/resources/tenantappmanagementpolicy) with an `asymmetricKeyLifetime` restriction so that new certificates cannot be added with an excessive validity period.\n6. Where possible, replace certificate authentication with a [managed identity](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/overview) or [workload identity federation](https://learn.microsoft.com/entra/workload-id/workload-identity-federation), which removes the credential entirely.",
+  "links": [
+   {
+    "text": "Microsoft Entra application management policies API overview",
+    "url": "https://learn.microsoft.com/graph/api/resources/applicationauthenticationmethodpolicy"
+   },
+   {
+    "text": "Tenant app management policy - Microsoft Graph reference",
+    "url": "https://learn.microsoft.com/graph/api/resources/tenantappmanagementpolicy"
+   },
+   {
+    "text": "Workload identity federation",
+    "url": "https://learn.microsoft.com/entra/workload-id/workload-identity-federation"
+   },
+   {
+    "text": "Microsoft Entra recommendation: Remove unused credentials from applications",
+    "url": "https://learn.microsoft.com/entra/identity/monitoring-health/recommendation-remove-unused-credential-from-apps"
+   }
+  ]
  },
  "MT.1199": {
   "description": "This test checks if any app registration has a certificate or secret that is expired or about to expire.\n\nAn expired credential can no longer authenticate, but it stays on the app registration until someone removes it. Expired credentials accumulate over time, obscure which credential a workload actually uses, and make it harder to notice one that was added by an attacker. Microsoft Entra recommends removing unused credentials from applications for exactly that reason.\n\nA credential that is about to expire is the same problem shortly before it happens. The workload keeps running until the credential lapses, and the resulting outage arrives without warning — usually outside office hours, and usually on the integration nobody documented.\n\nBoth credential types are reported. Certificates are the recommended alternative to secrets, but they expire just as silently, and an app registration that still uses secrets is reported here as well so that a single view covers everything that is about to lapse.",
-  "remediation": "1. Open the app registration listed below in the [Microsoft Entra admin center](https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade) and select **Certificates & secrets**.\n2. For a credential that is about to expire, upload or generate a replacement, update the workload that authenticates with it, and confirm the workload works with the new credential.\n3. Delete the expired or replaced credential once it is no longer in use.\n4. If the app registration is no longer used at all, remove the application instead of renewing its credentials.\n5. Where possible, replace the credential with a [managed identity](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/overview) or [workload identity federation](https://learn.microsoft.com/entra/workload-id/workload-identity-federation), neither of which expires."
+  "remediation": "1. Open the app registration listed below in the [Microsoft Entra admin center](https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade) and select **Certificates & secrets**.\n2. For a credential that is about to expire, upload or generate a replacement, update the workload that authenticates with it, and confirm the workload works with the new credential.\n3. Delete the expired or replaced credential once it is no longer in use.\n4. If the app registration is no longer used at all, remove the application instead of renewing its credentials.\n5. Where possible, replace the credential with a [managed identity](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/overview) or [workload identity federation](https://learn.microsoft.com/entra/workload-id/workload-identity-federation), neither of which expires.",
+  "links": [
+   {
+    "text": "Microsoft Entra recommendation: Remove unused credentials from applications",
+    "url": "https://learn.microsoft.com/entra/identity/monitoring-health/recommendation-remove-unused-credential-from-apps"
+   },
+   {
+    "text": "Workload identity federation",
+    "url": "https://learn.microsoft.com/entra/workload-id/workload-identity-federation"
+   },
+   {
+    "text": "Managed identities for Azure resources",
+    "url": "https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/overview"
+   },
+   {
+    "text": "application resource type - Microsoft Graph reference",
+    "url": "https://learn.microsoft.com/graph/api/resources/application"
+   }
+  ]
  },
  "CUS.SH.001": {
   "description": "Token Protection (token binding) cryptographically ties a sign-in session token to the device it was issued to. A token stolen with malware or an adversary-in-the-middle phishing proxy cannot be replayed from another device. It currently covers Windows devices and a limited set of apps (Exchange Online, SharePoint Online, Teams) in desktop clients.",
